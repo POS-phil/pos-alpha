@@ -1,12 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
+import { UploadImageComponent } from '../../../../dialogs/upload-image/upload-image.component';
 
 @Component({
   selector: 'app-add-category',
@@ -23,33 +33,17 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   templateUrl: './add-category.component.html',
-  styleUrl: './add-category.component.css'
+  styleUrl: './add-category.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCategoryComponent {
 
-  onFileSelected(event: any) {
-  const file = event.target.files[0];
-  if (file) {
-    console.log('Selected file:', file);
-    // Upload logic
-  }
-}
+  readonly dialog = inject(MatDialog);
 
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    const file = event.dataTransfer?.files[0];
-    if (file) {
-      console.log('Dropped file:', file);
-      // Upload logic
-    }
-  }
-
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-  }
-
-  onDragLeave(event: DragEvent) {
-    event.preventDefault();
-  }
+ openUploadDialog() : void {
+   const dialogRef = this.dialog.open(UploadImageComponent, {
+     width: '400px', 
+     height: '600px',
+    })};
 
 }

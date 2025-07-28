@@ -1,4 +1,4 @@
-<div class="cf">
+<div class="header-flex">
     <H1>Add Category</H1>
     <span class="spacer"></span>
     <button mat-stroked-button class="btnRadius" [routerLink]="['/menu/categories']">
@@ -8,12 +8,16 @@
         Save
     </button>
 </div>
-<div class="cf">
-    <div class="upload-container" (dragover)="onDragOver($event)" (drop)="onDrop($event)"
+<div class="container-flex">
+    <!-- <div class="upload-container" (dragover)="onDragOver($event)" (drop)="onDrop($event)"
         (dragleave)="onDragLeave($event)">
         <input type="file" (change)="onFileSelected($event)" hidden #fileInput />
     </div>
     <div>
 
-    </div>
+    </div> -->
+    <button mat-icon-button class="btnImage" (click)="openUploadDialog()">
+        <mat-icon class="icon-image">add_a_photo</mat-icon>
+    </button>
+
 </div>
