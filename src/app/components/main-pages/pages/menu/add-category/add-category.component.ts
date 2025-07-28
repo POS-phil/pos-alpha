@@ -42,8 +42,9 @@ export class AddCategoryComponent {
 
  openUploadDialog() : void {
    const dialogRef = this.dialog.open(UploadImageComponent, {
-     width: '400px', 
-     height: '600px',
+     width: '1500px', 
+     height: '900px',
+     maxWidth: '150vw',
     })};
 
 }

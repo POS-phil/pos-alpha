@@ -22,68 +22,124 @@ import { MatInputModule } from '@angular/material/input';
     <div class="container">
     
       <h1 mat-dialog-title>Upload Image</h1>
-    <div mat-dialog-content>
-      <div
-        class="drop-zone"
-        (drop)="onDrop($event)"
-        (dragover)="onDragOver($event)"
-        (dragleave)="onDragLeave($event)"
-        [class.active]="isDragOver">
-        Drag & Drop Image Here
+      <div mat-dialog-content>
+        <div class="cf">
+          <div class="f-50">
+            <div
+              class="drop-zone"
+              (drop)="onDrop($event)"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              [class.active]="isDragOver">
+              <p>Drag & Drop Image Here</p>
+              <mat-icon class="imgIcon" >image</mat-icon>
+              <div class="or-divider ">OR</div>
+              <button mat-flat-button class="btnBrowse" (click)="fileInput.click()">Browse File</button>
+              <input type="file" hidden #fileInput (change)="onFileSelected($event)" accept="image/*" />
+
+            </div>
+            <div class="or-divider">OR</div>
+
+            <mat-form-field appearance="outline" class="url-field">
+              <mat-label>Image URL</mat-label>
+              <input matInput [(ngModel)]="imageUrl" placeholder="https://example.com/image.jpg">
+              <button mat-icon-button matSuffix (click)="onLoadUrlImage()" aria-label="Preview from URL">
+                <mat-icon>preview</mat-icon>
+              </button>
+            </mat-form-field>
+
+            <p>
+              You can upload an image by dragging and dropping it here, selecting a file from your computer, or entering a URL.
+            </p>
+            
+
+            <!-- <div class="image-preview" *ngIf="previewImage">
+              <img [src]="previewImage" alt="Image Preview">
+            </div> -->
+
+          </div>
+          <div class="f-50">
+            <div class="image-preview-container">
+              @if(previewImage){
+              <div class="image-preview">
+                <img [src]="previewImage" alt="Image Preview">
+              </div>
+              } @else {
+                <p>Image preview will appear here</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>  
+      
+      <div mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-raised-button color="primary" (click)="onUpload()" [disabled]="!previewImage">Upload</button>
       </div>
-
-      <div class="or-divider">OR</div>
-
-      <button mat-raised-button class="btnBrowse" (click)="fileInput.click()">Browse File</button>
-      <input type="file" hidden #fileInput (change)="onFileSelected($event)" accept="image/*" />
-
-      <div class="or-divider">OR</div>
-
-      <mat-form-field appearance="outline" class="url-field">
-        <mat-label>Image URL</mat-label>
-        <input matInput [(ngModel)]="imageUrl" placeholder="https://example.com/image.jpg">
-        <button mat-icon-button matSuffix (click)="onLoadUrlImage()" aria-label="Preview from URL">
-          <mat-icon>preview</mat-icon>
-        </button>
-      </mat-form-field>
-
-      <div *ngIf="previewImage" class="image-preview">
-        <img [src]="previewImage" alt="Image preview" />
-      </div>
-    </div>
-
-    <div mat-dialog-actions align="end">
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-raised-button color="primary" (click)="onUpload()" [disabled]="!previewImage">Upload</button>
-    </div>
     </div>
   `,
   styles: `
 
-  ::host {
-    overflow: hidden;
-  }
+    ::host {
+      overflow: hidden;
+    }
 
-  .container{
-    padding: 16px;
-    overflow: hidden;
-  }
+    .container{
+      padding: 16px;
+      overflow: hidden;
+    }
 
-  .btnBrowse {
-    border-radius: 5px;
-    width: 100%;
-  }
+    .cf {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      height: calc(100vh - 220px);
+    }
 
-  .drop-zone {
+    @media (max-width: 600px) {
+
+      .cf{
+        flex-direction: column;
+      }
+    
+    }
+
+    .f-50{
+      flex: 50%;
+    }
+
+    .imgIcon{
+      width: 60px;
+      height: 60px;
+      font-size: 50px;
+    }
+
+    .btnBrowse {
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    .drop-zone {
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        padding: 24px;
+        text-align: center;
+        color: #888;
+        transition: border-color 0.3s;
+        margin-bottom: 12px;
+        cursor: pointer;
+        height: 200px;
+        justify-content: center;
+    }
+
+    .image-preview-container{
       border: 2px dashed #ccc;
       border-radius: 8px;
-      padding: 24px;
       text-align: center;
-      color: #888;
-      transition: border-color 0.3s;
-      margin-bottom: 12px;
-      cursor: pointer;
+      min-height: 500px;
+      min-width: 200px;
     }
+
     .drop-zone.active {
       border-color: #3f51b5;
       color: #3f51b5;
@@ -105,8 +161,8 @@ import { MatInputModule } from '@angular/material/input';
     }
     
     .image-preview img {
-      max-width: 250px;
-      max-height: 250px;
+      max-width: 660px;
+      max-height: 900px;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       margin-bottom: 10px;
