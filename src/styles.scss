@@ -1,0 +1,88 @@
+/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@include mat.core();
+
+$compact-form-theme: mat.define-theme(
+    (
+        density: (
+            scale: -4,
+        )
+    )
+);
+
+:root {
+    //@include mat.all-component-themes($default-theme);
+    @include mat.form-field-density($compact-form-theme)
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.grid {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 1rem;
+}
+
+.viewReportButtonContainer {
+    margin-top: 2px;
+    display: flex;
+    
+    @include mat.button-density(-3);
+    
+ }
+
+.viewReportButton {
+    margin-left: auto;
+}
+
+H1 {
+    font : var(--mat-sys-headline-large);
+}
+
+app-main-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+app-top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+app-side-nav {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    .dash-viewer-footer{
+        margin-top: 0;
+    }
+}
+
+app-main-layout > app-side-nav {
+    flex: 1;
+    margin-top: 56px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.no-data {
+    display: flex;
+    justify-content: center;
+    color: var(--mat-sys-outline);
+    font-size: 1.2rem;
+    padding: 10rem;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,101 @@
+<div class="container">
+    <div class="inner-container">
+        <div class="filter-container">
+            <button mat-icon-button>
+                <mat-icon>filter_alt</mat-icon>
+            </button>
+        </div>
+        <div class="widget-container">
+            <div class="card">
+                <div class="card-container-content">
+                    <div class="card-content">
+                        <mat-icon class="icon-styles active-order-icon">fastfood</mat-icon>
+                        <H6>123</H6>
+                        <H5>Active Order Counts</H5>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-container-content">
+                    <div class="card-content">
+                        <mat-icon class="icon-styles active-order-amount-icon">request_quote</mat-icon>
+                        <H6>AED 44,222.5</H6>
+                        <H5>Active Orders Amount</H5>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-container-content">
+                    <div class="card-content">
+                        <mat-icon class="icon-styles active-order-occupied-tables-icon">table_restaurant</mat-icon>
+                        <H6>20</H6>
+                        <H5>Occupied Tables</H5>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-container-content">
+                    <div class="card-content">
+                        <mat-icon class="icon-styles active-order-online-cashier-icon">point_of_sale</mat-icon>
+                        <H6>2</H6>
+                        <H5>Online Cashiers</H5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="branch-statistic-container">
+            <h3>Branches Statistics</h3>
+            <div class="table-container">
+                <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons>
+                </mat-paginator>
+                <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+
+                    <ng-container matColumnDef="store">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Store </th>
+                        <td mat-cell *matCellDef="let branch_statistics"> {{branch_statistics.stores}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="active_orders">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Active Orders </th>
+                        <td mat-cell *matCellDef="let branch_statistics"> {{branch_statistics.active_orders}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="active_orders_amount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Active Orders Amount </th>
+                        <td mat-cell *matCellDef="let branch_statistics">AED {{ branch_statistics.active_orders_amount
+                            }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="occupied_tables">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Occupied Tables </th>
+                        <td mat-cell *matCellDef="let branch_statistics">{{ branch_statistics.occupied_tables }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="online_cashiers">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Online Cashiers </th>
+                        <td mat-cell *matCellDef="let branch_statistics">{{ branch_statistics.online_cashiers}} /
+                            {{branch_statistics.number_of_cashiers }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="open_tills">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Open Tills </th>
+                        <td mat-cell *matCellDef="let branch_statistics">{{ branch_statistics.open_tills }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="last_sync">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Sync </th>
+                        <td mat-cell *matCellDef="let branch_statistics">{{ branch_statistics.last_sync }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="last_order">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Order </th>
+                        <td mat-cell *matCellDef="let branch_statistics">{{ branch_statistics.last_order }} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

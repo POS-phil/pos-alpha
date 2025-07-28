@@ -1,0 +1,32 @@
+<div class="container">
+    <div class="viewReportButtonContainer">
+        <button mat-button class="viewReportButton">View Report</button>
+    </div>
+    @switch (data().options) {
+    @case (1) {
+        <mat-grid-list class="mat-grid-tile-shadow" cols="1" rowHeight="2:1" [gutterSize]="'10px'">
+            <mat-grid-tile>
+                <div class="grid">
+                    <h4>AED <span>{{ sumDataset | number:'1.0-0' }}</span></h4>
+                </div>
+            </mat-grid-tile>
+        </mat-grid-list>
+    }
+    @case (2) {
+        <div class="container-chart-form">
+            <div class="aed-container">
+                <h3>AED <span>{{ sumDataset | number:'1.0-0' }}</span></h3>
+            </div>
+            <div class="chart-container">
+                <canvas baseChart [type]="barChartNetSales" [data]="barChartSales" [options]="barChartOptions"
+                (chartClick)="chartClicked($event)" (chartHover)="chartHovered($event)"></canvas>
+            </div>
+        </div>
+    }
+    @case (3) {
+    ??????????
+    }
+
+    }
+
+</div>

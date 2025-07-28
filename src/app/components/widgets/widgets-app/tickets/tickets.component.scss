@@ -1,0 +1,39 @@
+.container {
+    padding: 0px 10px 10px 10px;
+}
+
+mat-grid-tile {
+    background-color: whitesmoke;
+    border-radius: 3px;
+    box-shadow: var(--mat-sys-level2);
+}
+
+canvas {
+    margin: 5px;
+}
+
+.graphPadding {
+    padding: 5px;
+}
+
+.icon20 {
+    font-size: 15px;
+    height: 15px;
+    width: 15px;
+    color: #007FFF;
+    cursor: pointer;
+}
+
+h4 {
+    font: var(--mat-sys-title-medium);
+    line-height: var(--mat-sys-body-medium-line-height);
+}
+
+.mdc-list-item--with-trailing-meta .mdc-list-item__end {
+    font-size: var(--mdc-list-list-item-trailing-supporting-text-size, 15px);
+}
+
+mat-list-item {
+    border: 1px solid;
+    border-color: var(--mat-sys-outline-variant)
+}

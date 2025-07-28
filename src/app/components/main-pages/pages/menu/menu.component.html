@@ -1,0 +1,106 @@
+<div class="main-container">
+    <div class="menu-container container-2">
+        <button mat-stroked-button [matMenuTriggerFor]="import" class="btnCategory">
+            <mat-icon>cloud_queue</mat-icon>
+            Import/Export
+        </button>
+        <mat-menu #import="matMenu">
+            <button mat-menu-item>
+                <mat-icon>file_download</mat-icon>
+                Import Categories
+            </button>
+            <button mat-menu-item>
+                <mat-icon>file_upload</mat-icon>
+                Export Categories
+            </button>
+        </mat-menu>
+        <button mat-stroked-button class="btnCategory">
+            <mat-icon>sort</mat-icon>
+            Sort Categories
+        </button>
+        <button mat-flat-button class="btnCategory" [routerLink]="['/menu/categories/add-category']">
+            <mat-icon>add</mat-icon>
+            Create Category
+        </button>
+    </div>
+    @if(MENU_CATEGORIES_DATA.data.length === 0){
+    <div class="no-data">
+        <mat-icon>info</mat-icon>
+        <span>No Categories Found, Please add a category</span>
+    </div>
+    } @else {
+    <div class="menu-container container-1">
+        <mat-form-field appearance="outline" class="inputSearch">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search Category">
+        </mat-form-field>
+        <button mat-icon-button>
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+    <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons>
+    </mat-paginator>
+    <table mat-table [dataSource]="MENU_CATEGORIES_DATA" matSort (matSortChange)="announceSortChange($event)">
+
+        <ng-container matColumnDef="check">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()" [indeterminate]="isSomeSelected()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+                    [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category_name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="image">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="reference">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Reference </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="schedule">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Schedule </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="web_shop">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Web Shop </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="aggregator">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Aggregator </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="last_order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Order </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="selectedCount > 0 ? bulkColumns : displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    }
+</div>

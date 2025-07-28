@@ -1,0 +1,44 @@
+:host {
+    display: block;
+    border-radius: 10px;
+}
+
+.container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: inherit;
+    overflow: hidden;
+
+    box-shadow: var(--mat-sys-level2);
+}
+
+@media (max-width: 599px) {
+    .container {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: var(--mat-sys-level2);
+    }
+}
+
+.settings-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+h4 {
+    font-size: medium;
+    font-weight: 500;
+}
+
+.remove-widget-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #cc0000;
+}

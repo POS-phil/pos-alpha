@@ -1,0 +1,94 @@
+.dashboard-widgets {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+    grid-auto-rows: 150px;
+    gap: 16px;
+
+    @media (max-width: 599px) {
+        margin-left: 10px;
+    }
+}
+
+.cdk-drop-list-dragging {
+    opacity: 0.5;
+    border: 5px solid #007FFF;
+    padding: 8px;
+    cursor: move;
+}
+
+@media (max-width: 599px) {
+    .dashboard-widgets {
+        grid-template-columns: 1fr !important;
+    }
+
+    .dashboard-widgets > * {
+        grid-column: span 1 !important; 
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.date-picker-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 20px;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+mat-button-toggle-group {
+    border-radius: 5px;
+}
+
+
+.datepicker-input-container {
+    padding-top: var(--mat-form-field-container-vertical-padding, 14px) !important;
+    padding-bottom: var(--mat-form-field-container-vertical-padding, 14px) !important;
+}
+
+.selectStores {
+    min-width: 320px;
+}
+
+mat-chip-row {
+    margin-right: 2px;
+}
+
+.additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+  line-height: 1;
+}
+
+.mat-mdc-chip-set .mdc-evolution-chip {
+    margin: 0px 0 0px 8px;
+}
+
+
+@media(max-width: 720px) {
+
+    .date-picker-content {
+        display: grid;
+        gap: 1px;
+        margin: 10px;
+        align-items: flex-end;
+    }
+
+    .mb5 {
+        margin-bottom: 5px;
+    }
+
+    .mat-button-toggle-container {
+        max-width: 170px;
+    }
+
+}

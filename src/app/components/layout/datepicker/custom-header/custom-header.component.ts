@@ -1,0 +1,56 @@
+import { Component, Inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material/core';
+import { MatCalendar } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-custom-header',
+  standalone: true,
+  imports: [
+    MatIconModule,
+    MatButtonModule
+  ],
+  templateUrl: './custom-header.component.html',
+  styleUrl: './custom-header.component.css'
+})
+export class CustomHeaderComponent<D> {
+
+  constructor(
+    private calendar: MatCalendar<D>, // calendar instance of picker
+    private dateAdapter: DateAdapter<D>, // native or moment date adapter
+    @Inject(MAT_DATE_FORMATS)
+    private dateFormats: MatDateFormats // for formatting
+  ) { }
+
+  // active date label rendered between the arrow buttons
+  get periodLabel(): string {
+    // use date adapter to format the label, e.g. "SEP 2020"
+    return this.dateAdapter
+      .format(this.calendar.activeDate, this.dateFormats.display.monthYearLabel)
+      .toLocaleUpperCase();
+  }
+
+  // called when user clicks on one of the left buttons
+  previousClicked(mode: 'month' | 'year'): void {
+    this.changeDate(mode, -1);
+  }
+
+  // called when user clicks on one of the right buttons
+  nextClicked(mode: 'month' | 'year'): void {
+    this.changeDate(mode, 1);
+  }
+
+  private changeDate(mode: 'month' | 'year', amount: -1 | 1): void {
+    // increment or decrement month or year
+    this.calendar.activeDate =
+      mode === 'month'
+        ? this.dateAdapter.addCalendarMonths(this.calendar.activeDate, amount)
+        : this.dateAdapter.addCalendarYears(this.calendar.activeDate, amount);
+  }
+
+  openMonthPicker() {
+    this.calendar.currentView = 'year';
+  }
+
+}

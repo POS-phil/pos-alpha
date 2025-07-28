@@ -1,0 +1,9 @@
+.action-bar {
+  padding: 16px 8px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  text-align: right;
+}
+
+.action-bar:empty {
+  display: none;
+}

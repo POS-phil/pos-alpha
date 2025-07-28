@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="viewReportButtonContainer">
+        <button mat-button class="viewReportButton">View Report</button>
+    </div>
+
+    @switch (data().options) {
+    @case (1) {
+    <div class="container-basic-form">
+        @for (hour of hours; track $index) {
+        <div class="tile-hourly-sales">
+            <mat-icon class="icon">access_time</mat-icon>
+            <div>
+                <div class="tile-hour">{{ hour }}</div>
+                <div class="tile-value">{{ amounts[$index] | currency:'AED ': 'symbol':'1.0-0' }}</div>
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+    @case (2)
+    {
+    <div class="container-chart-form">
+        <div class="chart-container">
+            <canvas baseChart [type]="lineChartHourlySales" [data]="lineChartHourlySalesData"
+                [options]="lineCharHourlySalesOptions" (chartClick)="chartClicked($event)"
+                (chartHover)="chartHovered($event)"></canvas>
+        </div>
+    </div>
+    }
+    }
+
+</div>

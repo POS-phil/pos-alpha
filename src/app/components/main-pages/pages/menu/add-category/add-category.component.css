@@ -1,0 +1,34 @@
+.cf {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btnRadius{
+    border-radius: 5px;
+    width: 150px;
+}
+
+.upload-container {
+  width: 450px;
+  height: 250px;
+  background-color: #aaaaaa;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  border: 2px dashed white;
+  cursor: pointer;
+}
+
+.grid-cell {
+    flex: 0 0 calc(30% - 20px);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.spacer {
+    flex-grow: 1;
+  }

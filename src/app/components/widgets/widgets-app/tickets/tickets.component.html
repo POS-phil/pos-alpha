@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="viewReportButtonContainer">
+        <button mat-button class="viewReportButton">View Report</button>
+    </div>
+    @switch (data().options) {
+    @case (1) {
+    <mat-grid-list cols="2" rowHeight="2:1" [gutterSize]="'10px'">
+        <mat-grid-tile>
+            <div class="grid">
+                <h4>Open Ticket</h4>
+                <div>5</div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="grid">
+                <h4>Closed Ticket</h4>
+                <div>15</div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="grid">
+                <h4>Value <mat-icon matTooltip="Test" class="icon20">error_outline</mat-icon></h4>
+                <div>AED 500</div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <div class="grid">
+                <h4>High Value <mat-icon matTooltip="Test" class="icon20">error_outline</mat-icon></h4>
+                <div>AED 5000</div>
+            </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+    }
+    @case (2) {
+    <mat-grid-list cols="2" rowHeight="1:1" [gutterSize]="'10px'">
+        <mat-grid-tile>
+            <canvas baseChart [type]="doughnutChartTypeTicket" [options]="doughnutChartOptions"
+                [data]="doughnutChartDataTicket" (chartClick)="chartClicked($event)" (chartHover)="chartHovered($event)"></canvas>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <canvas baseChart [type]="doughnutChartTypeValue" [options]="doughnutChartOptions"
+                [data]="doughnutChartDataValue" (chartClick)="chartClicked($event)" (chartHover)="chartHovered($event)"></canvas>
+        </mat-grid-tile>
+    </mat-grid-list>
+    }
+    @case (3) {
+    ??????????
+    }
+
+    }
+</div>

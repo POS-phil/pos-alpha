@@ -1,0 +1,83 @@
+<div class="header">
+    <div class="date-picker-content">
+
+        <mat-form-field class="selectStores mb5">
+            <mat-label> Select Stores </mat-label>
+            <mat-select [formControl]="stores" multiple (selectionChange)="onStoreSelectionChange($event)">
+
+                <mat-select-trigger>
+                    @if (stores.value?.length > 0) {
+                        @for(store of stores.value ; track store) {
+
+                            @if (store !== 'All' && $index < 2) {
+                                <mat-chip-row [removable]="true">
+                                    {{ store }}
+                                </mat-chip-row>
+                            }
+                        }
+
+                        @if(stores.value.length > 2) {
+                                <span class="additional-selection">
+                                    (+{{stores.value.length - 2}} {{stores.value.length === 3 ? 'store selected' : 'stores selected'}})
+                                </span>
+                        }
+                    }
+                </mat-select-trigger>
+
+                <mat-option [value]="'All'">All</mat-option>
+                <mat-divider></mat-divider>
+
+                @for (store of storesList; track store) {
+                <mat-option [value]="store">{{ store }}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+
+        <mat-button-toggle-group hideSingleSelectionIndicator="true" class="mat-button-toggle-container">
+            <mat-button-toggle value="day">Day</mat-button-toggle>
+            <mat-button-toggle value="week">Week</mat-button-toggle>
+            <mat-button-toggle value="month">Month</mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-form-field class="datepicker-input-container" appearance="outline">
+            <input matInput [matDatepicker]="picker1" [formControl]="date" (click)="picker1.open()" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 [calendarHeaderComponent]="customHeader">
+            </mat-datepicker>
+        </mat-form-field>
+
+        <mat-slide-toggle class="mb5" labelPosition="before" (change)="toggleCompare($event)">Compare</mat-slide-toggle>
+
+        @if(isCompare) {
+        <mat-form-field class="datepicker-input-container" appearance="outline">
+            <input matInput [matDatepicker]="picker2" [formControl]="date" (click)="picker2.open()" />
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 [calendarHeaderComponent]="customHeader">
+            </mat-datepicker>
+        </mat-form-field>
+        }
+
+        <div class="spacer"></div>
+        <button mat-raised-button [mat-menu-trigger-for]="widgetMenu">
+            <mat-icon>add_circle</mat-icon>
+            Add Widget
+        </button>
+    </div>
+
+    <mat-menu #widgetMenu="matMenu">
+        @for (widget of store.widgetsToAdd(); track widget.id) {
+        <button mat-menu-item (click)="store.addWidget(widget)">
+            {{widget.label}}
+        </button>
+        } @empty {
+        <button mat-menu-item>
+            No widgets to add
+        </button>
+        }
+    </mat-menu>
+</div>
+
+<div #dashboard class="dashboard-widgets" cdkDropListGroup>
+    @for (w of store.addedWidgets(); track w.id) {
+    <app-widgets-component cdkDropList [data]="w" (cdkDropListDropped)="drop($event)" [cdkDropListData]="w.id" />
+    }
+</div>

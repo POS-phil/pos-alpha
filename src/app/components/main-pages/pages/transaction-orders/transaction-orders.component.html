@@ -1,0 +1,89 @@
+<div class="header-container">
+    <H1>Transaction Orders</H1>
+
+</div>
+
+<va-mat-table>
+    <ng-container action-bar-items>
+        <button class="btn-sorter" va-mat-table-column-sorter [(columns)]="displayedColumns" [columnNames]="displayedColumnNames"
+            [saveName]="'TransactionOrderTable'">
+            <mat-icon>view_column</mat-icon>
+            Columns
+        </button>
+    </ng-container>
+    <mat-paginator class="paginator" [pageSizeOptions]="[10, 20]" showFirstLastButtons>
+        </mat-paginator>
+    <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
+
+            <ng-container matColumnDef="refference">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Refference </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.refference}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Number </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.number}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="check_number">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Check Number </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.check_number}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="store">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Store </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.store}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="customer">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Customer </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.customer}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="source">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Source </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.source}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="app_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> App Name </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.app_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Total </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.total}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="order_type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Type </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.order_type}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="delivery_status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Delivery Status </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.delivery_status}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="bussiness_date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Business Date </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.bussiness_date}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="opened_at">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Opened At </th>
+                <td mat-cell *matCellDef="let transaction_orders"> {{transaction_orders.opened_at}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+    </div>
+</va-mat-table>

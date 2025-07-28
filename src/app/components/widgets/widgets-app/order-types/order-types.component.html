@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="viewReportButtonContainer">
+        <button mat-button class="viewReportButton">View Report</button>
+    </div>
+
+    @switch (data().options) {
+    @case (1) {
+    <mat-list role="list">
+        <mat-list-item role="listitem">
+            <p matListItemTitle>Delivery Orders</p>
+            <span matListItemMeta>100</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+            <p matListItemTitle>Dine In Orders</p>
+            <span matListItemMeta>100</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+            <p matListItemTitle>Take Away Orders</p>
+            <span matListItemMeta>100</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item role="listitem">
+            <p matListItemTitle>Drive Thru Orders</p>
+            <span matListItemMeta>100</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </mat-list>
+    }
+
+    @case (2)
+    {
+    <div class="container-chart-form">
+        <div class="chart-container">
+            <canvas baseChart [type]="lineChartOrderTypes" [data]="lineChartOrderTypesData"
+                [options]="lineCharOderTypestOptions" (chartClick)="chartClicked($event)"
+                (chartHover)="chartHovered($event)"></canvas>
+        </div>
+    </div>
+    }
+    }
+
+</div>

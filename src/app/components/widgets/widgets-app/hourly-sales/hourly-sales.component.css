@@ -1,0 +1,61 @@
+.container {
+    padding: 0px 10px 10px 10px;
+}
+
+.container-chart-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.chart-container {
+    height: 250px;
+    width: 100%;
+}
+
+.container-basic-form {
+
+    height: 220px;
+    display: flex;
+    align-items: start;
+    flex-flow: wrap;
+    justify-content: space-evenly;
+    overflow-y: auto;
+    gap: 10px;
+    padding: 10px;
+
+}
+
+
+.tile-hourly-sales {
+
+    display: flex;
+    flex-direction: row;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    min-width: 150px;
+    align-items: center;
+    justify-content: space-evenly;
+    justify-items: center;
+    
+}
+
+.icon {
+    font-size: 40px;
+    width: 45px;
+    height: 40px;
+}
+
+.tile-hour {
+    font: var(--mat-sys-label-large);
+    font-weight: 500;
+    color: #333;
+}
+
+.tile-value {
+    font: var(--mat-sys-title-medium);
+    font-weight: bold;
+    margin-top: 6px;
+    color: #4caf50;
+}

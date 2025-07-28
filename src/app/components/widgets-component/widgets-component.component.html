@@ -1,0 +1,17 @@
+<div class="container" cdkDrag cdkDragPreviewContainer="parent">
+    <h4 style="margin: 0;">{{ data().label }}</h4>
+    <button mat-icon-button class="settings-button" (click)="showOptions.set(true)">
+        <mat-icon>settings</mat-icon>
+    </button>
+    <!-- <button mat-icon-button class="remove-widget-button" (click)="store.removeWidget(data().id)">
+        <mat-icon>delete</mat-icon>
+    </button> -->
+    <ng-container [ngComponentOutlet]="data().content" [ngComponentOutletInputs]="{ data: data() }"  ></ng-container>
+
+    @if (showOptions()) {
+        <app-widgets-option [(showOptions)]="showOptions" [data]="data()" />
+    }
+    
+    <div *cdkDragPlaceholder></div>
+    
+</div>
