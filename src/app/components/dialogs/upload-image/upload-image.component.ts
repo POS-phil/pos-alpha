@@ -112,7 +112,6 @@ import { MatInputModule } from '@angular/material/input';
       margin-bottom: 10px;
     }
   
-  
   `
 })
 export class UploadImageComponent {
