@@ -32,7 +32,7 @@ import { MatInputModule } from '@angular/material/input';
               (dragleave)="onDragLeave($event)"
               [class.active]="isDragOver">
               <p>Drag & Drop Image Here</p>
-              <mat-icon class="imgIcon" >image</mat-icon>
+              <mat-icon class="imgIcon" >add_photo_alternate</mat-icon>
               <div class="or-divider ">OR</div>
               <button mat-flat-button class="btnBrowse" (click)="fileInput.click()">Browse File</button>
               <input type="file" hidden #fileInput (change)="onFileSelected($event)" accept="image/*" />
@@ -48,7 +48,7 @@ import { MatInputModule } from '@angular/material/input';
               </button>
             </mat-form-field>
 
-            <p>
+            <p class="note">
               You can upload an image by dragging and dropping it here, selecting a file from your computer, or entering a URL.
             </p>
             
@@ -65,7 +65,8 @@ import { MatInputModule } from '@angular/material/input';
                 <img [src]="previewImage" alt="Image Preview">
               </div>
               } @else {
-                <p>Image preview will appear here</p>
+                <p class="font-image-preview">Image preview will appear here</p>
+                <mat-icon class="imgIcon-preview" >photo</mat-icon>
               }
             </div>
           </div>
@@ -82,6 +83,10 @@ import { MatInputModule } from '@angular/material/input';
 
     ::host {
       overflow: hidden;
+    }
+
+    h1 {
+      font: var(--mat-sys-headline-large);
     }
 
     .container{
@@ -114,9 +119,25 @@ import { MatInputModule } from '@angular/material/input';
       font-size: 50px;
     }
 
+    .imgIcon-preview{
+      width: 550px;
+      height: 550px;
+      font-size: 500px;
+    }
+
     .btnBrowse {
       border-radius: 5px;
       width: 100%;
+    }
+
+    .note {
+      text-align: center; 
+      color: #666;
+      font: var(--mat-sys-body-medium);
+    }
+
+    .font-image-preview {
+      font: var(--mat-sys-display-small);
     }
 
     .drop-zone {
@@ -133,9 +154,11 @@ import { MatInputModule } from '@angular/material/input';
     }
 
     .image-preview-container{
+      
       border: 2px dashed #ccc;
       border-radius: 8px;
       text-align: center;
+      color: #888;
       min-height: 500px;
       min-width: 200px;
     }
