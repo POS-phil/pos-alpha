@@ -91,7 +91,6 @@ import { MatInputModule } from '@angular/material/input';
 
     .container{
       padding: 16px;
-      overflow: hidden;
     }
 
     .cf {
@@ -103,8 +102,13 @@ import { MatInputModule } from '@angular/material/input';
 
     @media (max-width: 600px) {
 
+      .container{
+        overflow: visible;
+      }
+
       .cf{
         flex-direction: column;
+        
       }
     
     }
@@ -241,7 +245,6 @@ export class UploadImageComponent {
   }
 
   onUpload() {
-    // Return the image (data URL or URL)
     console.log('Uploading:', this.previewImage);
     // You can send this to a backend or return it to the parent component
   }

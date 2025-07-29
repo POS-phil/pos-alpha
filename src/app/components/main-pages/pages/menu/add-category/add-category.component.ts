@@ -10,6 +10,8 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatSelectModule} from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
 import { UploadImageComponent } from '../../../../dialogs/upload-image/upload-image.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-add-category',
@@ -30,7 +33,10 @@ import { UploadImageComponent } from '../../../../dialogs/upload-image/upload-im
     MatStepperModule,
     MatIconModule,
     MatInputModule,
-    RouterModule
+    RouterModule,
+    MatAutocompleteModule,
+    MatSlideToggleModule,
+    MatSelectModule,
   ],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.css',

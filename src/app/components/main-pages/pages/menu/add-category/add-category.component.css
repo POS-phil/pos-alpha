@@ -1,17 +1,39 @@
 .header-flex {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .container-flex {
-    display: flex;
-    gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.btnRadius{
-    border-radius: 5px;
-    width: 150px;
+.grid-container {
+  display: grid;
+  grid-template-columns: 350px 350px 200px;
+  gap: 1rem;
+}
+
+.grid-slideContainer{
+  grid-column: 3;
+  grid-row: 1 / span 10;
+}
+
+.grid-textArea {
+  grid-column: 1 / span 2;;
+}
+
+
+/* .cf-col {
+  display: flex;
+  flex-direction: column;
+} */
+
+.btnRadius {
+  border-radius: 5px;
+  width: 150px;
 }
 
 .btnImage {
@@ -20,6 +42,11 @@
   padding: 0;
   border-radius: 0;
   background-color: #e7e7e7;
+}
+
+.btnAvailability {
+  height: 40px;
+  border-radius: 5px;
 }
 
 .icon-image {
@@ -41,8 +68,14 @@
   cursor: pointer;
 }
 
-.grid-cell {
-    flex: 0 0 calc(30% - 20px);
+.spacer {
+  flex-grow: 1;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
 }
 
 .full-width {
@@ -50,6 +83,15 @@
   margin-bottom: 10px;
 }
 
-.spacer {
-    flex-grow: 1;
+@media (max-width: 600px) {
+
+  .container-flex {
+    flex-direction: column;
+    margin-left: 5px;
   }
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
