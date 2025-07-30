@@ -12,7 +12,9 @@ $compact-form-theme: mat.define-theme(
 
 :root {
     //@include mat.all-component-themes($default-theme);
-    @include mat.form-field-density($compact-form-theme)
+    @include mat.form-field-density(
+        $compact-form-theme
+    )
 }
 
 html, body { height: 100%; }

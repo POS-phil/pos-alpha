@@ -1,0 +1,105 @@
+@use '@angular/material' as mat;
+
+.header-flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.container-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 350px 350px 200px;
+  gap: 1rem;
+}
+
+.grid-slideContainer{
+  grid-column: 3;
+  grid-row: 1 / span 10;
+}
+
+.grid-textArea {
+  grid-column: 1 / span 2;;
+}
+
+
+/* .cf-col {
+  display: flex;
+  flex-direction: column;
+} */
+
+.btnRadius {
+  border-radius: 5px;
+  width: 150px;
+}
+
+.btnImage {
+  width: 250px;
+  height: 250px;
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 5px
+    )
+  );
+  border: #aaaaaa 2px dashed;
+}
+
+.btnAvailability {
+  height: 40px;
+  border-radius: 5px;
+}
+
+.icon-image {
+  font-size: 120px;
+  width: 220px;
+  overflow: visible;
+}
+
+.uploaded-image {
+  width: 250px;
+  height: 250px;
+  object-fit: fill;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.toggle-button {
+  @include mat.slide-toggle-overrides((
+    handle-shape: 5px,
+    track-shape: 5px,
+    label-text-weight: 500,
+  ));
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+
+  .container-flex {
+    flex-direction: column;
+    margin-left: 5px;
+  }
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+}

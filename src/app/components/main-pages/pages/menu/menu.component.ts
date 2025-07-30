@@ -38,7 +38,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 export class MenuComponent {
 
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check', 'category_name', 'image', 'reference', 'schedule', 'item', 'web_shop', 'aggregator', 'last_order', 'created_at'];
+  displayedColumns: string[] = ['check', 'category_name', 'image', 'reference', 'schedule', 'item', 'web_shop', 'aggregator', 'kiosk', 'last_order', 'created_at'];
   MENU_CATEGORIES_DATA = new MatTableDataSource<any>([]);
   //MENU_CATEGORIES_DATA!: MatTableDataSource<MenuCategories>;
 
