@@ -81,24 +81,5 @@ export const routes: Routes = [
             }
         ]
     },
-    // {
-    //     path: '',
-    //     loadComponent: () => import('./components/layout/main-layout/main-layout.component').then(m => m.MainLayoutComponent),
-    //     children: [
-    //         {
-    //             path: 'dashboard',
-    //             loadComponent: () => import('./components/main-pages/tab-container/dashboard-tab/dashboard-tab.component').then(m => m.DashboardTabComponent),
-    //             children: [
-    //                 { path: '', redirectTo: '/dashboard/(tabContent:general)', pathMatch: 'full' },
-    //                 {
-    //                     path: 'general',
-    //                     loadComponent: () => import('./components/main-pages/pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
-    //                     title: 'Dashboard / General',
-    //                     outlet: 'tabContent',
-    //                 },
-    //             ]
-    //         }
-    //     ]
-    // },
 
 ];
