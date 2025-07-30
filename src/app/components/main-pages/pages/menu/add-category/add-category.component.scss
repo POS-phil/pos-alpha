@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .header-flex {
   display: flex;
   align-items: center;
@@ -26,6 +28,11 @@
 }
 
 
+/* .cf-col {
+  display: flex;
+  flex-direction: column;
+} */
+
 .btnRadius {
   border-radius: 5px;
   width: 150px;
@@ -35,8 +42,12 @@
   width: 250px;
   height: 250px;
   padding: 0;
-  border-radius: 0;
-  background-color: #e7e7e7;
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 5px
+    )
+  );
+  border: #aaaaaa 2px dashed;
 }
 
 .btnAvailability {
@@ -45,22 +56,15 @@
 }
 
 .icon-image {
-
   font-size: 120px;
   width: 220px;
   overflow: visible;
-
 }
 
-.upload-container {
-  width: 450px;
+.uploaded-image {
+  width: 250px;
   height: 250px;
-  background-color: #aaaaaa;
-  border-radius: 10px;
-  text-align: center;
-  color: white;
-  border: 2px dashed white;
-  cursor: pointer;
+  object-fit: fill;
 }
 
 .spacer {
@@ -75,6 +79,15 @@
 
 .full-width {
   width: 100%;
+  margin-bottom: 10px;
+}
+
+.toggle-button {
+  @include mat.slide-toggle-overrides((
+    handle-shape: 5px,
+    track-shape: 5px,
+    label-text-weight: 500,
+  ));
   margin-bottom: 10px;
 }
 

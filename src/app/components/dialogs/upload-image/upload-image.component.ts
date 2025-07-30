@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Inject, inject, OnInit, Output } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-upload-image',
@@ -82,11 +84,24 @@ import { MatInputModule } from '@angular/material/input';
   `,
   styleUrl: './upload-image.scss',
 })
-export class UploadImageComponent {
+export class UploadImageComponent implements OnInit {
 
   imageUrl = '';
-  previewImage: string | ArrayBuffer | null = null;
+  readonly dialogRef = inject(MatDialogRef<UploadImageComponent>);
+  previewImage: SafeUrl | ArrayBuffer | null = null;
   isDragOver = false;
+
+  @Output() imageRemoved = new EventEmitter<void>();
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: SafeUrl | null
+  ) { }
+
+  ngOnInit(): void {
+    if (this.data) {
+      this.previewImage = this.data;
+    }
+  }
 
   onDragOver(event: DragEvent) {
     event.preventDefault();
@@ -131,15 +146,16 @@ export class UploadImageComponent {
 
   onUpload() {
     console.log('Uploading:', this.previewImage);
-    // You can send this to a backend or return it to the parent component
+    this.dialogRef.close(this.previewImage);
   }
 
   onCancel() {
-
+    this.dialogRef.close();
   }
 
   onRemove() {
-
+    this.previewImage = null;
+    this.imageRemoved.emit();
   }
 
 }

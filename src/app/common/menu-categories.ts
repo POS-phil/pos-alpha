@@ -6,5 +6,6 @@ export interface MenuCategories {
     item: string;
     web_shop: boolean;
     aggregator: boolean;
+    kiosk: boolean;
     created_at: Date;
 }

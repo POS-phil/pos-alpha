@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -20,6 +20,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
 import { UploadImageComponent } from '../../../../dialogs/upload-image/upload-image.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-category',
@@ -39,26 +40,35 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSelectModule,
   ],
   templateUrl: './add-category.component.html',
-  styleUrl: './add-category.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './add-category.component.scss',
 })
 export class AddCategoryComponent {
 
   readonly dialog = inject(MatDialog);
-  uploadedImage: string | null = null;
+  uploadedImage: SafeUrl | null = null;
+
+  constructor(
+    private cdr: ChangeDetectorRef,
+  ) { }
 
   openUploadDialog(): void {
     const dialogRef = this.dialog.open(UploadImageComponent, {
       width: '1500px',
       height: '900px',
       maxWidth: '150vw',
+      data: this.uploadedImage
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        
+        this.uploadedImage = result;
       }
+    });
+
+    dialogRef.componentInstance.imageRemoved.subscribe(() => {
+      this.uploadedImage = null;
+      this.cdr.detectChanges();
     });
 
   };
