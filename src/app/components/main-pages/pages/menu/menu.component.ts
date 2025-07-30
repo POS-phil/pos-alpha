@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -35,17 +35,29 @@ import { SelectionModel } from '@angular/cdk/collections';
   styleUrl: './menu.component.scss'
 })
 
-export class MenuComponent {
+export class MenuComponent implements OnInit {
 
+  // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
   displayedColumns: string[] = ['check', 'category_name', 'image', 'reference', 'schedule', 'item', 'web_shop', 'aggregator', 'kiosk', 'last_order', 'created_at'];
-  MENU_CATEGORIES_DATA = new MatTableDataSource<any>([]);
-  //MENU_CATEGORIES_DATA!: MatTableDataSource<MenuCategories>;
 
+  // Data source for the table
+  categoryList : MenuCategories[] = [];
+  MENU_CATEGORIES_DATA : any;
+
+  // Injecting LiveAnnouncer for accessibility announcements
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   private _liveAnnouncer = inject(LiveAnnouncer);
+
+  ngOnInit(): void {
+    this.getCategories();
+  }
+
+  getCategories() {
+    this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+  }
 
   announceSortChange(sortState: Sort) {
     if (sortState.direction) {
@@ -76,7 +88,7 @@ export class MenuComponent {
     const data = this.MENU_CATEGORIES_DATA.data ?? [];
     this.isAllSelected()
       ? this.selection.clear()
-      : data.forEach(row => this.selection.select(row));
+      : data.forEach((row: any) => this.selection.select(row));
   }
 
 }

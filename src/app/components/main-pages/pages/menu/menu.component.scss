@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 va-mat-table {
   display: block;
   width: 100%;
@@ -6,6 +8,12 @@ va-mat-table {
 
 ::ng-deep .mat-mdc-paginator-container {
     justify-content: flex-start !important;
+}
+
+.checkbox{
+   @include mat.checkbox-overrides((
+    
+  ));
 }
 
 .action-bar-1{
