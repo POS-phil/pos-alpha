@@ -10,7 +10,12 @@
 </div>
 <div class="container-flex">
     <button mat-icon-button class="btnImage" (click)="openUploadDialog()">
-        <mat-icon class="icon-image">add_a_photo</mat-icon>
+        <ng-container *ngIf="uploadedImage; else defaultIcon">
+            <img [src]="uploadedImage" alt="Uploaded" class="uploaded-icon" />
+        </ng-container>
+        <ng-template #defaultIcon>
+            <mat-icon class="icon-image">add_a_photo</mat-icon>
+        </ng-template>
     </button>
     <div class="grid-container">
         <div>

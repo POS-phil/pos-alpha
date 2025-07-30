@@ -10,8 +10,8 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,7 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
 import { UploadImageComponent } from '../../../../dialogs/upload-image/upload-image.component';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-add-category',
@@ -45,12 +45,22 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 export class AddCategoryComponent {
 
   readonly dialog = inject(MatDialog);
+  uploadedImage: string | null = null;
 
- openUploadDialog() : void {
-   const dialogRef = this.dialog.open(UploadImageComponent, {
-     width: '1500px', 
-     height: '900px',
-     maxWidth: '150vw',
-    })};
+  openUploadDialog(): void {
+    const dialogRef = this.dialog.open(UploadImageComponent, {
+      width: '1500px',
+      height: '900px',
+      maxWidth: '150vw',
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        
+      }
+    });
+
+  };
 
 }
