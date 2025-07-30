@@ -54,6 +54,11 @@
             </td>
         </ng-container>
 
+        <ng-container matColumnDef="reference">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Reference </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.reference}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="category_name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </th>
             <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
@@ -64,11 +69,6 @@
             <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.image}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="reference">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Reference </th>
-            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.reference}} </td>
-        </ng-container>
-
         <ng-container matColumnDef="schedule">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Schedule </th>
             <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
@@ -76,7 +76,13 @@
 
         <ng-container matColumnDef="item">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Item </th>
-            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.item}} </td>
+            <td mat-cell *matCellDef="let menu_cat"> 
+                @if(menu_cat.item >= 0){
+                    <a>Item ({{menu_cat.item}})</a>
+                } @else {
+                    <span>No Items</span>
+                }
+             </td>
         </ng-container>
 
         <ng-container matColumnDef="web_shop">
