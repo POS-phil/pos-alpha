@@ -10,8 +10,12 @@ export class MenuCategoriesService {
 
   private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-categories';
 
-  getMenuCategories(reference: number ) : Observable<MenuCategories[]>{
-    return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}/${reference}`);
+  getMenuCategories(categoryId: number ) : Observable<MenuCategories[]>{
+    return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}/${categoryId}`);
+  }
+
+  createMenuCategory(category: MenuCategories): Observable<MenuCategories> {
+    return this.http.post<MenuCategories>(`${this.menuCategoriesApiUrl}/create`, category);
   }
   
 }
