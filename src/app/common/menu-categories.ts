@@ -1,6 +1,7 @@
 /// src/app/common/menu-categories.ts
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
+    categoryId : number;
     category_name: string;
     image?: File | string;
     reference: number;

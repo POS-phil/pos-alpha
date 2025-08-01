@@ -1,5 +1,12 @@
 @use '@angular/material' as mat;
 
+form {
+  display: contents;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
 .header-flex {
   display: flex;
   align-items: center;
@@ -27,11 +34,32 @@
   grid-column: 1 / span 2;;
 }
 
+.icon-picker {
+  width: 150px;
+  height: 150px;
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 5px
+    )
+  );
+  border: #aaaaaa 2px dashed;
+}
 
-/* .cf-col {
-  display: flex;
-  flex-direction: column;
-} */
+.icon-picker-image {
+  font-size: 90px;
+  width: 90px;
+  overflow: visible;
+}
+
+.icon-menu{
+  overflow: hidden !important;
+}
+
+.icon-grid{
+  overflow: hidden !important;
+}
+
 
 .btnRadius {
   border-radius: 5px;
