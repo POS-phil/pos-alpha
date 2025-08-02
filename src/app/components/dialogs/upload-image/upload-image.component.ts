@@ -49,16 +49,9 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
                 <mat-icon>preview</mat-icon>
               </button>
             </mat-form-field>
-
             <p class="note">
               You can upload an image by dragging and dropping it here, selecting a file from your computer, or entering a URL.
             </p>
-            
-
-            <!-- <div class="image-preview" *ngIf="previewImage">
-              <img [src]="previewImage" alt="Image Preview">
-            </div> -->
-
           </div>
           <div class="f-50">
             <div class="image-preview-container">
@@ -145,7 +138,7 @@ export class UploadImageComponent implements OnInit {
   }
 
   onUpload() {
-    console.log('Uploading:', this.previewImage);
+    //console.log('Uploading:', this.previewImage);
     this.dialogRef.close(this.previewImage);
   }
 
