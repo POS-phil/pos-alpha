@@ -2,7 +2,7 @@
     <div class="header-flex">
         <H1>Add Category</H1>
         <span class="spacer"></span>
-        <button type="button" class="btnRadius" [routerLink]="['/menu/categories']">
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/categories']">
             Cancel
         </button>
         <button type="submit" mat-flat-button class="btnRadius">
@@ -19,14 +19,14 @@
             </ng-template>
         </button>
         <div class="grid-container">
-            <div>
+            <div class="grid-1cS3-1r">
                 <mat-form-field class="full-width">
                     <mat-label>Name</mat-label>
                     <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
                     <mat-error *ngIf="categoryName.hasError('required')">Category Name is required</mat-error>
                 </mat-form-field>
             </div>
-            <div>
+            <div class="grid-4cS2-1r">
                 <mat-form-field class="full-width">
                     <mat-label>Second Language</mat-label>
                     <input matInput>
@@ -43,15 +43,15 @@
                     Kiosk
                 </mat-slide-toggle>
             </div>
-            <div>
+            <div class="grid-1cS3-2r">
                 <mat-form-field class="full-width">
                     <mat-label>Parent Category</mat-label>
                     <input matInput [matAutocomplete]="auto">
                     <mat-autocomplete #auto="matAutocomplete"></mat-autocomplete>
                 </mat-form-field>
             </div>
-            <div>
-                <button type="button" mat-fab extended class="full-width btnAvailability">
+            <div class="grid-4cS2-2r">
+                <button type="button" mat-fab extended class="full-width btnAvailability" (click)="openAvailabilityDialog()">
                     <mat-icon>event_repeat</mat-icon>
                     <span>Availability</span>
                 </button>
@@ -63,15 +63,13 @@
                 </mat-form-field>
             </div>
             <div>
-                <div style="font-weight: 500;">
-                    <span>Icon Picker : </span>
+                <div style="font: var(--mat-sys-label-small)">
+                    <span>ICON PICKER : </span>
                 </div>
-                <button type="button" mat-icon-button class="iconSelector" class="icon-picker"
+                <button matTooltip = "If no image is provided, an icon can be selected to use as the category image."  type="button" mat-icon-button class="iconSelector" class="icon-picker"
                     [matMenuTriggerFor]="iconMenu">
                     <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
                 </button>
-
-
 
                 <mat-menu #iconMenu="matMenu" class="icon-menu">
                     <div class="icon-grid">
@@ -81,9 +79,9 @@
                     </div>
                 </mat-menu>
             </div>
-            <div>
+            <div class="grid-reference">
                 <mat-form-field class="full-width">
-                    <mat-label>SKU</mat-label>
+                    <mat-label>Reference</mat-label>
                     <input matInput>
                 </mat-form-field>
             </div>
