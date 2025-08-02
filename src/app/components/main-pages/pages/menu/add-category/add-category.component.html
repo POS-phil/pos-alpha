@@ -42,6 +42,9 @@
                 <mat-slide-toggle class="toggle-button">
                     Kiosk
                 </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Counter Top
+                </mat-slide-toggle>
             </div>
             <div class="grid-1cS3-2r">
                 <mat-form-field class="full-width">
@@ -66,7 +69,7 @@
                 <div style="font: var(--mat-sys-label-small)">
                     <span>ICON PICKER : </span>
                 </div>
-                <button matTooltip = "If no image is provided, an icon can be selected to use as the category image."  type="button" mat-icon-button class="iconSelector" class="icon-picker"
+                <button [disabled]="uploadedImage" matTooltip = "If no image is provided, an icon can be selected to use as the category image."  type="button" mat-icon-button class="iconSelector" class="icon-picker"
                     [matMenuTriggerFor]="iconMenu">
                     <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
                 </button>

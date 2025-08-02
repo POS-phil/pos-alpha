@@ -10,6 +10,7 @@ export interface MenuCategories {
     web_shop: boolean;
     aggregator: boolean;
     kiosk: boolean;
+    counter_top: boolean;
     last_order: Date;
     created_at: Date;
 }
