@@ -17,32 +17,28 @@ import { MatIconModule } from '@angular/material/icon';
 export class CustomHeaderComponent<D> {
 
   constructor(
-    private calendar: MatCalendar<D>, // calendar instance of picker
-    private dateAdapter: DateAdapter<D>, // native or moment date adapter
+    private calendar: MatCalendar<D>, 
+    private dateAdapter: DateAdapter<D>, 
     @Inject(MAT_DATE_FORMATS)
-    private dateFormats: MatDateFormats // for formatting
+    private dateFormats: MatDateFormats 
   ) { }
 
-  // active date label rendered between the arrow buttons
   get periodLabel(): string {
-    // use date adapter to format the label, e.g. "SEP 2020"
     return this.dateAdapter
       .format(this.calendar.activeDate, this.dateFormats.display.monthYearLabel)
       .toLocaleUpperCase();
   }
 
-  // called when user clicks on one of the left buttons
   previousClicked(mode: 'month' | 'year'): void {
     this.changeDate(mode, -1);
   }
 
-  // called when user clicks on one of the right buttons
   nextClicked(mode: 'month' | 'year'): void {
     this.changeDate(mode, 1);
   }
 
   private changeDate(mode: 'month' | 'year', amount: -1 | 1): void {
-    // increment or decrement month or year
+
     this.calendar.activeDate =
       mode === 'month'
         ? this.dateAdapter.addCalendarMonths(this.calendar.activeDate, amount)

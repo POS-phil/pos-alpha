@@ -22,6 +22,8 @@ import { UploadImageComponent } from '../../../../dialogs/upload-image/upload-im
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SafeUrl } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MenuCategoryAvailabilityComponent } from '../../../../dialogs/menu-category-availability/menu-category-availability.component';
 
 @Component({
   selector: 'app-add-category',
@@ -39,7 +41,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule
   ],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.scss',
@@ -76,10 +79,8 @@ export class AddCategoryComponent implements OnInit{
   ngOnInit(): void {
     this.createCategoryForm = this.fb.group({
       category_name: ['', Validators.required],
-      image: [null],
       reference: ['', Validators.required],
-      schedule: this.fb.array([]), // Initialize with an empty array
-      item: [0, Validators.required],
+      schedule: this.fb.array([]),
       web_shop: [false],
       aggregator: [false],
       kiosk: [false],
@@ -112,5 +113,20 @@ export class AddCategoryComponent implements OnInit{
     });
 
   };
+
+  openAvailabilityDialog(): void {
+    const dialogRef = this.dialog.open(MenuCategoryAvailabilityComponent, {
+      width: '500px',
+      height: '600px',
+      maxWidth: '90vw',
+      data: this.createCategoryForm.get('schedule')?.value || []
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.createCategoryForm.get('schedule')?.setValue(result);
+      }
+    });
+  }
 
 }
