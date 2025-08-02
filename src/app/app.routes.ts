@@ -32,13 +32,13 @@ export const routes: Routes = [
                     {
                         path: 'stores',
                         loadComponent: () =>
-                            import('./components/main-pages/tab-container/pages/stores/stores.component').then(m => m.StoresComponent),
+                            import('./components/main-pages/tab-container/pages/dashboard-pages/stores/stores.component').then(m => m.StoresComponent),
                         title: 'Dashboard / Stores'
                     },
                     {
                         path: 'inventory',
                         loadComponent: () =>
-                            import('./components/main-pages/tab-container/pages/inventory-lpo/inventory-lpo.component').then(m => m.InventoryLpoComponent),
+                            import('./components/main-pages/tab-container/pages/dashboard-pages/inventory-lpo/inventory-lpo.component').then(m => m.InventoryLpoComponent),
                         title: 'Dashboard / Inventory & LPO'
                     }
                 ]
