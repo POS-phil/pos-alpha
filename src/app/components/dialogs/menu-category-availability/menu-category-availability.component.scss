@@ -1,0 +1,17 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    gap: 10px;
+}
+
+.schedule-container {
+    display: flex;
+    gap: 10px;
+}
+
+.time-input {
+    -webkit-font-smoothing: antialiased;
+}
