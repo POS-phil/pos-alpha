@@ -10,6 +10,7 @@ export interface MenuCategories {
     web_shop: boolean;
     aggregator: boolean;
     kiosk: boolean;
+    counter_top: boolean;
     last_order: Date;
     created_at: Date;
 }
@@ -22,5 +23,6 @@ export interface ScheduleEntry {
   allDay: boolean;
   startTime?: string;         // '08:00'
   endTime?: string;           // '17:00'
+  days?: ScheduleEntry[]; // Array of ScheduleEntry for repeating schedules
 }
 

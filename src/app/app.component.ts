@@ -7,7 +7,7 @@ import { MainLayoutComponent } from "./components/layout/main-layout/main-layout
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'POS Development Build';

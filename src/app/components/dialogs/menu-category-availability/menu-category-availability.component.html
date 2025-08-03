@@ -1,1 +1,24 @@
-<p>menu-category-availability works!</p>
+<div class="main-container">
+    <h1>Availability</h1>
+    <div class="schedule-container">
+        <mat-checkbox [indeterminate]="partiallyAvailable()" [checked]="schedule().available"
+            (change)="update($event.checked)">{{schedule().day}}</mat-checkbox>
+        <mat-checkbox [checked]="schedule().allDay" (change)="toggleAllDay($event.checked)">All Day</mat-checkbox>
+        <input type="time" class="time-input" [value]="schedule().startTime" [disabled]="schedule().allDay">
+        <input type="time" class="time-input" [value]="schedule().endTime" [disabled]="schedule().allDay">
+    </div>
+    @for (day of schedule().days; track day; let i = $index) {
+    <div class="schedule-container">
+            <mat-checkbox [checked]="day.available" (change)="update($event.checked, i)"
+                [disabled]="schedule().available"> {{ day.day }} </mat-checkbox>
+            <mat-checkbox [checked]="day.allDay" (change)="toggleAllDay($event.checked)"
+                [disabled]="schedule().available">All Day</mat-checkbox>
+            <input type="time" class="time-input" [value]="day.startTime" [disabled]="day.allDay">
+            <input type="time" class="time-input" [value]="day.endTime" [disabled]="day.allDay">
+    </div>
+    }
+</div>
+<mat-dialog-actions>
+    <button matButton="filled">Save</button>
+    <button matButton="elevated">Close</button>
+</mat-dialog-actions>
