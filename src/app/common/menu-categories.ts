@@ -23,5 +23,6 @@ export interface ScheduleEntry {
   allDay: boolean;
   startTime?: string;         // '08:00'
   endTime?: string;           // '17:00'
+  days?: ScheduleEntry[]; // Array of ScheduleEntry for repeating schedules
 }
 

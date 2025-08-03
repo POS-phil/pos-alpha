@@ -94,9 +94,10 @@ export class AddCategoryComponent implements OnInit{
 
   openUploadDialog(): void {
     const dialogRef = this.dialog.open(UploadImageComponent, {
-      width: '1500px',
-      height: '900px',
+      width: '800px',
+      height: '650px',
       maxWidth: '150vw',
+      maxHeight: '190vh',
       data: this.uploadedImage
 
     });
@@ -117,7 +118,7 @@ export class AddCategoryComponent implements OnInit{
   openAvailabilityDialog(): void {
     const dialogRef = this.dialog.open(MenuCategoryAvailabilityComponent, {
       width: '500px',
-      height: '600px',
+      height: '750px',
       maxWidth: '90vw',
       data: this.createCategoryForm.get('schedule')?.value || []
     });

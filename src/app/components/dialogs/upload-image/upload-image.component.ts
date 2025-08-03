@@ -5,7 +5,15 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
@@ -17,16 +25,14 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
     MatIconModule,
     FormsModule,
     MatButtonModule,
-    MatInputModule
-
+    MatInputModule,
+    MatDialogActions,
   ],
   template: `
     <div class="container">
-    
-      <h1 mat-dialog-title>Upload Image</h1>
-      <div mat-dialog-content>
-        <div class="cf">
-          <div class="f-50">
+        <h1>Upload Image</h1>
+        <div class="grid-container">
+          <div>
             <div
               class="drop-zone"
               (drop)="onDrop($event)"
@@ -53,7 +59,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
               You can upload an image by dragging and dropping it here, selecting a file from your computer, or entering a URL.
             </p>
           </div>
-          <div class="f-50">
+          <div>
             <div class="image-preview-container">
               @if(previewImage){
               <div class="image-preview">
@@ -66,14 +72,12 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
             </div>
           </div>
         </div>
-      </div>  
-      
-      <div mat-dialog-actions>
+      <mat-dialog-actions>
         <button mat-button mat-dialog-close class="btnRadius-text" (click)="onCancel()">Cancel</button>
         <button matButton="filled" class="btnRadius-filled " (click)="onUpload()" [disabled]="!previewImage">Upload</button>
         <button matButton="filled" class="btnRemove btnRadius-filled " (click)="onRemove()" [disabled]="!previewImage">Remove</button>
-      </div>
-    </div>
+      </mat-dialog-actions>
+    </div> 
   `,
   styleUrl: './upload-image.scss',
 })
