@@ -1,0 +1,46 @@
+@use '@angular/material' as mat;
+
+:host {
+    color: var(--mat-sys-primary);
+    background: var(--mat-sys-primary-container);
+    border-bottom: 1px solid;
+    border-color: var(--mat-sys-outline-variant);
+}
+
+.search-field {
+    @include mat.form-field-overrides((
+        //nothing to code, for now
+    ));
+    background-color: whitesmoke;
+    width: 350px;
+}
+
+.dash-navbar-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px 16px;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.iconColor {
+    color: var(--mat-sys-primary);
+    margin-left: 2px;
+    margin-right: 15px;
+}
+
+@media (min-width: 721px) and (max-width: 959px) {
+    .burger-hidden {
+        display: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-field{
+        width: 200px;
+    }
+    
+}
