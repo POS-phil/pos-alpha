@@ -39,7 +39,7 @@ export class MenuComponent implements OnInit {
 
   // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check', 'reference', 'category_name', 'image', 'schedule', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top' , 'last_order', 'created_at'];
+  displayedColumns: string[] = ['check', 'reference', 'category_name', 'image', 'schedule', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top' , 'last_order', 'created_at', 'isActive'];
 
   // Data source for the table
   categoryList : MenuCategories[] = [];
