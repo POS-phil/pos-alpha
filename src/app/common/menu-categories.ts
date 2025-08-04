@@ -4,6 +4,9 @@ export interface MenuCategories {
     categoryId : number;
     category_name: string;
     image?: File | string;
+    withProducts: boolean;
+    withSubCategories: boolean
+    subCategories?: MenuCategories[];
     reference: number;
     schedule: ScheduleEntry[];
     item: number;
