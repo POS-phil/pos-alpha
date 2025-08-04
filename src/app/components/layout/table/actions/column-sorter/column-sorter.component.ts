@@ -70,7 +70,6 @@ export class ColumnSorterComponent implements OnInit, AfterViewInit {
   }
 
   private emitColumns(saveColumns: boolean) {
-    // Only emit the columns on the next animation frame available
     window.requestAnimationFrame(() => {
       this.columnsChange.emit(this.columnInfo?.filter(colInfo => !colInfo.hidden).map(colInfo => colInfo.id) || []);
       if (saveColumns) {

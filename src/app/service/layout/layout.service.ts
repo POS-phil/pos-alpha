@@ -8,15 +8,13 @@ export class LayoutService {
 
   private menuItemComponents: MenuItemComponent[] = [];
 
-  // Register a new MenuItemComponent
   registerMenuItemComponent(menuItemComponent: MenuItemComponent): void {
     this.menuItemComponents.push(menuItemComponent);
   }
 
-  // Trigger toggle on all MenuItemComponents (set nestedMenuOpen to false for all)
   triggerToggleNested(): void {
     this.menuItemComponents.forEach(menuItem => {
-      menuItem.nestedMenuOpen.set(false); // Set the nestedMenuOpen to false for all
+      menuItem.nestedMenuOpen.set(false);
     });
   }
 }

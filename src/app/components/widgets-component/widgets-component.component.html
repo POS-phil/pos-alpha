@@ -3,9 +3,6 @@
     <button mat-icon-button class="settings-button" (click)="showOptions.set(true)">
         <mat-icon>settings</mat-icon>
     </button>
-    <!-- <button mat-icon-button class="remove-widget-button" (click)="store.removeWidget(data().id)">
-        <mat-icon>delete</mat-icon>
-    </button> -->
     <ng-container [ngComponentOutlet]="data().content" [ngComponentOutletInputs]="{ data: data() }"  ></ng-container>
 
     @if (showOptions()) {
