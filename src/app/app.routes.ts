@@ -63,12 +63,22 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
                         title: 'Product Lists / Categories',
                     },
+                    {
+                        path: 'item',
+                        loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/item/item.component').then(m => m.ItemComponent),
+                        title: 'Product Lists / Item',
+                    }
                 ]
             },
             {
                 path: 'menu/categories/add-category',
                 loadComponent: () => import('./components/main-pages/pages/menu/add-category/add-category.component').then(m => m.AddCategoryComponent),
                 title: 'Add Category'
+            },
+            {
+                path:'menu/item/add-item',
+                loadComponent :  () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
+                title: 'Create Item'
             }
         ]
     },

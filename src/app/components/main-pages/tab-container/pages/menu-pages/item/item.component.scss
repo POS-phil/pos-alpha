@@ -1,0 +1,59 @@
+@use '@angular/material' as mat;
+
+va-mat-table {
+  display: block;
+  width: 100%;
+  box-shadow: var(--mat-sys-level2);
+}
+
+::ng-deep .mat-mdc-paginator-container {
+    justify-content: flex-start !important;
+}
+
+.checkbox{
+   @include mat.checkbox-overrides((
+    
+  ));
+}
+
+.action-bar-1{
+  text-align: left !important;
+}
+
+.btnCategory {
+    border-radius: 5px;
+}
+
+.main-container {
+  box-shadow: var(--mat-sys-level2)
+}
+
+.menu-container {
+    display: flex;
+    gap: 10px;
+    padding: 5px;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.container-1 {
+  justify-content: flex-start;
+}
+
+.container-2 {
+  justify-content: flex-end;
+}
+
+.inputSearch{
+  width: 100%;
+}
+
+@media (max-width: 599px) {
+
+  .main-container {
+    margin-left: 10px;
+  }
+
+  .menu-container {
+    flex-direction: column;
+  }
+}
