@@ -17,8 +17,10 @@
         <input type="time" class="time-input" [value]="schedule().endTime"
             (change)="updateTime(undefined, 'endTime', $any($event.target).value)"
             [disabled]="!schedule().available || schedule().allDay">
-
     </div>
+    <div *ngIf="!isTimeValid(schedule().startTime, schedule().endTime)">
+            <small style="color: red;">Time To must be greater than Time From</small>
+        </div>
     @for (day of schedule().days; track day; let i = $index) {
     <div class="schedule-container">
         <mat-checkbox [checked]="day.available" (change)="update($event.checked, i)" [disabled]="schedule().available">
@@ -38,6 +40,9 @@
         <input type="time" class="time-input" [value]="day.endTime"
             (change)="updateTime(i, 'endTime', $any($event.target).value)"
             [disabled]="day.allDay || schedule().available || !day.available">
+    </div>
+    <div *ngIf="!isTimeValid(day.startTime, day.endTime) && day.available && !day.allDay">
+      <small style="color: red;">Time To must be greater than Time From</small>
     </div>
     }
 </div>

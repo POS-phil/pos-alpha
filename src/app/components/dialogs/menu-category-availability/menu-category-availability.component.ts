@@ -1,4 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, inject as angularInject, signal } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ScheduleEntry } from '../../../common/menu-categories';
 import { CommonModule } from '@angular/common';
@@ -25,10 +26,12 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
   styleUrl: './menu-category-availability.component.scss'
 })
 export class MenuCategoryAvailabilityComponent {
-  
 
   readonly dialogRef = inject(MatDialogRef<MenuCategoryAvailabilityComponent>);
-  readonly schedule = signal<ScheduleEntry>({
+
+  readonly schedule = signal<ScheduleEntry>(
+  inject(MAT_DIALOG_DATA) ?? {
+    // fallback default (in case it's undefined)
     day: 'All Days',
     available: true,
     allDay: true,
@@ -43,7 +46,8 @@ export class MenuCategoryAvailabilityComponent {
       { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
       { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
     ]
-  });
+  }
+);
 
   readonly partiallyAvailable = computed(() => {
     const schedule = this.schedule();
@@ -56,29 +60,54 @@ export class MenuCategoryAvailabilityComponent {
   update(available: boolean, index?: number) {
     this.schedule.update(schedule => {
       if (index === undefined) {
-
         // Master toggle (All Days checkbox)
         schedule.available = available;
 
-        schedule.days?.forEach(day => {
-          day.available = available;
-          // Optional: reset allDay for clarity
-          day.allDay = available;
+        const defaultDayTemplate = (): ScheduleEntry => ({
+          available: true,
+          allDay: true,
+          startTime: '00:00',
+          endTime: '23:59',
+          day: '',
         });
 
-        // Disable All Day master if not available
-        if (!available) {
-          schedule.allDay = false;
+        const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+        // Regenerate full week if not present or empty
+        if (!schedule.days || schedule.days.length !== 7) {
+          schedule.days = dayNames.map(day => ({
+            ...defaultDayTemplate(),
+            day,
+          }));
+        } else {
+          // Apply toggle to each day
+          schedule.days.forEach(day => {
+            day.available = available;
+            day.allDay = available;
+            if (available) {
+              day.startTime = '00:00';
+              day.endTime = '23:59';
+            }
+          });
         }
+
+        // Sync master allDay
+        schedule.allDay = available;
+
       } else {
         // Individual toggle
         schedule.days![index].available = available;
 
-        // Update global checkbox status
+        // Recalculate master toggle
         schedule.available = schedule.days?.every(day => day.available) ?? true;
 
-        // Optional: enable master allDay only if all are available
         if (!schedule.available) {
+          schedule.allDay = false;
+        } else {
+          // If all days are now available, reset all their allDay flags to false
+          schedule.days?.forEach(day => {
+            day.allDay = false;
+          });
           schedule.allDay = false;
         }
       }
@@ -87,51 +116,103 @@ export class MenuCategoryAvailabilityComponent {
     });
   }
 
-  updateTime(index: number | undefined, field: 'startTime' | 'endTime', value: string) {
-  this.schedule.update(schedule => {
-    if (index === undefined) {
-      schedule[field] = value;
-      // Sync to all days if available and not allDay
-      if (schedule.available && !schedule.allDay) {
-        schedule.days?.forEach(day => {
-          if (day.available && !day.allDay) {
-            day[field] = value;
-          }
-        });
-      }
-    } else {
-      const day = schedule.days![index];
-      if (!day.allDay && day.available) {
-        day[field] = value;
-      }
-    }
-    return { ...schedule };
-  });
-}
+  isTimeValid(startTime: string | undefined, endTime: string | undefined): boolean {
+    if (!startTime || !endTime) return true;
 
-  toggleAllDay(allDay: boolean, index?: number) {
+    const [startH, startM] = startTime.split(':').map(Number);
+    const [endH, endM] = endTime.split(':').map(Number);
+
+    const start = startH * 60 + startM;
+    const end = endH * 60 + endM;
+
+    return end > start;
+  }
+
+  updateTime(index: number | undefined, field: 'startTime' | 'endTime', value: string) {
     this.schedule.update(schedule => {
       if (index === undefined) {
-
-        schedule.allDay = allDay;
-
-        if (schedule.available) {
+        schedule[field] = value;
+        // Sync to all days if available and not allDay
+        if (schedule.available && !schedule.allDay) {
           schedule.days?.forEach(day => {
-            day.allDay = allDay;
+            if (day.available && !day.allDay) {
+              day[field] = value;
+            }
           });
         }
       } else {
-        schedule.days![index].allDay = allDay;
+        const day = schedule.days![index];
+        if (!day.allDay && day.available) {
+          day[field] = value;
+        }
       }
-
       return { ...schedule };
     });
   }
 
+  toggleAllDay(allDay: boolean, index?: number) {
+  this.schedule.update(schedule => {
+    if (index === undefined) {
+      // Master allDay toggle
+      schedule.allDay = allDay;
+
+      if (schedule.available) {
+        schedule.days?.forEach(day => {
+          day.allDay = allDay;
+
+          if (allDay) {
+            day.startTime = '00:00';
+            day.endTime = '23:59';
+          }
+        });
+      }
+
+      // Set times if switching ON
+      if (allDay) {
+        schedule.startTime = '00:00';
+        schedule.endTime = '23:59';
+      }
+
+    } else {
+      // Per-day toggle
+      const day = schedule.days![index];
+      day.allDay = allDay;
+
+      if (allDay) {
+        day.startTime = '00:00';
+        day.endTime = '23:59';
+      }
+    }
+
+    // 👇 Fix: do not auto-reset master.allDay just because all days are checked
+    const allChecked = schedule.days?.every(day => day.available);
+    if (allChecked) {
+      schedule.available = true;
+    }
+
+    return { ...schedule }; // 👈 force reactivity
+  });
+}
+
   save() {
-    this.dialogRef.close(this.schedule());
+    const sched = this.schedule();
+
+    // If master is on and not allDay, validate its time
+    if (sched.available && !sched.allDay && !this.isTimeValid(sched.startTime, sched.endTime)) {
+      alert('Main schedule time is invalid. "Time To" must be greater than "Time From".');
+      return;
+    }
+
+    // Check each day’s time validity
+    for (const day of sched.days!) {
+      if (day.available && !day.allDay && !this.isTimeValid(day.startTime, day.endTime)) {
+        alert(`Invalid time for ${day.day}. "Time To" must be greater than "Time From".`);
+        return;
+      }
+    }
+
+    // If all time validations pass
+    this.dialogRef.close(sched);
   }
-
-
 
 }
