@@ -10,7 +10,7 @@
         </button>
     </div>
     <div class="container-flex">
-        <button mat-icon-button class="btnImage" (click)="openUploadDialog()">
+        <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
             <ng-container *ngIf="uploadedImage; else defaultIcon">
                 <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
             </ng-container>
@@ -21,7 +21,7 @@
         <div class="grid-container">
             <div class="grid-1cS3-1r">
                 <mat-form-field class="full-width">
-                    <mat-label>Name</mat-label>
+                    <mat-label>Category Name</mat-label>
                     <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
                     <mat-error *ngIf="categoryName.hasError('required')">Category Name is required</mat-error>
                 </mat-form-field>
@@ -53,23 +53,31 @@
                     <mat-autocomplete #auto="matAutocomplete"></mat-autocomplete>
                 </mat-form-field>
             </div>
-            <div class="grid-4cS2-2r">
-                <button type="button" mat-fab extended class="full-width btnAvailability" (click)="openAvailabilityDialog()">
+            <div class="grid-4cS2-2rS1">
+                <button type="button" mat-fab extended class="full-width btnAvailability"
+                    (click)="openAvailabilityDialog()">
                     <mat-icon>event_repeat</mat-icon>
                     <span>Availability</span>
                 </button>
+                <mat-chip-set>
+                    @for(item of scheduleSummary; track item){
+                        <mat-chip >{{ item }}</mat-chip>
+                    }
+                    <!--
+                     <mat-chip>All Day : 12:00AM - 11:59PM</mat-chip> -->
+                    <!-- Example chips for each day 
+                     <mat-chip>Monday : 12:00AM - 11:59PM</mat-chip>
+                    <mat-chip>Saturday : 12:00AM - 11:59PM</mat-chip>
+                    <mat-chip>Sunday : 12:00AM - 11:59PM</mat-chip> -->
+                </mat-chip-set>
             </div>
-            <div class="grid-textArea">
-                <mat-form-field class="full-width">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."></textarea>
-                </mat-form-field>
-            </div>
-            <div>
+            <div class="grid-icon-picker">
                 <div style="font: var(--mat-sys-label-small)">
                     <span>ICON PICKER : </span>
                 </div>
-                <button [disabled]="uploadedImage" matTooltip = "If no image is provided, an icon can be selected to use as the category image."  type="button" mat-icon-button class="iconSelector" class="icon-picker"
+                <button [disabled]="uploadedImage"
+                    matTooltip="If no image is provided, an icon can be selected to use as the category image."
+                    type="button" mat-icon-button class="iconSelector" class="icon-picker"
                     [matMenuTriggerFor]="iconMenu">
                     <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
                 </button>
@@ -81,6 +89,12 @@
                         </button>
                     </div>
                 </mat-menu>
+            </div>
+            <div class="grid-textArea">
+                <mat-form-field class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."></textarea>
+                </mat-form-field>
             </div>
             <div class="grid-reference">
                 <mat-form-field class="full-width">

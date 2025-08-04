@@ -2,13 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
+  MatDialog
 } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
@@ -24,6 +18,8 @@ import { SafeUrl } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../dialogs/menu-category-availability/menu-category-availability.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { ScheduleEntry } from '../../../../../common/menu-categories';
 
 @Component({
   selector: 'app-add-category',
@@ -42,12 +38,15 @@ import { MenuCategoryAvailabilityComponent } from '../../../../dialogs/menu-cate
     MatSlideToggleModule,
     MatSelectModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatChipsModule
   ],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.scss',
 })
-export class AddCategoryComponent implements OnInit{
+export class AddCategoryComponent implements OnInit {
+
+  scheduleSummary: string[] = [];
 
   icons = [
     'breakfast_dining', 'free_breakfast', 'bakery_dining', 'brunch_dining', 'coffee',
@@ -65,6 +64,7 @@ export class AddCategoryComponent implements OnInit{
   createCategoryForm!: FormGroup;
 
   readonly dialog = inject(MatDialog);
+
   uploadedImage: SafeUrl | null = null;
 
   constructor(
@@ -80,7 +80,7 @@ export class AddCategoryComponent implements OnInit{
     this.createCategoryForm = this.fb.group({
       category_name: ['', Validators.required],
       reference: ['', Validators.required],
-      schedule: this.fb.array([]),
+      schedule: this.fb.control<ScheduleEntry[]>([]),
       web_shop: [false],
       aggregator: [false],
       kiosk: [false],
@@ -126,8 +126,44 @@ export class AddCategoryComponent implements OnInit{
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.createCategoryForm.get('schedule')?.setValue(result);
+        this.scheduleSummary = this.generateScheduleSummary(result);
       }
     });
+  }
+
+  generateScheduleSummary(schedule: ScheduleEntry): string[] {
+  const days = schedule.days || [];
+
+  const allAvailable = days.every(d => d.available);
+  const sameAllDay = days.every(d => d.allDay === days[0].allDay);
+  const sameStart = days.every(d => d.startTime === days[0].startTime);
+  const sameEnd = days.every(d => d.endTime === days[0].endTime);
+
+  if (allAvailable && sameAllDay && sameStart && sameEnd) {
+    const start = this.formatTime(days[0].startTime || '00:00');
+    const end = this.formatTime(days[0].endTime || '23:59');
+    return [`All Days : ${start} - ${end}`];
+  }
+
+  return days
+    .filter(day => day.available)
+    .map(day => {
+      const start = this.formatTime(day.startTime!);
+      const end = this.formatTime(day.endTime!);
+      return `${this.capitalize(day.day)} : ${start} - ${end}`;
+    });
+  }
+
+  formatTime(time: string): string {
+    const [hourStr, minute] = time.split(':');
+    let hour = +hourStr;
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12 || 12;
+    return `${hour}:${minute}${suffix}`;
+  }
+
+  capitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
 }

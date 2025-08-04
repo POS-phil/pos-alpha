@@ -1,6 +1,7 @@
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
     categoryId : number;
+    isActive: boolean;
     category_name: string;
     image?: File | string;
     withProducts: boolean;

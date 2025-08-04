@@ -62,6 +62,11 @@ export const routes: Routes = [
                         path: 'categories',
                         loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
                         title: 'Product Lists / Categories',
+                    },
+                    {
+                        path: 'item',
+                        loadComponent: () => import('./components/main-pages/tab-container/pages/item/item.component').then(m => m.ItemComponent),
+                        title: 'Product Lists / Item',
                     }
                 ]
             },

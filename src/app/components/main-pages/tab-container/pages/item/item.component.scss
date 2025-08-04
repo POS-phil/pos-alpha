@@ -1,0 +1,20 @@
+@use '@angular/material' as mat;
+
+.btn {
+    @include mat.button-overrides((
+
+        text-container-shape: 5px,
+
+    ));
+
+}
+
+.input {
+    @include mat.form-field-overrides((
+        outlined-input-text-color: red,
+    ));
+}
+
+.mat-elevation-z8 {
+    box-shadow: var(--mat-sys-level1)
+}
