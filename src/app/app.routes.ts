@@ -65,7 +65,7 @@ export const routes: Routes = [
                     },
                     {
                         path: 'item',
-                        loadComponent: () => import('./components/main-pages/tab-container/pages/item/item.component').then(m => m.ItemComponent),
+                        loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/item/item.component').then(m => m.ItemComponent),
                         title: 'Product Lists / Item',
                     }
                 ]
@@ -74,6 +74,11 @@ export const routes: Routes = [
                 path: 'menu/categories/add-category',
                 loadComponent: () => import('./components/main-pages/pages/menu/add-category/add-category.component').then(m => m.AddCategoryComponent),
                 title: 'Add Category'
+            },
+            {
+                path:'menu/item/add-item',
+                loadComponent :  () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
+                title: 'Create Item'
             }
         ]
     },
