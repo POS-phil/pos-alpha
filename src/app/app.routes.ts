@@ -49,18 +49,9 @@ export const routes: Routes = [
                 title: 'Transaction Orders',
             },
             {
-                path: 'reports',
-                children: [
-                    {
-                        path: 'sales',
-                        loadComponent: () => import('./components/main-pages/nested-page/reports/sales-report/sales-report.component').then(m => m.SalesReportComponent)
-                    }
-                ]
-            },
-            {
                 path: 'menu',
                 loadComponent: () => import('./components/main-pages/tab-container/menu-tab/menu-tab.component').then(m => m.MenuTabComponent),
-                title: 'Menu',
+                title: 'Product Lists',
                 children: [
                     {
                         path: '',
@@ -70,7 +61,7 @@ export const routes: Routes = [
                     {
                         path: 'categories',
                         loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
-                        title: 'Menu / Categories',
+                        title: 'Product Lists / Categories',
                     }
                 ]
             },

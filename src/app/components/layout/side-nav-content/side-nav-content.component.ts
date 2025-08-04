@@ -134,7 +134,7 @@ export class SideNavContentComponent {
     },
     {
       icon: 'menu_book',
-      label: 'Menu',
+      label: 'Product List',
       route: 'menu'
     },
     
