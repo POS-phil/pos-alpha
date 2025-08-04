@@ -1,5 +1,4 @@
  <div class="header">
-    <!-- "previous" buttons -->
     <button
       mat-icon-button
       class="double-arrow"
@@ -11,10 +10,8 @@
        <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
 
-    <!-- center label -->
     <button mat-raised-button (click)="openMonthPicker()" class="header-label">{{ periodLabel }}</button>
 
-    <!-- "next" buttons -->
     <button mat-icon-button (click)="nextClicked('month')">
       <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
