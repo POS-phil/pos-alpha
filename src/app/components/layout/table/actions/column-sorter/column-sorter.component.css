@@ -18,23 +18,22 @@
   white-space: nowrap;
 }
 
-/* Ensure the button aligns properly with other elements */
 button[va-mat-table-column-sorter] {
-  display: inline-flex; /* Align items horizontally */
-  align-items: center;  /* Center items vertically */
-  justify-content: center; /* Center content inside the button */
-  vertical-align: middle; /* Align with other inline elements */
+  display: inline-flex; 
+  align-items: center;  
+  justify-content: center; 
+  vertical-align: middle; 
 }
 
 button[va-mat-table-column-sorter] mat-icon {
-  margin-right: 8px; /* Add spacing between the icon and text */
-  vertical-align: middle; /* Align the icon vertically */
+  margin-right: 8px; 
+  vertical-align: middle; 
 }
 
 .va-mat-table-dragable-container .dragable-row mat-icon,
 .va-mat-table-dragable-container .dragable-row mat-checkbox {
-  vertical-align: middle; /* Ensure consistent vertical alignment */
-  display: inline-flex;  /* Align items properly */
+  vertical-align: middle; 
+  display: inline-flex;  
   align-items: center; 
 }
 .va-mat-table-dragable-container .dragable-row mat-icon {
@@ -59,8 +58,8 @@ button[va-mat-table-column-sorter] mat-icon {
 
 .va-mat-table-drag-preview mat-icon,
 .va-mat-table-drag-preview mat-checkbox {
-  vertical-align: middle; /* Ensure consistent vertical alignment */
-  display: inline-flex;  /* Align items properly */
+  vertical-align: middle; 
+  display: inline-flex;  
   align-items: center; 
 }
 
@@ -70,12 +69,10 @@ button[va-mat-table-column-sorter] mat-icon {
   color: #616161;
 }
 
-/* Animate items as they're being sorted. */
 .cdk-drop-list-dragging .cdk-drag {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-/* Animate an item that has been dropped. */
 .cdk-drag-animating {
   transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
 }

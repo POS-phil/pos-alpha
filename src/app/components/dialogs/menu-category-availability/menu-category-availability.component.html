@@ -11,7 +11,7 @@
     <div class="schedule-container">
             <mat-checkbox [checked]="day.available" (change)="update($event.checked, i)"
                 [disabled]="schedule().available"> {{ day.day }} </mat-checkbox>
-            <mat-checkbox [checked]="day.allDay" (change)="toggleAllDay($event.checked)"
+            <mat-checkbox [checked]="day.allDay" 
                 [disabled]="schedule().available">All Day</mat-checkbox>
             <input type="time" class="time-input" [value]="day.startTime" [disabled]="day.allDay">
             <input type="time" class="time-input" [value]="day.endTime" [disabled]="day.allDay">
