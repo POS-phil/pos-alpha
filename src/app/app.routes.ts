@@ -72,7 +72,7 @@ export const routes: Routes = [
             },
             {
                 path: 'menu/categories/add-category',
-                loadComponent: () => import('./components/main-pages/pages/menu/add-category/add-category.component').then(m => m.AddCategoryComponent),
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
                 title: 'Add Category'
             },
             {
