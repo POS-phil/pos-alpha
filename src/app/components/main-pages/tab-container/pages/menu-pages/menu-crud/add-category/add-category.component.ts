@@ -12,14 +12,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { RouterModule } from '@angular/router';
-import { UploadImageComponent } from '../../../../dialogs/upload-image/upload-image.component';
+import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upload-image.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { SafeUrl } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MenuCategoryAvailabilityComponent } from '../../../../dialogs/menu-category-availability/menu-category-availability.component';
+import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ScheduleEntry } from '../../../../../common/menu-categories';
+import { ScheduleEntry } from '../../../../../../../common/menu-categories';
 
 @Component({
   selector: 'app-add-category',
