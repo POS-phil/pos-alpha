@@ -1,23 +1,23 @@
 import { Component, inject, ViewChild } from '@angular/core';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormField, MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, MatMenuPanel } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+//import { LiveAnnouncer } from '@angular/cdk/a11y';
 //import { MenuCategories } from '../../../../common/menu-categories';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MenuCategories } from '../../../../../../common/menu-categories';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 @Component({
-  selector: 'app-item',
-  standalone:true,
+  selector: 'app-modifier-group',
+  standalone: true,
   imports: [CommonModule,
     RouterModule,
     MatButtonModule,
@@ -30,13 +30,16 @@ import { MenuCategories } from '../../../../../../common/menu-categories';
     MatPaginatorModule,
     MatSortModule,
     MatCheckbox],
-  templateUrl: './item.component.html',
-  styleUrl: './item.component.scss'
+  templateUrl: './modifier-group.component.html',
+  styleUrl: './modifier-group.component.scss'
 })
-export class ItemComponent {
+export class ModifierGroupComponent {
+applyFilters() {
+throw new Error('Method not implemented.');
+}
 // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check','ima  ge', 'item_name', 'sku', 'category', 'vat', 'price', 'status', 'created_date'];
+  displayedColumns: string[] = ['check','name','image', 'reference', 'options', 'link_item', 'web_shop', 'aggregator'];
   // Data source for the table
   categoryList : MenuCategories[] = [];
   MENU_CATEGORIES_DATA : any;
@@ -46,6 +49,7 @@ export class ItemComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   private _liveAnnouncer = inject(LiveAnnouncer);
+  // menu: MatMenuPanel<any> | null | undefined;
 
   ngOnInit(): void {
     this.getCategories();
