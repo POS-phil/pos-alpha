@@ -39,7 +39,7 @@ throw new Error('Method not implemented.');
 }
 // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check','name','image', 'reference', 'options', 'link_item', 'web_shop', 'aggregator'];
+  displayedColumns: string[] = ['check','name','image', 'reference', 'options', 'link_item', 'web_shop', 'aggregator', 'created'];
   // Data source for the table
   categoryList : MenuCategories[] = [];
   MENU_CATEGORIES_DATA : any;
