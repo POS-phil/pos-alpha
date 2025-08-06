@@ -1,50 +1,63 @@
 <div class="main-container">
     <h1>Availability</h1>
+    <!--This is the master checkbox All Days - All Day-->
     <div class="schedule-container">
 
-        <mat-checkbox [indeterminate]="partiallyAvailable()" [checked]="schedule().available"
-            (change)="update($event.checked)">
-            {{ schedule().day }}
+        <mat-checkbox [checked]="isAllDaysChecked()" (change)="toggleAllDays($event.checked)">
+            All Days
         </mat-checkbox>
 
-        <mat-checkbox [checked]="schedule().allDay" (change)="toggleAllDay($event.checked)"
-            [disabled]="!schedule().available">All Day</mat-checkbox>
-
-        <input type="time" class="time-input" [value]="schedule().startTime"
-            (change)="updateTime(undefined, 'startTime', $any($event.target).value)"
-            [disabled]="!schedule().available || schedule().allDay">
-
-        <input type="time" class="time-input" [value]="schedule().endTime"
-            (change)="updateTime(undefined, 'endTime', $any($event.target).value)"
-            [disabled]="!schedule().available || schedule().allDay">
-    </div>
-    <div *ngIf="!isTimeValid(schedule().startTime, schedule().endTime)">
-            <small style="color: red;">Time To must be greater than Time From</small>
-        </div>
-    @for (day of schedule().days; track day; let i = $index) {
-    <div class="schedule-container">
-        <mat-checkbox [checked]="day.available" (change)="update($event.checked, i)" [disabled]="schedule().available">
-            <!-- Disable if master is on -->
-            {{ day.day }}
-        </mat-checkbox>
-
-        <mat-checkbox [checked]="day.allDay" (change)="toggleAllDay($event.checked, i)"
-            [disabled]="schedule().available || !day.available"> <!-- Disable if global or day is off -->
+        <mat-checkbox 
+        [checked]="isAllDayChecked()" 
+        [disabled]="!isAllDaysChecked()" 
+        (change)="isMasterAllDayChecked($event.checked)"
+        >
             All Day
         </mat-checkbox>
 
-        <input type="time" class="time-input" [value]="day.startTime"
-            (change)="updateTime(i, 'startTime', $any($event.target).value)"
-            [disabled]="day.allDay || schedule().available || !day.available">
+        <input type="time" class="time-input" name="masterStartTime"
+            [disabled]="!isAllDaysChecked() || isAllDayChecked()" 
+            [value]="allDayStartTime()"
+            (change)="updateMasterStartTime($any($event.target).value)"
+            >
 
-        <input type="time" class="time-input" [value]="day.endTime"
-            (change)="updateTime(i, 'endTime', $any($event.target).value)"
-            [disabled]="day.allDay || schedule().available || !day.available">
+        <input type="time" class="time-input" name="masterEndTime"
+            [disabled]="!isAllDaysChecked() || isAllDayChecked()" 
+            [value]="allDayEndTime()"
+            (change)="updateMasterEndTime($any($event.target).value)"
+            >
     </div>
-    <div *ngIf="!isTimeValid(day.startTime, day.endTime) && day.available && !day.allDay">
-      <small style="color: red;">Time To must be greater than Time From</small>
-    </div>
+
+    <!-- Schedule entries for each day -->
+    <!-- Loop through each schedule entry -->
+    @for (sched of schedule(); track sched.day; let i = $index) {
+        <div class="schedule-container">
+            <mat-checkbox [checked]="sched.available" [disabled]="isAllDaysChecked()" (change)="sched.available = $event.checked">
+                {{ sched.day | titlecase }}
+            </mat-checkbox>
+
+            <mat-checkbox 
+                [checked]="sched.allDay" 
+                [disabled]="!sched.available || isAllDaysChecked()" 
+                (change)="toggleAllDay(i, $event.checked)" 
+                >
+                All Day
+            </mat-checkbox>
+
+            <input type="time" class="time-input" name="eachDayStartTime"
+            [value]="sched.startTime" 
+            [disabled]="sched.allDay || isAllDaysChecked()"
+            (change)="updateDayTime(i, 'startTime', $any($event.target).value)"
+            >
+
+            <input type="time" class="time-input" name="eachDayEndTime"
+            [value]="sched.endTime" 
+            [disabled]="sched.allDay || isAllDaysChecked()"
+            (change)="updateDayTime(i, 'endTime', $any($event.target).value)"
+            >
+        </div>
     }
+
 </div>
 <mat-dialog-actions>
     <button class="btnActions" matButton="filled" (click)="save()">Save</button>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MatDialog
@@ -47,6 +47,8 @@ import { ScheduleEntry } from '../../../../../../../common/menu-categories';
 export class AddCategoryComponent implements OnInit {
 
   scheduleSummary: string[] = [];
+  isAllDaysChecked = signal(true);
+  isAllDayChecked = signal(true);
 
   icons = [
     'breakfast_dining', 'free_breakfast', 'bakery_dining', 'brunch_dining', 'coffee',
@@ -78,28 +80,21 @@ export class AddCategoryComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const defaultSchedule: ScheduleEntry = {
-      day: 'All Days',
-      available: true,
-      allDay: true,
-      startTime: '00:00',
-      endTime: '23:59',
-      days: [
-        { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-      ]
-    };
+    const defaultSchedule: ScheduleEntry[] = [
+      { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+    ];
 
 
     this.createCategoryForm = this.fb.group({
       category_name: ['', Validators.required],
       reference: ['', Validators.required],
-      schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
+      schedule: this.fb.control<ScheduleEntry>(defaultSchedule[7]),
       web_shop: [false],
       aggregator: [false],
       kiosk: [false],
@@ -141,39 +136,46 @@ export class AddCategoryComponent implements OnInit {
       width: '500px',
       height: '750px',
       maxWidth: '90vw',
-      data: this.createCategoryForm.get('schedule')?.value || []
+      data: {
+        schedule: this.createCategoryForm.get('schedule')?.value || [],
+        isAllDaysChecked: this.isAllDaysChecked(),
+        isAllDayChecked: this.isAllDayChecked()
+      }
+
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.createCategoryForm.get('schedule')?.setValue(result);
-        this.scheduleSummary = this.generateScheduleSummary(result);
+        this.createCategoryForm.get('schedule')?.setValue(result.schedule);
+        this.isAllDaysChecked.set(result.isAllDaysChecked);
+        this.isAllDayChecked.set(result.isAllDayChecked);
+        this.scheduleSummary = this.generateScheduleSummary(result.schedule);
       }
     });
   }
 
-  generateScheduleSummary(schedule: ScheduleEntry): string[] {
-    const days = (schedule.days || []).filter(d => d.day !== 'All Days');
+  generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
+  const days = schedule.filter(d => d.day.toLowerCase() !== 'all days'); // optional filter
 
-    const allAvailable = days.every(d => d.available);
-    const sameAllDay = days.every(d => d.allDay === days[0].allDay);
-    const sameStart = days.every(d => d.startTime === days[0].startTime);
-    const sameEnd = days.every(d => d.endTime === days[0].endTime);
+  const allAvailable = days.every(d => d.available);
+  const sameAllDay = days.every(d => d.allDay === days[0].allDay);
+  const sameStart = days.every(d => d.startTime === days[0].startTime);
+  const sameEnd = days.every(d => d.endTime === days[0].endTime);
 
-    if (allAvailable && sameAllDay && sameStart && sameEnd) {
-      const start = this.formatTime(days[0].startTime || '00:00');
-      const end = this.formatTime(days[0].endTime || '23:59');
-      return [`All Days : ${start} - ${end}`];
-    }
-
-    return days
-      .filter(day => day.available)
-      .map(day => {
-        const start = this.formatTime(day.startTime!);
-        const end = this.formatTime(day.endTime!);
-        return `${this.capitalize(day.day)} : ${start} - ${end}`;
-      });
+  if (allAvailable && sameAllDay && sameStart && sameEnd) {
+    const start = this.formatTime(days[0].startTime || '00:00');
+    const end = this.formatTime(days[0].endTime || '23:59');
+    return [`All Days : ${start} - ${end}`];
   }
+
+  return days
+    .filter(day => day.available)
+    .map(day => {
+      const start = this.formatTime(day.startTime || '00:00');
+      const end = this.formatTime(day.endTime || '23:59');
+      return `${this.capitalize(day.day)} : ${start} - ${end}`;
+    });
+}
 
   formatTime(time: string): string {
     const [hourStr, minute] = time.split(':');
