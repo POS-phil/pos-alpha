@@ -8,6 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogActions, MatDialogRef } from "@angular/material/dialog";
 import { MatButton, MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-menu-category-availability',
@@ -27,6 +29,7 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
 })
 export class MenuCategoryAvailabilityComponent {
 
+  private snackBar = inject(MatSnackBar);
   readonly dialogRef = inject(MatDialogRef<MenuCategoryAvailabilityComponent>);
 
   data = inject(MAT_DIALOG_DATA);
@@ -49,6 +52,8 @@ export class MenuCategoryAvailabilityComponent {
   isAllDayChecked = signal(this.data?.isAllDayChecked ?? true);
   allDayStartTime = signal('00:00');
   allDayEndTime = signal('23:59');
+  invalidDays = signal(new Set<number>());
+  invalidMasterTime = signal(false);
 
   toggleAllDays(checked: boolean) {
     this.isAllDaysChecked.set(checked);
@@ -98,6 +103,7 @@ export class MenuCategoryAvailabilityComponent {
     } else {
       this.allDayStartTime.set("00:00");
     }
+    this.validateMasterTime();
   }
 
   updateMasterEndTime(time: string) {
@@ -111,6 +117,28 @@ export class MenuCategoryAvailabilityComponent {
     } else {
       this.allDayEndTime.set("23:59");
     }
+    this.validateMasterTime();
+  }
+
+  hasInvalidMasterTime(): boolean {
+    return !this.isTimeValid(this.allDayStartTime(), this.allDayEndTime());
+  }
+
+  validateMasterTime(): boolean {
+    const start = this.allDayStartTime();
+    const end = this.allDayEndTime();
+
+    const isValid = this.isTimeValid(start, end);
+
+    if (!isValid) {
+      this.snackBar.open('Master time range is invalid. End time must be later than start time.', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top'
+      });
+    }
+
+    return isValid;
   }
 
   toggleAllDay(dayIndex: number, checked: boolean) {
@@ -128,21 +156,41 @@ export class MenuCategoryAvailabilityComponent {
 
   updateDayTime(dayIndex: number, field: 'startTime' | 'endTime', time: string) {
     const updatedSchedules = this.schedule().map((day, index) => {
+      //reset time if allDay is checked
       if (index === dayIndex) {
-        return {
+        const updatedDay = {
           ...day,
           [field]: time,
-          // Reset to "All Day" times if needed
           ...(day.allDay && {
             startTime: '00:00',
             endTime: '23:59'
           })
         };
+
+        // Only validate if not allDay
+        if (!updatedDay.allDay && !this.isTimeValid(updatedDay.startTime, updatedDay.endTime)) {
+          const current = new Set(this.invalidDays());
+          current.add(dayIndex);
+          this.invalidDays.set(current);
+
+          this.snackBar.open('End time must be later than start time.', 'Close', {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "top"
+          });
+
+        } else {
+          const current = new Set(this.invalidDays());
+          current.delete(dayIndex);
+          this.invalidDays.set(current);
+        }
+
+        return updatedDay;
       }
       return day;
     });
 
-    this.schedule.set(updatedSchedules); // Force change detection
+    this.schedule.set(updatedSchedules);
   }
 
   isTimeValid(startTime: string | undefined, endTime: string | undefined): boolean {
@@ -158,6 +206,14 @@ export class MenuCategoryAvailabilityComponent {
   }
 
   save() {
+    if (this.invalidDays().size > 0 || !this.invalidMasterTime()) {
+      this.snackBar.open('Please fix invalid time entries before saving.', 'Close', {
+        duration: 3000,
+        panelClass: ['snackbar-error']
+      });
+      return;
+    }
+
     const sched = this.schedule();
 
     this.dialogRef.close({

@@ -49,3 +49,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     protected-container-shape: 5px,
   ));
 }
+
+.invalid-time {
+  border: 1px solid red;
+  background-color: #ffe6e6;
+}

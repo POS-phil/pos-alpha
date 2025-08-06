@@ -7,55 +7,48 @@
             All Days
         </mat-checkbox>
 
-        <mat-checkbox 
-        [checked]="isAllDayChecked()" 
-        [disabled]="!isAllDaysChecked()" 
-        (change)="isMasterAllDayChecked($event.checked)"
-        >
+        <mat-checkbox [checked]="isAllDayChecked()" [disabled]="!isAllDaysChecked()"
+            (change)="isMasterAllDayChecked($event.checked)">
             All Day
         </mat-checkbox>
 
-        <input type="time" class="time-input" name="masterStartTime"
-            [disabled]="!isAllDaysChecked() || isAllDayChecked()" 
-            [value]="allDayStartTime()"
+        <input type="time" class="time-input" name="masterStartTime" 
+            [ngClass]="{ 'invalid-time': hasInvalidMasterTime() }"
+            [disabled]="!isAllDaysChecked() || isAllDayChecked()" [value]="allDayStartTime()" 
             (change)="updateMasterStartTime($any($event.target).value)"
+            
             >
 
         <input type="time" class="time-input" name="masterEndTime"
-            [disabled]="!isAllDaysChecked() || isAllDayChecked()" 
-            [value]="allDayEndTime()"
-            (change)="updateMasterEndTime($any($event.target).value)"
-            >
+            [ngClass]="{ 'invalid-time': hasInvalidMasterTime() }" 
+            [disabled]="!isAllDaysChecked() || isAllDayChecked()"
+            [value]="allDayEndTime()" (change)="updateMasterEndTime($any($event.target).value)">
     </div>
 
     <!-- Schedule entries for each day -->
     <!-- Loop through each schedule entry -->
     @for (sched of schedule(); track sched.day; let i = $index) {
-        <div class="schedule-container">
-            <mat-checkbox [checked]="sched.available" [disabled]="isAllDaysChecked()" (change)="sched.available = $event.checked">
-                {{ sched.day | titlecase }}
-            </mat-checkbox>
+    <div class="schedule-container">
+        <mat-checkbox [checked]="sched.available" [disabled]="isAllDaysChecked()"
+            (change)="sched.available = $event.checked">
+            {{ sched.day | titlecase }}
+        </mat-checkbox>
 
-            <mat-checkbox 
-                [checked]="sched.allDay" 
-                [disabled]="!sched.available || isAllDaysChecked()" 
-                (change)="toggleAllDay(i, $event.checked)" 
-                >
-                All Day
-            </mat-checkbox>
+        <mat-checkbox [checked]="sched.allDay" [disabled]="!sched.available || isAllDaysChecked()"
+            (change)="toggleAllDay(i, $event.checked)">
+            All Day
+        </mat-checkbox>
 
-            <input type="time" class="time-input" name="eachDayStartTime"
-            [value]="sched.startTime" 
-            [disabled]="sched.allDay || isAllDaysChecked()"
-            (change)="updateDayTime(i, 'startTime', $any($event.target).value)"
-            >
+        <input type="time" class="time-input" name="eachDayStartTime" 
+            [ngClass]="{'invalid-time': invalidDays().has(i)}"
+            [value]="sched.startTime" [disabled]="sched.allDay || isAllDaysChecked()"
+            (change)="updateDayTime(i, 'startTime', $any($event.target).value)">
 
-            <input type="time" class="time-input" name="eachDayEndTime"
-            [value]="sched.endTime" 
-            [disabled]="sched.allDay || isAllDaysChecked()"
-            (change)="updateDayTime(i, 'endTime', $any($event.target).value)"
-            >
-        </div>
+        <input type="time" class="time-input" name="eachDayEndTime" 
+            [ngClass]="{'invalid-time': invalidDays().has(i)}"
+            [value]="sched.endTime" [disabled]="sched.allDay || isAllDaysChecked()"
+            (change)="updateDayTime(i, 'endTime', $any($event.target).value)">
+    </div>
     }
 
 </div>
