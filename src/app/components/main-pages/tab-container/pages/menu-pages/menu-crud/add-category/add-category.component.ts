@@ -94,7 +94,7 @@ export class AddCategoryComponent implements OnInit {
     this.createCategoryForm = this.fb.group({
       category_name: ['', Validators.required],
       reference: ['', Validators.required],
-      schedule: this.fb.control<ScheduleEntry>(defaultSchedule[7]),
+      schedule: this.fb.control<ScheduleEntry[]>(defaultSchedule),
       web_shop: [false],
       aggregator: [false],
       kiosk: [false],
