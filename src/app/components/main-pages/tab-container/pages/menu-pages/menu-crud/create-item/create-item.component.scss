@@ -1,0 +1,274 @@
+@use '@angular/material' as mat;
+
+form {
+  display: contents;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.header-flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.container-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 150px);
+  gap: 1rem;
+
+  
+}
+//row 1
+.grid-1cS1-1r {
+  grid-column: 1 / span 1;
+  grid-row: 1;
+}
+
+.grid-1cS2-1r {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+}
+
+.grid-4cS2-1r {
+  grid-column: 4 / span 2;
+  grid-row: 1;
+}
+
+.grid-6cS2-1r {
+  grid-column: 6 / span 2;
+  grid-row: 1;
+}
+
+
+//row2
+.grid-1cS2-2r{
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+
+.grid-4cS2-2rS1{
+  grid-column: 4 / span 2;
+  grid-row: 2 /span 5;
+}
+
+
+// row3
+.grid-3cS2-2rS1{
+  grid-column: 1 / span 2;
+  grid-row: 3 /span 2;
+}
+.grid-3cS4-3r{
+  grid-column: 3 / span 3;
+  grid-row: 3 ;
+}
+.grid-5cS4-3r{
+  grid-column: 5 / span 3;
+  grid-row: 3 ;
+}
+
+
+
+//row4
+
+.grid-1cS2-1rS1{
+  grid-column: 1 / span 2;
+  grid-row: 4 /span 2;
+}
+.grid-3cS4-4r{
+  grid-column: 3 / span 3;
+  grid-row: 4;
+}
+.grid-5cS4-4r{
+  grid-column: 5 / span 3;
+  grid-row: 4 ;
+}
+
+
+//row5
+
+.grid-1cS2-5rS1{
+  grid-column: 1 / span 2;
+  grid-row: 5 /span 2;
+}
+.grid-3cS4-5r{
+  grid-column: 3 / span 3;
+  grid-row: 5;
+}
+.grid-5cS4-5r{
+  grid-column: 5 / span 3;
+  grid-row: 5 ;
+}
+
+//row6
+
+.grid-1cS2-6rS1{
+  grid-column: 1 / span 2;
+  grid-row: 6 /span 2;
+}
+.grid-3cS4-6r{
+  grid-column: 3 / span 3;
+  grid-row: 6;
+}
+.grid-5cS4-6r{
+  grid-column: 5 / span 3;
+  grid-row: 6 ;
+}
+
+.grid-7cS4-6r{
+  grid-column: 7 / span 3;
+  grid-row: 6 ;
+}
+
+
+//row7
+
+.grid-1cS2-7rS1{
+  grid-column: 1 / span 2;
+  grid-row: 7 /span 2;
+}
+.grid-3cS3-7r{
+  grid-column: 3 / span 3;
+  grid-row: 7;
+}
+.grid-5cS3-7r{
+  grid-column: 5 / span 3;
+  grid-row: 7 ;
+}
+
+.grid-8cS3-7r{
+  grid-column: 8 / span 3;
+  grid-row: 7 ;
+}
+
+
+.grid-icon-picker {
+  grid-column: 1 /span 3;
+  grid-row: 3;
+}
+
+.grid-slideContainer{
+  grid-column: 6;
+  grid-row: 1 / span 10;
+}
+
+.grid-reference {
+  grid-column: 1 / span 3;
+  grid-row: 5;
+}
+
+.grid-textArea {
+  grid-column: 1 / span 3;
+  grid-row: 4;
+}
+
+.icon-picker {
+  width: 150px;
+  height: 150px;
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 5px
+    )
+  );
+  border: #aaaaaa 2px dashed;
+}
+
+.icon-picker-image {
+  font-size: 90px;
+  width: 90px;
+  overflow: visible;
+}
+
+.icon-menu{
+  overflow: hidden !important;
+}
+
+.icon-grid{
+  overflow: hidden !important;
+}
+
+
+.btnRadius {
+  border-radius: 5px;
+  width: 150px;
+}
+
+.btnImage {
+  width: 250px;
+  height: 250px;
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 5px
+    )
+  );
+  border: #aaaaaa 2px dashed;
+}
+
+.btnAvailability {
+  height: 40px;
+  border-radius: 5px;
+
+  @include mat.fab-overrides(
+    (
+      extended-container-elevation-shadow: 0,
+    )
+  );
+}
+
+.icon-image {
+  font-size: 120px;
+  width: 220px;
+  overflow: visible;
+}
+
+.uploaded-image {
+  width: 250px;
+  height: 250px;
+  object-fit: scale-down;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.toggle-button {
+  @include mat.slide-toggle-overrides((
+    handle-shape: 5px,
+    track-shape: 5px,
+    label-text-weight: 500,
+  ));
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+
+  .container-flex {
+    flex-direction: column;
+    margin-left: 5px;
+  }
+  .grid-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
