@@ -77,29 +77,21 @@ iconMenu: MatMenuPanel<any> | null | undefined;
 
   ngOnInit(): void {
 
-    const defaultSchedule: ScheduleEntry = {
-      day: 'All Days',
-      available: true,
-      allDay: true,
-      startTime: '00:00',
-      endTime: '23:59',
-      days: [
-        { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-      ]
-    };
+ const defaultSchedule: ScheduleEntry[] = [
+      { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+    ];
 
 
     this.createItemForm = this.fb.group({
       category_name: ['', Validators.required],
       reference: ['', Validators.required],
-      schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
-      web_shop: [false],
+      schedule: this.fb.control<ScheduleEntry[]>(defaultSchedule),
       aggregator: [false],
       kiosk: [false],
       created_at: [new Date()],
@@ -151,8 +143,8 @@ iconMenu: MatMenuPanel<any> | null | undefined;
     });
   }
 
-  generateScheduleSummary(schedule: ScheduleEntry): string[] {
-    const days = (schedule.days || []).filter(d => d.day !== 'All Days');
+  generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
+    const days = schedule.filter(d => d.day.toLowerCase() !== 'all days'); // optional filter
 
     const allAvailable = days.every(d => d.available);
     const sameAllDay = days.every(d => d.allDay === days[0].allDay);
@@ -168,8 +160,8 @@ iconMenu: MatMenuPanel<any> | null | undefined;
     return days
       .filter(day => day.available)
       .map(day => {
-        const start = this.formatTime(day.startTime!);
-        const end = this.formatTime(day.endTime!);
+        const start = this.formatTime(day.startTime || '00:00');
+        const end = this.formatTime(day.endTime || '23:59');
         return `${this.capitalize(day.day)} : ${start} - ${end}`;
       });
   }

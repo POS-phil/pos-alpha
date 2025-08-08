@@ -21,24 +21,29 @@ form {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(6, 150px);
+  grid-template-columns: repeat(7, 150px);
   gap: 1rem;
 
   
 }
 //row 1
-.grid-1cS1-1r {
+.grid-itemName{
   grid-column: 1 / span 1;
   grid-row: 1;
 }
 
-.grid-1cS2-1r {
-  grid-column: 1 / span 2;
+.grid-secondLanguage{
+  grid-column: 3 / span 1;
   grid-row: 1;
 }
 
-.grid-4cS2-1r {
-  grid-column: 4 / span 2;
+.grid-IconPicker{
+  grid-column: 4 / span 1;
+  grid-row: 1;
+}
+
+.grid-Availabilty {
+  grid-column: 5 / span 1;
   grid-row: 1;
 }
 
@@ -48,105 +53,107 @@ form {
 }
 
 
-//row2
-.grid-1cS2-2r{
+//row12
+.grid-SKU{
   grid-column: 1 / span 2;
-  grid-row: 2;
+  grid-row: 12;
 }
 
-.grid-4cS2-2rS1{
-  grid-column: 4 / span 2;
-  grid-row: 2 /span 5;
+.buttonGenerate
+{
+  @include mat.button-overrides (( 
+    tonal-container-shape : 5px
+  ));
+  height: 40px;
+  width: 80px;
+  margin: 1px;
+}
+
+.grid-itemType{
+  grid-column: 3 / span 2;
+  grid-row: 12 ;
+}
+
+.grid-Description{
+  grid-column: 5 / span 2;
+  grid-row: 12 ;
 }
 
 
-// row3
-.grid-3cS2-2rS1{
+// row13
+.grid-CostingMethod{
   grid-column: 1 / span 2;
-  grid-row: 3 /span 2;
-}
-.grid-3cS4-3r{
-  grid-column: 3 / span 3;
-  grid-row: 3 ;
-}
-.grid-5cS4-3r{
-  grid-column: 5 / span 3;
-  grid-row: 3 ;
+  grid-row: 13 /span 2;
 }
 
+.grid-Category{
+  grid-column: 3 / span 2;
+  grid-row: 13 ;
+}
+.grid-Barcode{
+  grid-column: 5 / span 2;
+  grid-row: 13 ;
+}
 
 
-//row4
 
-.grid-1cS2-1rS1{
+//row14
+
+.grid-PricingMethod{
   grid-column: 1 / span 2;
-  grid-row: 4 /span 2;
+  grid-row: 14;
 }
-.grid-3cS4-4r{
-  grid-column: 3 / span 3;
-  grid-row: 4;
+.grid-TaxGroup{
+  grid-column: 3 / span 2;
+  grid-row: 14;
 }
-.grid-5cS4-4r{
-  grid-column: 5 / span 3;
-  grid-row: 4 ;
+.grid-SellingMethod{
+  grid-column: 5 / span 2;
+  grid-row: 14 ;
 }
 
 
-//row5
+//row15
 
-.grid-1cS2-5rS1{
+.grid-Price{
   grid-column: 1 / span 2;
-  grid-row: 5 /span 2;
+  grid-row: 15 /span 2;
 }
-.grid-3cS4-5r{
-  grid-column: 3 / span 3;
-  grid-row: 5;
+.grid-PreparationTime{
+  grid-column: 3 / span 2;
+  grid-row: 15;
 }
-.grid-5cS4-5r{
-  grid-column: 5 / span 3;
-  grid-row: 5 ;
+.grid-GrossWeight{
+  grid-column: 5 / span 1;
+  grid-row: 15 ;
+}
+.grid-NetWeight{
+  grid-column: 6 / span 1;
+  grid-row: 15 ;
 }
 
-//row6
+//row16
 
-.grid-1cS2-6rS1{
+.grid-PriceSchedule{
   grid-column: 1 / span 2;
-  grid-row: 6 /span 2;
+  grid-row: 16 / span 2;
 }
-.grid-3cS4-6r{
-  grid-column: 3 / span 3;
-  grid-row: 6;
-}
-.grid-5cS4-6r{
-  grid-column: 5 / span 3;
-  grid-row: 6 ;
-}
-
-.grid-7cS4-6r{
-  grid-column: 7 / span 3;
-  grid-row: 6 ;
+.grid-WalkingTime{
+  grid-column: 3 / span 2;
+  grid-row: 16 / span 2;
 }
 
 
-//row7
-
-.grid-1cS2-7rS1{
-  grid-column: 1 / span 2;
-  grid-row: 7 /span 2;
-}
-.grid-3cS3-7r{
-  grid-column: 3 / span 3;
-  grid-row: 7;
-}
-.grid-5cS3-7r{
-  grid-column: 5 / span 3;
-  grid-row: 7 ;
+.grid-IngredientCost{
+  grid-column: 5 / span 1;
+  grid-row: 16 ;
 }
 
-.grid-8cS3-7r{
-  grid-column: 8 / span 3;
-  grid-row: 7 ;
+.grid-Cost{
+  grid-column: 6 / span 1;
+  grid-row: 16 ;
 }
+
 
 
 .grid-icon-picker {
