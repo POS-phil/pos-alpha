@@ -1,4 +1,4 @@
-<form [formGroup]="createCategoryForm" (ngSubmit)="confirmCreate()">
+<form [formGroup]="createCategoryForm" (ngSubmit)="createCategory()">
     <div class="header-flex">
         <H1>Create Category</H1>
         <span class="spacer"></span>
@@ -11,19 +11,20 @@
     </div>
     <div class="container-flex">
         <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
-            <ng-container *ngIf="uploadedImage; else defaultIcon">
-                <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
-            </ng-container>
-            <ng-template #defaultIcon>
-                <mat-icon class="icon-image">add_a_photo</mat-icon>
-            </ng-template>
+            @if (uploadedImage) {
+            <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
+            } @else {
+            <mat-icon class="icon-image">add_a_photo</mat-icon>
+            }
         </button>
         <div class="grid-container">
             <div class="grid-1cS3-1r">
                 <mat-form-field class="full-width">
                     <mat-label>Category Name</mat-label>
                     <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
-                    <mat-error *ngIf="categoryName.hasError('required')">Category Name is required</mat-error>
+                    @if(categoryName.hasError('required')) {
+                    <mat-error class="error-message">Category Name is required</mat-error>
+                    }
                 </mat-form-field>
             </div>
             <div class="grid-4cS2-1r">
@@ -33,7 +34,7 @@
                 </mat-form-field>
             </div>
             <div class="grid-slideContainer">
-                <mat-slide-toggle class="toggle-button">
+                <mat-slide-toggle formControlName="web_shop" class="toggle-button">
                     Web Shop
                 </mat-slide-toggle>
                 <mat-slide-toggle class="toggle-button">
@@ -61,14 +62,8 @@
                 </button>
                 <mat-chip-set>
                     @for(item of scheduleSummary; track item){
-                        <mat-chip >{{ item }}</mat-chip>
+                    <mat-chip>{{ item }}</mat-chip>
                     }
-                    <!--
-                     <mat-chip>All Day : 12:00AM - 11:59PM</mat-chip> -->
-                    <!-- Example chips for each day 
-                     <mat-chip>Monday : 12:00AM - 11:59PM</mat-chip>
-                    <mat-chip>Saturday : 12:00AM - 11:59PM</mat-chip>
-                    <mat-chip>Sunday : 12:00AM - 11:59PM</mat-chip> -->
                 </mat-chip-set>
             </div>
             <div class="grid-icon-picker">
@@ -84,9 +79,11 @@
 
                 <mat-menu #iconMenu="matMenu" class="icon-menu">
                     <div class="icon-grid">
-                        <button mat-icon-button *ngFor="let icon of icons" (click)="selectIcon(icon)">
+                        @for(icon of icons; track icon) {
+                        <button mat-icon-button (click)="selectIcon(icon)">
                             <mat-icon>{{ icon }}</mat-icon>
                         </button>
+                        }
                     </div>
                 </mat-menu>
             </div>
