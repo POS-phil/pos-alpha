@@ -15,11 +15,12 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MenuCategories } from '../../../../../../common/menu-categories';
+
 @Component({
   selector: 'app-item',
   standalone:true,
   imports: [CommonModule,
-    RouterModule,
+    RouterModule, 
     MatButtonModule,
     MatTableModule,
     MatIconModule,

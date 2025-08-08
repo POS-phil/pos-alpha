@@ -20,7 +20,7 @@
         </button>
         <button mat-flat-button class="btnCategory" [routerLink]="['add-item']">
             <mat-icon>add</mat-icon>
-            Create New
+            Create New Item
         </button>
     </div>
     <!--
@@ -30,6 +30,16 @@
         <span>No Categories Found, Please add a category</span>
     </div>
     } @else {-->
+     <div class="menu-container container-1">
+            <button matButton class="btnCategory">
+            
+            Barcode
+        </button>
+            <button matButton class="btnCategory">
+           
+           Deleted
+        </button>
+     </div>
     <div class="menu-container container-1">
         <mat-form-field appearance="outline" class="inputSearch">
             <mat-label>Search</mat-label>
