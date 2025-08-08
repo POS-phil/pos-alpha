@@ -1,1 +1,291 @@
-<p>create-item works!</p>
+<form [formGroup]="createItemForm" (ngSubmit)="confirmCreate()">
+    <div class="header-flex">
+        <H1>Create Item</H1>
+        <span class="spacer"></span>
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
+            Cancel
+        </button>
+        <button type="submit" mat-flat-button class="btnRadius">
+            Save
+        </button>       
+    </div>    
+    <!--  formControlName="category_name"  formControlName="localized"  - -->
+    <div class="container-flex">
+        <div class="grid-container">
+            <div class="grid-1cS3-1r">
+                <mat-form-field class="full-width">
+                    <mat-label>Category Name</mat-label>
+                    <input matInput type="text" placeholder="Ex. Combo 1">
+                    <mat-error *ngIf="categoryName.hasError('required')">Category Name is required</mat-error>
+                </mat-form-field>       
+                <mat-form-field class="full-width">
+                    <mat-label>Localized</mat-label>
+                    <input matInput type="text" placeholder="Ex. Combo 1">
+                    
+                </mat-form-field>
+            </div>
+            <div class="grid-1cS3-1r">
+                <button matButton="outlined">Edit Item</button>
+                <button matButton="outlined">Create Item</button>
+                <button matButton="outlined">Icon Image</button>
+            </div>
+            <div class="grid-4cS2-1r">
+                <div style="font: var(--mat-sys-label-small)">
+                    <span>ICON PICKER : </span>
+                </div>
+                <button [disabled]="uploadedImage"
+                    matTooltip="If no image is provided, an icon can be selected to use as the category image."
+                    type="button" mat-icon-button class="iconSelector" class="icon-picker"
+                    >
+                    <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
+                </button>
+             </div>       
+            <div class="grid-6cS2-1r">
+                <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
+                    <ng-container *ngIf="uploadedImage; else defaultIcon">
+                        <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
+                    </ng-container>
+                    <ng-template #defaultIcon>
+                        <mat-icon class="icon-image">add_a_photo</mat-icon>
+                    </ng-template>
+                </button>
+             </div>
+            <div class="grid-3cS2-2rS1">
+                <mat-form-field class="full-width">
+                    <mat-label>SKU</mat-label>
+                    <input matInput type="text" placeholder="SKU">                    
+                </mat-form-field>  
+            </div>
+               <div class="grid-3cS4-3r">
+                <mat-form-field>
+               <mat-label>Item Type</mat-label>
+                <select matNativeControl required>
+                    <option value="Menu">Menu Item</option>
+                    <option value="Retail">Retail Item</option>
+                </select>
+                </mat-form-field>
+            </div>
+   
+            <div class="grid-5cS4-3r">
+                  <mat-form-field>
+                    <mat-label>Description</mat-label>
+                    <textarea matInput placeholder="Description"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div class="grid-1cS2-1rS1">
+                <mat-form-field class="full-width">
+                    <mat-label>Costing Method</mat-label>
+                    <input matInput type="text" placeholder="SKU">                    
+                </mat-form-field>  
+            </div>
+      
+               <div class="grid-3cS4-4r">
+                <mat-form-field>
+                <mat-label>Category</mat-label>
+                <select matNativeControl required>
+                    <option value="Category 1">Category 1</option>
+                    <option value="Category 2">Category 2</option>
+                </select>
+                </mat-form-field>
+            </div>
+            
+               <div class="grid-5cS4-4r">
+                <mat-form-field class="full-width">
+                    <mat-label>Barcode</mat-label>
+                    <input matInput type="text" placeholder="Barcode">                    
+                </mat-form-field>  
+            </div>
+
+            <!-- row 5-->
+            <div class="grid-1cS2-5rS1">
+                <mat-form-field class="full-width">
+                <mat-label>Pricing Method</mat-label>                    
+                <select matNativeControl placeholder="Pricing Method">
+                    <option value="Fixed">Fixed</option>
+                    <option value="Open">Open</option>
+                </select>                  
+                </mat-form-field>  
+            </div>
+
+            <div class="grid-3cS4-5r">
+                <mat-form-field>
+                    <mat-label>Tax Group</mat-label>
+                    <input matInput type="text" placeholder="VAT">                    
+                </mat-form-field>  
+            </div>
+
+            <div class="grid-5cS4-5r">
+                <mat-form-field  class="full-width">
+                <mat-label>Selling Method</mat-label>
+                <select matNativeControl required>
+                    <option value="Category 1">Category 1</option>
+                    <option value="Category 2">Category 2</option>
+                </select>
+                </mat-form-field>
+            </div>
+
+            <!-- row 6-->
+            <div class="grid-1cS2-6rS1">
+                <mat-form-field class="full-width">
+                    <mat-label>Price</mat-label>
+                    <input matInput type="text" placeholder="Enter Amount">                    
+                </mat-form-field>  
+            </div>
+
+            <div class="grid-3cS4-6r">
+                <mat-form-field >
+                    <mat-label>Preparation Time</mat-label>
+                    <input matInput type="text" placeholder="Preparation Time">                    
+                </mat-form-field>  
+            </div>
+
+            <div class="grid-5cS4-6r">
+                <mat-form-field class="full-width">
+                    <mat-label>Gross Weight</mat-label>
+                    <input matInput type="text" placeholder="0.000">                    
+                </mat-form-field>  
+            </div>
+
+            <!-- row 7-->
+            <div class="grid-1cS2-7rS1">
+                <mat-form-field class="full-width">
+                    <mat-label>Price Schedule</mat-label>
+                    <input matInput type="text" placeholder="Enter Amount">                    
+                </mat-form-field>  
+
+
+            </div>
+
+            <div class="grid-3cS3-7r">
+
+
+                <mat-form-field>
+                    <mat-label>Walking Time</mat-label>
+                    <textarea matInput placeholder="Walking Time"></textarea>
+                </mat-form-field>
+            </div>
+
+            <div class="grid-5cS3-7r">
+                <mat-form-field class="full-width">
+                    <mat-label>Ingredient Cost</mat-label>
+                    <input matInput type="text" placeholder="Ingredient Cost">                    
+                </mat-form-field>  
+                <mat-form-field class="full-width">
+                    <mat-label>Calories</mat-label>
+                    <input matInput type="text" placeholder="Calories">                    
+                </mat-form-field> 
+            </div>
+
+
+
+            
+            <div class="grid-8cS3-7r">
+                <mat-form-field class="full-width">
+                    <mat-label>Cost %</mat-label>
+                    <input matInput type="text" placeholder="Cost %">                    
+                </mat-form-field> 
+                <mat-form-field class="full-width">
+                    <mat-label>Salt Content</mat-label>
+                    <input matInput type="text" placeholder="Salt Content">                    
+                </mat-form-field>  
+            </div>
+
+        </div>
+    
+            
+    
+        
+    </div>
+</form>
+
+<!--
+<mat-error *ngIf="categoryName.hasError('required')">Category Name is required</mat-error>
+       <div class="grid-container">
+            <div class="grid-1cS3-1r">
+                <mat-form-field class="full-width">
+                    <mat-label>Category Name</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <mat-error *ngIf="categoryName.hasError('required')">Category Name is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="grid-4cS2-1r">
+                <mat-form-field class="full-width">
+                    <mat-label>Second Language</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </div>
+            <div class="grid-slideContainer">
+                <mat-slide-toggle class="toggle-button">
+                    Web Shop
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Aggregator
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Kiosk
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Counter Top
+                </mat-slide-toggle>
+            </div>
+            <div class="grid-1cS3-2r">
+                <mat-form-field class="full-width">
+                    <mat-label>Parent Category</mat-label>
+                    <input matInput [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete"></mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="grid-4cS2-2rS1">
+                <button type="button" mat-fab extended class="full-width btnAvailability"
+                    (click)="openAvailabilityDialog()">
+                    <mat-icon>event_repeat</mat-icon>
+                    <span>Availability</span>
+                </button>
+                <mat-chip-set>
+                    @for(item of scheduleSummary; track item){
+                        <mat-chip >{{ item }}</mat-chip>
+                    }
+             
+                </mat-chip-set>
+            </div>
+            <div class="grid-icon-picker">
+                <div style="font: var(--mat-sys-label-small)">
+                    <span>ICON PICKER : </span>
+                </div>
+                <button [disabled]="uploadedImage"
+                    matTooltip="If no image is provided, an icon can be selected to use as the category image."
+                    type="button" mat-icon-button class="iconSelector" class="icon-picker"
+                    [matMenuTriggerFor]="iconMenu">
+                    <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
+                </button>
+
+                <mat-menu #iconMenu="matMenu" class="icon-menu">
+                    <div class="icon-grid">
+                        <button mat-icon-button *ngFor="let icon of icons" (click)="selectIcon(icon)">
+                            <mat-icon>{{ icon }}</mat-icon>
+                        </button>
+                    </div>
+                </mat-menu>
+            </div>
+            <div class="grid-textArea">
+                <mat-form-field class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."></textarea>
+                </mat-form-field>
+            </div>
+            <div class="grid-reference">
+                <mat-form-field class="full-width">
+                    <mat-label>Reference</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </div>
+</div>
+-->
+
+       <!--
+                     <mat-chip>All Day : 12:00AM - 11:59PM</mat-chip> -->
+                    <!-- Example chips for each day 
+                     <mat-chip>Monday : 12:00AM - 11:59PM</mat-chip>
+                    <mat-chip>Saturday : 12:00AM - 11:59PM</mat-chip>
+                    <mat-chip>Sunday : 12:00AM - 11:59PM</mat-chip> -->

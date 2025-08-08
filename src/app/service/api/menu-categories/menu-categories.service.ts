@@ -8,14 +8,17 @@ export class MenuCategoriesService {
 
   constructor(private http: HttpClient) { }
 
-  private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-categories';
+  private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
 
-  getMenuCategories(categoryId: number ) : Observable<MenuCategories[]>{
-    return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}/${categoryId}`);
+  getMenuCategories(): Observable<MenuCategories[]> {
+    return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
   }
 
-  createMenuCategory(category: MenuCategories): Observable<MenuCategories> {
-    return this.http.post<MenuCategories>(`${this.menuCategoriesApiUrl}/create`, category);
-  }
-  
+  createCategory(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.menuCategoriesApiUrl}/create`, formData);
+}
+
+getImageUrl(filename: string): string {
+    return `${this.menuCategoriesApiUrl}/image/${filename}`;
+}
 }

@@ -8,6 +8,14 @@
   gap: 5px;
 }
 
+ ::ng-deep .snackbar-error {
+  @include mat.snack-bar-overrides((
+    button-color: white,
+    container-color: red,
+    supporting-text-color: white,
+  ));
+}
+
 .schedule-container {
   display: grid;
   grid-template-columns: repeat(4, 100px);
