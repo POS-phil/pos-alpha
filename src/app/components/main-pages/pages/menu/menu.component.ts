@@ -13,6 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
+import { MenuCategoriesService } from '../../../../service/api/menu-categories/menu-categories.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-menu',
@@ -29,8 +31,10 @@ import { SelectionModel } from '@angular/cdk/collections';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCheckbox
+    MatCheckbox,
+    MatSlideToggleModule
   ],
+  providers: [MenuCategoriesService],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
@@ -39,11 +43,11 @@ export class MenuComponent implements OnInit {
 
   // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check', 'reference', 'category_name', 'image', 'schedule', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top' , 'last_order', 'created_at', 'isActive'];
+  displayedColumns: string[] = ['check', 'reference', 'category_name', 'image', 'schedule', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'last_order', 'created_at', 'isActive'];
 
   // Data source for the table
-  categoryList : MenuCategories[] = [];
-  MENU_CATEGORIES_DATA : any;
+  categoryList: MenuCategories[] = [];
+  MENU_CATEGORIES_DATA: any;
 
   // Injecting LiveAnnouncer for accessibility announcements
   @ViewChild(MatSort) sort!: MatSort;
@@ -55,7 +59,32 @@ export class MenuComponent implements OnInit {
     this.getCategories();
   }
 
+  constructor(
+    private menuCategoriesService: MenuCategoriesService,
+  ) { }
+
   getCategories() {
+
+    this.menuCategoriesService.getMenuCategories().subscribe({
+        next: (data: MenuCategories[]) => {
+            this.categoryList = data.map(category => {
+                return {
+                    ...category,
+                    image: category.imagePath 
+                        ? this.menuCategoriesService.getImageUrl(category.imagePath) 
+                        : null
+                };
+            });
+            
+            this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+            this.MENU_CATEGORIES_DATA.sort = this.sort;
+            this.MENU_CATEGORIES_DATA.paginator = this.paginator;
+        },
+        error: (error) => {
+            console.error('Error fetching menu categories', error);
+        }
+    });
+
     this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
   }
 

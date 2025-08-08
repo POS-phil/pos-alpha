@@ -66,7 +66,14 @@
 
         <ng-container matColumnDef="image">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
-            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.image}} </td>
+            <td mat-cell *matCellDef="let menu_cat">
+                @if(menu_cat.image)
+                {
+                    <img [src]="menu_cat.image" alt="Category Image" class="category-image" loading="lazy" />
+                } @else if(menu_cat.icon) {
+                    <mat-icon>{{menu_cat.icon}}</mat-icon>
+                }
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="schedule">
@@ -87,22 +94,22 @@
 
         <ng-container matColumnDef="web_shop">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Web Shop </th>
-            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+            <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle checked="menu_cat.web_shop"></mat-slide-toggle> </td>
         </ng-container>
 
         <ng-container matColumnDef="aggregator">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Aggregator </th>
-            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+            <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle checked="menu_cat.web_shop"></mat-slide-toggle> </td>
         </ng-container>
 
         <ng-container matColumnDef="kiosk">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Kiosk </th>
-            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+            <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle checked="menu_cat.web_shop"></mat-slide-toggle> </td>
         </ng-container>
 
         <ng-container matColumnDef="counter_top">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Counter Top </th>
-            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+            <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle checked="menu_cat.web_shop"></mat-slide-toggle> </td>
         </ng-container>
 
         <ng-container matColumnDef="last_order">
@@ -111,12 +118,12 @@
         </ng-container>
 
         <ng-container matColumnDef="created_at">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
             <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.created_at}} </td>
         </ng-container>
 
         <ng-container matColumnDef="isActive">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Active </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
             <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.created_at}} </td>
         </ng-container>
 

@@ -1,9 +1,11 @@
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
-    categoryId : number;
+    categoryId?: number;
     isActive: boolean;
     category_name: string;
-    image?: File | string;
+    imagePath?: string;  // Changed from image to imagePath
+    imageUrl?: string;   // Optional - can be added for convenience
+    icon?: string;
     withProducts: boolean;
     withSubCategories: boolean
     subCategories?: MenuCategories[];
@@ -14,7 +16,7 @@ export interface MenuCategories {
     aggregator: boolean;
     kiosk: boolean;
     counter_top: boolean;
-    last_order: Date;
+    last_order?: Date;
     created_at: Date;
 }
 

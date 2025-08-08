@@ -50,14 +50,16 @@ export class MenuCategoryAvailabilityComponent {
 
   isAllDaysChecked = signal(this.data?.isAllDaysChecked ?? true);
   isAllDayChecked = signal(this.data?.isAllDayChecked ?? true);
-  allDayStartTime = signal('00:00');
-  allDayEndTime = signal('23:59');
+  allDayStartTime = signal<string>(this.data?.allDayStartTime ?? '00:00');
+  allDayEndTime = signal<string>(this.data?.allDayEndTime ?? '23:59');
   invalidDays = signal(new Set<number>());
-  invalidMasterTime = signal(false);
 
   toggleAllDays(checked: boolean) {
     this.isAllDaysChecked.set(checked);
     this.isAllDayChecked.set(checked);
+
+    // allDayStartTime: this.allDayStartTime(),
+    // allDayEndTime: this.allDayEndTime()
 
     if (checked) {
       // When enabling "All Days", sync all days with master times
@@ -66,7 +68,8 @@ export class MenuCategoryAvailabilityComponent {
         available: true,
         allDay: this.isAllDayChecked(),
         startTime: this.isAllDayChecked() ? '00:00' : this.allDayStartTime(),
-        endTime: this.isAllDayChecked() ? '23:59' : this.allDayEndTime()
+        endTime: this.isAllDayChecked() ? '23:59' : this.allDayEndTime(),
+        
       }));
 
       this.schedule.set(updatedSchedules);
@@ -131,10 +134,11 @@ export class MenuCategoryAvailabilityComponent {
     const isValid = this.isTimeValid(start, end);
 
     if (!isValid) {
-      this.snackBar.open('Master time range is invalid. End time must be later than start time.', 'Close', {
+      this.snackBar.open('Time range is invalid. End time must be later than start time.', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
-        verticalPosition: 'top'
+        verticalPosition: 'top',
+        panelClass: 'snackbar-error'
       });
     }
 
@@ -173,10 +177,11 @@ export class MenuCategoryAvailabilityComponent {
           current.add(dayIndex);
           this.invalidDays.set(current);
 
-          this.snackBar.open('End time must be later than start time.', 'Close', {
-            duration: 3000,
+          this.snackBar.open('Time range is invalid. End time must be later than start time.', 'Close', {
+            duration: 5000,
             horizontalPosition: "center",
-            verticalPosition: "top"
+            verticalPosition: "top",
+            panelClass: 'snackbar-error'
           });
 
         } else {
@@ -205,10 +210,18 @@ export class MenuCategoryAvailabilityComponent {
     return end > start;
   }
 
+  close(){
+    this.dialogRef.close();
+  }
+
   save() {
-    if (this.invalidDays().size > 0 || !this.invalidMasterTime()) {
+    const masterTimeIsValid = this.validateMasterTime();
+
+    if (this.invalidDays().size > 0 || !masterTimeIsValid) {
       this.snackBar.open('Please fix invalid time entries before saving.', 'Close', {
-        duration: 3000,
+        duration: 5000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
         panelClass: ['snackbar-error']
       });
       return;
@@ -218,6 +231,8 @@ export class MenuCategoryAvailabilityComponent {
 
     this.dialogRef.close({
       schedule: sched,
+      allDayStartTime : this.allDayStartTime(),
+      allDayEndTime: this.allDayEndTime(),
       isAllDaysChecked: this.isAllDaysChecked(),
       isAllDayChecked: this.isAllDayChecked()
     });
