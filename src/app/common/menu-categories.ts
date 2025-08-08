@@ -26,6 +26,6 @@ export interface ScheduleEntry {
   allDay: boolean;
   startTime?: string;         // '08:00'
   endTime?: string;           // '17:00'
-  //days?: ScheduleEntry[]; // Removed to fix circular reference
+  days?: ScheduleEntry[]; // Removed to fix circular reference
 }
 
