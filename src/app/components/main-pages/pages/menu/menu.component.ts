@@ -49,7 +49,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 export class MenuComponent implements OnInit {
 
-  displayedColumns: string[] = ['check', 'reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
+  //displayedColumns: string[] = ['check', 'plus', 'reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
   sortableColumns: string[] = ['reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
   displayedColumnNames: string[] = ['Reference', 'Category Name', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
   categoryList: MenuCategories[] = [];
@@ -69,7 +69,7 @@ export class MenuComponent implements OnInit {
   ) { }
 
   getFinalDisplayedColumns(): string[] {
-    return ['check', ...this.sortableColumns];
+    return ['check','plus', ...this.sortableColumns];
   }
 
   getCategories() {
@@ -89,6 +89,11 @@ export class MenuComponent implements OnInit {
     });
 
     this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.MENU_CATEGORIES_DATA.filter = filterValue.trim().toLowerCase();
   }
 
   announceSortChange(sortState: Sort) {

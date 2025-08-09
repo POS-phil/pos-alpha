@@ -1,20 +1,24 @@
 @use '@angular/material' as mat;
 
 .slide-toggle {
-  @include mat.slide-toggle-overrides((
-    track-width: 50px,
-    track-height: 20px,
-    selected-handle-color: rgb(100, 194, 100),
-    selected-hover-handle-color: rgb(34, 190, 34),
-    selected-focus-handle-color: rgb(34, 190, 34),
-    selected-icon-color: white,
-    unselected-handle-color: rgb(194, 100, 100),
-    unselected-hover-handle-color: rgb(180, 39, 39),
-    unselected-focus-handle-color: rgb(180, 39, 39),
-  ));
+  @include mat.slide-toggle-overrides((track-width: 45px,
+      track-height: 20px,
+      selected-handle-color: rgb(100, 194, 100),
+      selected-hover-handle-color: rgb(34, 190, 34),
+      selected-focus-handle-color: rgb(34, 190, 34),
+      selected-icon-color: white,
+      unselected-handle-color: rgb(194, 100, 100),
+      unselected-hover-handle-color: rgb(180, 39, 39),
+      unselected-focus-handle-color: rgb(180, 39, 39),
+    ));
 }
 
-.spacer{
+.catTable {
+  @include mat.table-overrides(());
+  overflow: auto;
+}
+
+.spacer {
   flex-grow: 1;
 }
 
@@ -38,21 +42,19 @@ va-mat-table {
 }
 
 ::ng-deep .mat-mdc-paginator-container {
-    justify-content: flex-start !important;
+  justify-content: flex-start !important;
 }
 
-.checkbox{
-   @include mat.checkbox-overrides((
-    
-  ));
+.checkbox {
+  @include mat.checkbox-overrides(());
 }
 
-.action-bar-1{
+.action-bar-1 {
   text-align: left !important;
 }
 
 .btnCategory {
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 .main-container {
@@ -60,10 +62,10 @@ va-mat-table {
 }
 
 .menu-container {
-    display: flex;
-    gap: 10px;
-    padding: 5px;
-    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  display: flex;
+  gap: 10px;
+  padding: 5px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
 .container-1 {
@@ -74,11 +76,24 @@ va-mat-table {
   justify-content: flex-end;
 }
 
-.inputSearch{
-  width: 500px;
+.inputSearch {
+  width: 250px;
+}
+
+.tableContainer {
+  overflow: hidden;
 }
 
 @media (max-width: 599px) {
+
+  .tableContainer {
+    overflow: auto;
+  }
+  
+  .inputSearch {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
   .main-container {
     margin-left: 10px;
