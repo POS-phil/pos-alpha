@@ -5,7 +5,7 @@ export interface MenuCategories {
     categoryId?: number;
     active: boolean;
     deleted?: boolean;
-    category_name: string;
+    categoryName: string;
     secondLanguageName?: string; // Optional for second language support
     description? : string; 
     reference: string;
@@ -18,12 +18,12 @@ export interface MenuCategories {
     subCategories?: MenuCategories[];
     schedule: ScheduleEntry[];
     item: number;
-    web_shop: boolean;
+    webShop: boolean;
     aggregator: boolean;
     kiosk: boolean;
-    counter_top: boolean;
-    last_order?: Date;
-    created_at: Date;
+    counterTop: boolean;
+    lastOrder?: Date;
+    createdAt: Date;
 }
 
 // Update new interface for schedule entries

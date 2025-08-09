@@ -71,7 +71,7 @@
 
             <ng-container matColumnDef="category_name">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Category Name </th>
-                <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+                <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.categoryName}} </td>
             </ng-container>
 
             <ng-container matColumnDef="image">
@@ -100,13 +100,13 @@
             <ng-container matColumnDef="web_shop">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Web Shop </th>
                 <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle class="slide-toggle"
-                        [(ngModel)]="menu_cat.web_shop"></mat-slide-toggle> </td>
+                        [(ngModel)]="menu_cat.webShop"></mat-slide-toggle> </td>
             </ng-container>
 
             <ng-container matColumnDef="aggregator">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Aggregator </th>
                 <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle class="slide-toggle"
-                        [(ngModel)]="menu_cat.aggregatorp"></mat-slide-toggle> </td>
+                        [(ngModel)]="menu_cat.aggregator"></mat-slide-toggle> </td>
             </ng-container>
 
             <ng-container matColumnDef="kiosk">
@@ -118,12 +118,12 @@
             <ng-container matColumnDef="counter_top">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Counter Top </th>
                 <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle class="slide-toggle"
-                        [(ngModel)]="menu_cat.counter_top"></mat-slide-toggle> </td>
+                        [(ngModel)]="menu_cat.counterTop"></mat-slide-toggle> </td>
             </ng-container>
 
             <ng-container matColumnDef="created_at">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
-                <td mat-cell *matCellDef="let menu_cat"> {{formatCreatedAt(menu_cat.created_at)}} </td>
+                <td mat-cell *matCellDef="let menu_cat"> {{formatCreatedAt(menu_cat.createdAt)}} </td>
             </ng-container>
 
             <ng-container matColumnDef="isActive">
