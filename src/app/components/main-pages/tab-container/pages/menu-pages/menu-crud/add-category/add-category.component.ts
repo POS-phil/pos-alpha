@@ -163,6 +163,8 @@ export class AddCategoryComponent implements OnInit {
 
     dialogRef.componentInstance.imageRemoved.subscribe(() => {
       this.previewImage = null;
+      this.selectedImage = null;
+      this.cleanUpObjectUrl();
       this.cdr.detectChanges();
     });
 
