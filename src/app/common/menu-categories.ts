@@ -3,7 +3,7 @@ import { SafeUrl } from "@angular/platform-browser";
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
     categoryId?: number;
-    active: boolean;
+    isActive: boolean;
     deleted?: boolean;
     categoryName: string;
     secondLanguageName?: string; // Optional for second language support
