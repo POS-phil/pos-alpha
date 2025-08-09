@@ -19,6 +19,7 @@ import { FormsModule } from '@angular/forms';
 import { CsMatTableComponent } from "../../../layout/table/cs-mat-table/cs-mat-table.component";
 import { ColumnSorterComponent } from '../../../layout/table/actions/column-sorter/column-sorter.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'app-menu',
@@ -40,7 +41,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSlideToggleModule,
     CsMatTableComponent,
     ColumnSorterComponent,
-    MatTabsModule
+    MatTabsModule,
+    MatButtonToggleModule
   ],
   providers: [MenuCategoriesService],
   templateUrl: './menu.component.html',
@@ -49,11 +51,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 
 export class MenuComponent implements OnInit {
 
-  //displayedColumns: string[] = ['check', 'plus', 'reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
   sortableColumns: string[] = ['reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
   displayedColumnNames: string[] = ['Reference', 'Category Name', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
   categoryList: MenuCategories[] = [];
   MENU_CATEGORIES_DATA: any;
+
+  showSelectionHeader = false;
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;

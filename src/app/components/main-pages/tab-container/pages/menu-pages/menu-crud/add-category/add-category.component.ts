@@ -81,8 +81,9 @@ export class AddCategoryComponent implements OnInit {
     this.createCategoryForm.patchValue({ icon });
   }
 
-  selectBackgroundColor(color: string) {
-    this.selectedBackgroundColor = color;
+  selectBackgroundColor(backgroundColor: string) {
+    this.selectedBackgroundColor = backgroundColor;
+    this.createCategoryForm.patchValue({})
   }
 
   createCategoryForm!: FormGroup;
@@ -272,7 +273,7 @@ export class AddCategoryComponent implements OnInit {
         );
 
         setTimeout(() => {
-          this.route.navigate(['/menu/categories']);
+          this.route.navigate(['/product-list/category']);
         }, 100);
       },
       error: (err) => {

@@ -4,7 +4,7 @@ import { SafeUrl } from "@angular/platform-browser";
 export interface MenuCategories {
     categoryId?: number;
     isActive: boolean;
-    deleted?: boolean;
+    isDeleted?: boolean;
     categoryName: string;
     secondLanguageName?: string; // Optional for second language support
     description? : string; 
