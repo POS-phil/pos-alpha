@@ -146,6 +146,17 @@ export class UploadImageComponent implements OnInit {
 
       const blob = await response.blob();
 
+      
+      const maxSizeMB = 10;
+      if (blob.size > maxSizeMB * 1024 * 1024) {
+        throw new Error(`File is too large. Max size is ${maxSizeMB}MB`);
+      }
+
+      const image = await this.loadImageFromBlob(blob);
+      if (image.width < 660 || image.height < 900) {
+        throw new Error(`Image must be at least 660x900 pixels`);
+      }
+
       let fileName = this.imageUrl.split('/').pop() || 'downloaded-image.jpg';
       fileName = fileName.replace(/[^a-zA-Z0-9.\-_]/g, '_');
 
@@ -162,6 +173,15 @@ export class UploadImageComponent implements OnInit {
     }
 
   }
+
+  private loadImageFromBlob(blob: Blob): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error('Invalid image'));
+    img.src = URL.createObjectURL(blob);
+  });
+}
 
   onUpload() {
     //console.log('Uploading:', this.previewImage);

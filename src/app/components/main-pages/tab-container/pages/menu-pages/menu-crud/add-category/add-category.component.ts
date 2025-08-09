@@ -22,6 +22,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ScheduleEntry } from '../../../../../../../common/menu-categories';
 import { MenuCategoriesService } from '../../../../../../../service/api/menu-categories/menu-categories.service';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-category',
@@ -41,13 +42,16 @@ import { HttpClient } from '@angular/common/http';
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSnackBarModule
   ],
   providers: [MenuCategoriesService],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.scss',
 })
 export class AddCategoryComponent implements OnInit {
+
+  private _createCategorySuccess = inject(MatSnackBar);
 
   scheduleSummary: string[] = [];
   isAllDaysChecked = signal(true);
@@ -225,14 +229,14 @@ export class AddCategoryComponent implements OnInit {
   }
 
   private cleanUpObjectUrl(): void {
-      if (this.previewImage) {
-        const unsafeUrl = this.sanitizer.sanitize(SecurityContext.URL, this.previewImage);
-        if (unsafeUrl) {
-          window.URL.revokeObjectURL(unsafeUrl);
-        }
-        this.previewImage = null;
+    if (this.previewImage) {
+      const unsafeUrl = this.sanitizer.sanitize(SecurityContext.URL, this.previewImage);
+      if (unsafeUrl) {
+        window.URL.revokeObjectURL(unsafeUrl);
       }
+      this.previewImage = null;
     }
+  }
 
   createCategory(): void {
     if (this.createCategoryForm.invalid) {
@@ -248,7 +252,7 @@ export class AddCategoryComponent implements OnInit {
     if (this.selectedImage) {
       formData.append('image', this.selectedImage);
     }
-    
+
     // Uncomment for debugging
     // console.log('Form Data:', formData);
     // console.log('Form Value:', formValue);
@@ -258,7 +262,16 @@ export class AddCategoryComponent implements OnInit {
       next: (response) => {
         console.log('Category created:', response);
         this.cleanUpObjectUrl();
-        this.route.navigate(['/menu/categories']);
+
+        const snackBarRef = this._createCategorySuccess.open(
+          `Category "${this.categoryName}" created successfully`,
+          'Close',
+          { duration: 5000 }
+        );
+
+        setTimeout(() => {
+          this.route.navigate(['/menu/categories']);
+        }, 100);
       },
       error: (err) => {
         console.error('Error creating category', err);
