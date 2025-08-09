@@ -1,15 +1,21 @@
+import { SafeUrl } from "@angular/platform-browser";
+
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
     categoryId?: number;
-    isActive: boolean;
+    active: boolean;
+    deleted?: boolean;
     category_name: string;
-    imagePath?: string;  // Changed from image to imagePath
-    imageUrl?: string;   // Optional - can be added for convenience
+    secondLanguageName?: string; // Optional for second language support
+    description? : string; 
+    reference: string;
+    parentCategoryId?: number; // Optional for subcategories
+    image?: File | string | null; 
     icon?: string;
+    background : string;
     withProducts: boolean;
     withSubCategories: boolean
     subCategories?: MenuCategories[];
-    reference: number;
     schedule: ScheduleEntry[];
     item: number;
     web_shop: boolean;

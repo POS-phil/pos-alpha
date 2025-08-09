@@ -1,5 +1,36 @@
 @use '@angular/material' as mat;
 
+.slide-toggle {
+  @include mat.slide-toggle-overrides((
+    track-width: 50px,
+    track-height: 20px,
+    selected-handle-color: rgb(100, 194, 100),
+    selected-hover-handle-color: rgb(34, 190, 34),
+    selected-focus-handle-color: rgb(34, 190, 34),
+    selected-icon-color: white,
+    unselected-handle-color: rgb(194, 100, 100),
+    unselected-hover-handle-color: rgb(180, 39, 39),
+    unselected-focus-handle-color: rgb(180, 39, 39),
+  ));
+}
+
+.spacer{
+  flex-grow: 1;
+}
+
+.icon-image {
+  text-align: center;
+  font-size: 40px;
+  width: 50px;
+  height: 50px;
+}
+
+.category-image {
+  align-items: center;
+  max-width: 50px;
+  max-height: 50px;
+}
+
 va-mat-table {
   display: block;
   width: 100%;
@@ -44,7 +75,7 @@ va-mat-table {
 }
 
 .inputSearch{
-  width: 100%;
+  width: 500px;
 }
 
 @media (max-width: 599px) {

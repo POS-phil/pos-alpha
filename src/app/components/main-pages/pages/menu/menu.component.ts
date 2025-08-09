@@ -15,12 +15,17 @@ import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MenuCategoriesService } from '../../../../service/api/menu-categories/menu-categories.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FormsModule } from '@angular/forms';
+import { CsMatTableComponent } from "../../../layout/table/cs-mat-table/cs-mat-table.component";
+import { ColumnSorterComponent } from '../../../layout/table/actions/column-sorter/column-sorter.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     RouterModule,
     MatButtonModule,
     MatTableModule,
@@ -32,7 +37,10 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatPaginatorModule,
     MatSortModule,
     MatCheckbox,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    CsMatTableComponent,
+    ColumnSorterComponent,
+    MatTabsModule
   ],
   providers: [MenuCategoriesService],
   templateUrl: './menu.component.html',
@@ -41,15 +49,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export class MenuComponent implements OnInit {
 
-  // Define the columns to be displayed in the table
-  bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check', 'reference', 'category_name', 'image', 'schedule', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'last_order', 'created_at', 'isActive'];
-
-  // Data source for the table
+  displayedColumns: string[] = ['check', 'reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
+  sortableColumns: string[] = ['reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
+  displayedColumnNames: string[] = ['Reference', 'Category Name', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
   categoryList: MenuCategories[] = [];
   MENU_CATEGORIES_DATA: any;
 
-  // Injecting LiveAnnouncer for accessibility announcements
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -63,26 +68,24 @@ export class MenuComponent implements OnInit {
     private menuCategoriesService: MenuCategoriesService,
   ) { }
 
+  getFinalDisplayedColumns(): string[] {
+    return ['check', ...this.sortableColumns];
+  }
+
   getCategories() {
 
     this.menuCategoriesService.getMenuCategories().subscribe({
-        next: (data: MenuCategories[]) => {
-            this.categoryList = data.map(category => {
-                return {
-                    ...category,
-                    image: category.imagePath 
-                        ? this.menuCategoriesService.getImageUrl(category.imagePath) 
-                        : null
-                };
-            });
-            
-            this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
-            this.MENU_CATEGORIES_DATA.sort = this.sort;
-            this.MENU_CATEGORIES_DATA.paginator = this.paginator;
-        },
-        error: (error) => {
-            console.error('Error fetching menu categories', error);
-        }
+      next: (data: MenuCategories[]) => {
+        this.categoryList = [...data].sort((a, b) => (b.categoryId ?? 0) - (a.categoryId ?? 0));
+
+        this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+        this.MENU_CATEGORIES_DATA.sort = this.sort;
+        this.MENU_CATEGORIES_DATA.paginator = this.paginator;
+        
+      },
+      error: (error) => {
+        console.error('Error fetching menu categories', error);
+      }
     });
 
     this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
@@ -94,6 +97,30 @@ export class MenuComponent implements OnInit {
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
+  }
+
+  formatCreatedAt(dateStr: string | Date): string {
+    const date = new Date(dateStr);
+    const now = new Date();
+
+    const isSameYear = date.getFullYear() === now.getFullYear();
+
+    const optionsSameYear: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+
+    const optionsDifferentYear: Intl.DateTimeFormatOptions = {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+
+    return date.toLocaleString('en-US', isSameYear ? optionsSameYear : optionsDifferentYear);
   }
 
   selection = new SelectionModel<any>(true, []);

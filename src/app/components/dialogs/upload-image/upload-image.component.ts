@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Inject, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, inject, OnInit, Output, SecurityContext } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -85,18 +85,21 @@ export class UploadImageComponent implements OnInit {
 
   imageUrl = '';
   readonly dialogRef = inject(MatDialogRef<UploadImageComponent>);
-  previewImage: SafeUrl | ArrayBuffer | null = null;
+  previewImage: SafeUrl | null = null;
+  selectedImage: File | null = null;
   isDragOver = false;
+
+  data = inject(MAT_DIALOG_DATA);
 
   @Output() imageRemoved = new EventEmitter<void>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: SafeUrl | null
-  ) { }
+    private sanitizer: DomSanitizer,) { }
 
   ngOnInit(): void {
     if (this.data) {
-      this.previewImage = this.data;
+      this.previewImage = this.data.previewImage;
+      this.selectedImage = this.data.selectedImage;
     }
   }
 
@@ -115,43 +118,77 @@ export class UploadImageComponent implements OnInit {
     this.isDragOver = false;
     const file = event.dataTransfer?.files?.[0];
     if (file && file.type.startsWith('image/')) {
-      this.readFile(file);
+      this.cleanUpObjectUrl();
+      this.selectedImage = file;
+      this.previewImage = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+      // console.log('File dropped:', file);
+      // console.log('Preview URL:', this.previewImage);
     }
   }
 
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file && file.type.startsWith('image/')) {
-      this.readFile(file);
+      this.cleanUpObjectUrl();
+      this.selectedImage = file;
+      this.previewImage = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
+      // console.log('File dropped:', file);
+      // console.log('Preview URL:', this.previewImage);
     }
   }
 
-  onLoadUrlImage() {
-    // Minimal URL validation
-    if (this.imageUrl.startsWith('http')) {
-      this.previewImage = this.imageUrl;
-    }
-  }
+  async onLoadUrlImage() {
+    try {
+      const response = await fetch(this.imageUrl);
+      if (!response.ok) throw new Error('Failed to fetch image');
 
-  readFile(file: File) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.previewImage = reader.result;
-    };
-    reader.readAsDataURL(file);
+      this.cleanUpObjectUrl();
+
+      const blob = await response.blob();
+
+      let fileName = this.imageUrl.split('/').pop() || 'downloaded-image.jpg';
+      fileName = fileName.replace(/[^a-zA-Z0-9.\-_]/g, '_');
+
+      this.selectedImage = new File([blob], fileName, { type: blob.type });
+      this.previewImage = this.sanitizer.bypassSecurityTrustUrl(
+        window.URL.createObjectURL(blob)
+      );
+
+      console.log('File dropped:', this.selectedImage);
+      console.log('Preview URL:', this.previewImage);
+
+    } catch (error) {
+      console.error('Error loading image from URL:', error);
+    }
+
   }
 
   onUpload() {
     //console.log('Uploading:', this.previewImage);
-    this.dialogRef.close(this.previewImage);
+    this.dialogRef.close({
+      previewImage: this.previewImage,
+      selectedImage: this.selectedImage
+    });
   }
 
   onCancel() {
     this.dialogRef.close();
   }
 
+  private cleanUpObjectUrl(): void {
+    if (this.previewImage) {
+      const unsafeUrl = this.sanitizer.sanitize(SecurityContext.URL, this.previewImage);
+      if (unsafeUrl) {
+        window.URL.revokeObjectURL(unsafeUrl);
+      }
+      this.previewImage = null;
+    }
+  }
+
   onRemove() {
+    this.cleanUpObjectUrl();
     this.previewImage = null;
+    this.selectedImage = null;
     this.imageRemoved.emit();
   }
 
