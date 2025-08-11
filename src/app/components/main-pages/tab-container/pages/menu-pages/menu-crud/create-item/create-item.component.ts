@@ -18,6 +18,7 @@ import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/men
 import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upload-image.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeUrl } from '@angular/platform-browser';
+import { MatDivider } from "@angular/material/divider";
 
 @Component({
   selector: 'app-create-item',
@@ -37,8 +38,9 @@ import { SafeUrl } from '@angular/platform-browser';
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule
-  ],
+    MatChipsModule,
+    MatDivider
+],
   templateUrl: './create-item.component.html',
   styleUrl: './create-item.component.scss'
 })
