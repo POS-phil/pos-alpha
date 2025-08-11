@@ -79,8 +79,13 @@ export class CreateModifierComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const defaultSchedule: ScheduleEntry[] = 
-     [
+    const defaultSchedule: ScheduleEntry = {
+      day: 'All Days',
+      available: true,
+      allDay: true,
+      startTime: '00:00',
+      endTime: '23:59',
+      days: [
         { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
         { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
         { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
@@ -89,19 +94,20 @@ export class CreateModifierComponent implements OnInit {
         { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
         { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
       ]
-    ;
+    };
 
 
     this.createCategoryForm = this.fb.group({
       category_name: ['', Validators.required],
       reference: ['', Validators.required],
-      schedule: this.fb.control<ScheduleEntry>(defaultSchedule[7]),
+      schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
       web_shop: [false],
       aggregator: [false],
       kiosk: [false],
       created_at: [new Date()],
     });
 
+    this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
   }
 
   confirmCreate(): void {
@@ -138,6 +144,36 @@ export class CreateModifierComponent implements OnInit {
       maxWidth: '90vw',
       data: this.createCategoryForm.get('schedule')?.value || []
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.createCategoryForm.get('schedule')?.setValue(result);
+        this.scheduleSummary = this.generateScheduleSummary(result);
+      }
+    });
+  }
+
+  generateScheduleSummary(schedule: ScheduleEntry): string[] {
+    const days = (schedule.days || []).filter((d: ScheduleEntry) => d.day !== 'All Days');
+
+    const allAvailable = days.every((d: ScheduleEntry) => d.available);
+    const sameAllDay = days.every((d: ScheduleEntry) => d.allDay === days[0].allDay);
+    const sameStart = days.every((d: ScheduleEntry) => d.startTime === days[0].startTime);
+    const sameEnd = days.every((d: ScheduleEntry) => d.endTime === days[0].endTime);
+
+    if (allAvailable && sameAllDay && sameStart && sameEnd) {
+      const start = this.formatTime(days[0].startTime || '00:00');
+      const end = this.formatTime(days[0].endTime || '23:59');
+      return [`All Days : ${start} - ${end}`];
+    }
+
+    return days
+      .filter((day: ScheduleEntry) => day.available)
+      .map((day: ScheduleEntry) => {
+        const start = this.formatTime(day.startTime!);
+        const end = this.formatTime(day.endTime!);
+        return `${this.capitalize(day.day)} : ${start} - ${end}`;
+      });
   }
 
   formatTime(time: string): string {

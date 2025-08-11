@@ -23,7 +23,28 @@
             Create Modifier
         </button>
     </div>
-    <div class="menu-container container-2">
+    <!-- <div class="menu-container container-2">
+        <button mat-button [matMenuTriggerFor]="menu" aria-label="Filter menu">
+            <mat-icon>filter_alt</mat-icon>
+            <span>Filter</span>
+        </button>
+    </div>     -->
+
+    <div class="menu-container container-1">
+        <div class="menu-tabs">
+            <a href="#">All</a>
+            <a href="#">Active</a>
+            <a href="#">Inactive</a>
+            <a href="#">Deleted</a>
+        </div>
+        
+        <mat-form-field appearance="outline" class="inputSearch">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="Search Category">
+        </mat-form-field>
+        <button mat-icon-button>
+            <mat-icon>search</mat-icon>
+        </button>
         <button mat-button [matMenuTriggerFor]="menu" aria-label="Filter menu">
             <mat-icon>filter_alt</mat-icon>
             <span>Filter</span>
@@ -66,22 +87,7 @@
             </form>
             </div>
         </mat-menu>
-    </div>
-    <!--
-    @if(MENU_CATEGORIES_DATA.data.length === 0){
-    <div class="no-data">
-        <mat-icon>info</mat-icon>
-        <span>No Categories Found, Please add a category</span>
-    </div>
-    } @else {-->
-    <div class="menu-container container-1">
-        <mat-form-field appearance="outline" class="inputSearch">
-            <mat-label>Search</mat-label>
-            <input matInput placeholder="Search Category">
-        </mat-form-field>
-        <button mat-icon-button>
-            <mat-icon>search</mat-icon>
-        </button>
+   
     </div>
     <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons>
     </mat-paginator>
@@ -133,7 +139,14 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> aggregator </th>
             <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
         </ng-container> 
-        
+        <ng-container matColumnDef="kiosk">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Kiosk </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+        </ng-container> 
+        <ng-container matColumnDef="counter_top">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Counter Top </th>
+            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+        </ng-container>         
         <ng-container matColumnDef="created">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
             <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>

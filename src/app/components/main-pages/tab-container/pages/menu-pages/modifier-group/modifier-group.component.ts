@@ -34,12 +34,16 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
   styleUrl: './modifier-group.component.scss'
 })
 export class ModifierGroupComponent {
+setTab(arg0: string) {
+throw new Error('Method not implemented.');
+}
+selectedTab: any;
 applyFilters() {
 throw new Error('Method not implemented.');
 }
 // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check','name','image', 'reference', 'options', 'link_item', 'web_shop', 'aggregator', 'created'];
+  displayedColumns: string[] = ['check','name','image', 'reference', 'options', 'link_item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created'];
   // Data source for the table
   categoryList : MenuCategories[] = [];
   MENU_CATEGORIES_DATA : any;

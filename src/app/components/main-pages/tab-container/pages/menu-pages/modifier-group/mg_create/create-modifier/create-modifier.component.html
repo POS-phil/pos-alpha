@@ -1,65 +1,67 @@
 <form [formGroup]="createCategoryForm" (ngSubmit)="confirmCreate()">
-    <div class="header-flex header-flex-center">
-        <div class="grid-container">
-            <div class="grid-1cS3-1r"><H1>Create Modifier</H1></div>
-            <div class="grid-4cS2-1r">
-                <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
-                <ng-container *ngIf="uploadedImage; else defaultIcon">
-                    <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
-                </ng-container>
-                <ng-template #defaultIcon>
-                    <mat-icon class="icon-image">add_a_photo</mat-icon>
-                </ng-template>
-                </button>
-                   
-            </div>
-        </div>   
-    </div>
-  <br>
-    <div class="grid-container grid-container-center">
-        <div class="grid-1cS3-1r">
-            <p><span>Name</span></p>
-            <mat-form-field class="full-width">
-                <!-- <mat-label>Modifier Name</mat-label> -->
-                <input matInput type="text">
-            </mat-form-field>
-            <p><span>Name Localized</span></p>
-            <mat-form-field class="full-width">
-                <!-- <mat-label>Name Localized</mat-label> -->
-                <input matInput type="text">
-            </mat-form-field>
-            <p><span>Reference</span></p>
-            <mat-form-field class="full-width">
-                <!--<mat-label>Reference</mat-label> -->
-                <input matInput type="text">
-            </mat-form-field>
-        </div>
-        <div class="grid-4cS2-1r">
-            <p></p>
-                <mat-slide-toggle class="toggle-button">
-                    Web Shop
-                </mat-slide-toggle><br>
-                <mat-slide-toggle class="toggle-button">
-                    Aggregator
-                </mat-slide-toggle><br>
-                <mat-slide-toggle class="toggle-button">
-                    Kiosk
-                </mat-slide-toggle><br>
-                
-            </div>
-        
-        
-    </div>
-    <div class="grid-container grid-container-center">
-        <div class="grid-1cS3-1r grid-1cS3-1r-gap">
+    <div class="header-flex">
+        <H1>Create Modifier</H1>
+        <span class="spacer"></span>
         <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/modifier-group']">
             Cancel
         </button>
-       
         <button type="submit" mat-flat-button class="btnRadius">
             Save
         </button>
     </div>
+    <div class="container-flex">
+        <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
+            <ng-container *ngIf="uploadedImage; else defaultIcon">
+                <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
+            </ng-container>
+            <ng-template #defaultIcon>
+                <mat-icon class="icon-image">add_a_photo</mat-icon>
+            </ng-template>
+        </button>
+        <div class="grid-container">
+            <div class="grid-1cS3-1r">
+                <mat-form-field class="full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Second Language</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Reference</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+            </div>
+            <!-- <div class="grid-4cS2-1r">
+                <mat-form-field class="full-width">
+                    <mat-label>Second Language</mat-label>
+                    <input matInput>
+                </mat-form-field>
+            </div> -->
+            <div class="grid-slideContainer">
+                <mat-slide-toggle class="toggle-button">
+                    Web Shop
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Aggregator
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Kiosk
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Counter Top
+                </mat-slide-toggle>
+            </div>
+           
+            
+            
+           
+        </div>
     </div>
-                    
 </form>
