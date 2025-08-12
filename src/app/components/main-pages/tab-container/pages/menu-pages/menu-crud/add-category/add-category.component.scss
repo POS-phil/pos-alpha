@@ -45,8 +45,6 @@ form {
   grid-row: 2 /span 5;
 }
 
-
-
 .grid-icon-picker {
   grid-column: 6;
   grid-row: 3 / span 5;
@@ -185,4 +183,14 @@ form {
     flex-direction: column;
   }
 
+}
+
+.categoryImg {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+[dir='rtl'] .categoryImg {
+  margin-right: 0;
+  margin-left: 8px;
 }

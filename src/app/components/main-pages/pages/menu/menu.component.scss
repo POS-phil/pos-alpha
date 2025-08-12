@@ -19,8 +19,6 @@
   ));
 }
 
-
-
 .spacer {
   flex-grow: 1;
 }
@@ -44,6 +42,10 @@ va-mat-table {
   display: block;
   width: 100%;
   box-shadow: var(--mat-sys-level2);
+}
+
+::ng-deep .mat-button-toggle-group-appearance-standard .mat-button-toggle {
+  border: none !important;
 }
 
 ::ng-deep .mat-mdc-paginator-container {
@@ -111,7 +113,7 @@ va-mat-table {
 
 .btnToggle {
   @include mat.button-toggle-overrides((
-    shape: 5px,
+    shape: 0px,
     
   ));
   height: 40px

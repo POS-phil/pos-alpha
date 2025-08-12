@@ -24,6 +24,13 @@ import { MenuCategoriesService } from '../../../../../../../service/api/menu-cat
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+interface CategoryIdAndName {
+  categoryId: number;
+  categoryName: string;
+  image: File | string;
+  icon: string;
+}
+
 @Component({
   selector: 'app-add-category',
   standalone: true,
@@ -75,6 +82,8 @@ export class AddCategoryComponent implements OnInit {
 
   selectedIcon = 'fastfood';
   selectedBackgroundColor = '#e62e2eff';
+  previewImage: SafeUrl | null = null;
+  selectedImage: File | null = null;
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;
@@ -86,12 +95,14 @@ export class AddCategoryComponent implements OnInit {
     this.createCategoryForm.patchValue({})
   }
 
+  displayCategoryName = (categoryId: number): string => {
+    const category = this.listOfCategory.find(cat => cat.categoryId === categoryId);
+    return category ? category.categoryName : '';
+  };
+
   createCategoryForm!: FormGroup;
 
   readonly dialog = inject(MatDialog);
-
-  previewImage: SafeUrl | null = null;
-  selectedImage: File | null = null;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -121,9 +132,9 @@ export class AddCategoryComponent implements OnInit {
       active: [true],
       categoryName: ['', Validators.required],
       secondLanguageName: [''],
+      parentCategoryId: [null],
       description: [''],
       reference: [''],
-      //schedule: this.fb.control<ScheduleEntry[]>(defaultSchedule),
       image: [null],
       icon: [this.selectedIcon],
       background: [this.selectedBackgroundColor],
@@ -139,8 +150,26 @@ export class AddCategoryComponent implements OnInit {
     });
 
     this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
+    this.getListOfCategories();
   }
 
+  listOfCategory: CategoryIdAndName[] = [];
+
+  getListOfCategories() {
+    this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
+      next: (data: CategoryIdAndName[]) => {
+        this.listOfCategory = data;
+        console.log(data);
+      },
+      error: (error) => {
+        console.error('Error fetching list categories', error);
+      }
+    })
+  }
+
+  onParentCategorySelected(parentId: number) {
+
+  }
 
   openUploadDialog(): void {
     const dialogRef = this.dialog.open(UploadImageComponent, {
@@ -256,10 +285,10 @@ export class AddCategoryComponent implements OnInit {
       formData.append('image', this.selectedImage);
     }
 
-    // Uncomment for debugging
-    // console.log('Form Data:', formData);
-    // console.log('Form Value:', formValue);
-    // console.log('Category Form', this.createCategoryForm.value);
+    //Uncomment for debugging
+    console.log('Form Data:', formData);
+    console.log('Form Value:', formValue);
+    console.log('Category Form', this.createCategoryForm.value);
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {

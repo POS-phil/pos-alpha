@@ -15,7 +15,15 @@ export class MenuCategoriesService {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
   }
 
+  getSubCategories(parentId : number) : Observable<MenuCategories[]>{
+    return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}/subcategories/${parentId}`);
+  }
+
   createCategory(formData: FormData): Observable<any> {
     return this.http.post<any>(`${this.menuCategoriesApiUrl}/create`, formData);
+  }
+
+  getMenuCategoryIdAndName(): Observable<any>{
+    return this.http.get<any>(`${this.menuCategoriesApiUrl}/id_name`);
   }
 }

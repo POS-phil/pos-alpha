@@ -54,7 +54,6 @@ export class MenuComponent implements OnInit {
   sortableColumns: string[] = ['reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
   displayedColumnNames: string[] = ['Reference', 'Category Name', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
   categoryList: MenuCategories[] = [];
-  MENU_CATEGORIES_DATA: any;
 
   showSelectionHeader = false;
 
@@ -72,26 +71,75 @@ export class MenuComponent implements OnInit {
   ) { }
 
   getFinalDisplayedColumns(): string[] {
-    return ['check','plus', ...this.sortableColumns];
+    return ['check', 'plus', ...this.sortableColumns];
   }
 
+  MENU_CATEGORIES_DATA = new MatTableDataSource<MenuCategories>([]);
+
   getCategories() {
-
     this.menuCategoriesService.getMenuCategories().subscribe({
-      next: (data: MenuCategories[]) => {
-        this.categoryList = [...data].sort((a, b) => (b.categoryId ?? 0) - (a.categoryId ?? 0));
-
-        this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
-        this.MENU_CATEGORIES_DATA.sort = this.sort;
-        this.MENU_CATEGORIES_DATA.paginator = this.paginator;
-        
+      next: (res: MenuCategories[]) => {
+        const topLevel = res.filter(cat => cat.parentCategoryId == null);
+        this.MENU_CATEGORIES_DATA.data = topLevel;
       },
-      error: (error) => {
-        console.error('Error fetching menu categories', error);
+      error: (err) => {
+        console.error('Error fetching categories:', err);
       }
     });
+  }
 
-    this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+  isSubcategory(row: MenuCategories): boolean {
+    return row.parentCategoryId != null;
+  }
+
+  // getCategories() {
+
+  //   this.menuCategoriesService.getMenuCategories().subscribe({
+  //     next: (data: MenuCategories[]) => {
+  //       this.categoryList = [...data].sort((a, b) => (b.categoryId ?? 0) - (a.categoryId ?? 0));
+
+  //       this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+  //       this.MENU_CATEGORIES_DATA.sort = this.sort;
+  //       this.MENU_CATEGORIES_DATA.paginator = this.paginator;
+
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching menu categories', error);
+  //     }
+  //   });
+
+  //   this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+  // }
+
+  expandCategory(parent: MenuCategories) {
+    const parentIndex = this.MENU_CATEGORIES_DATA.data.findIndex(
+      (c: MenuCategories) => c.categoryId === parent.categoryId
+    );
+
+    const alreadyExpanded = this.MENU_CATEGORIES_DATA.data[parentIndex + 1]?.parentCategoryId === parent.categoryId;
+
+    if (alreadyExpanded) {
+      this.MENU_CATEGORIES_DATA.data = this.MENU_CATEGORIES_DATA.data.filter(
+        (row: MenuCategories) => row.parentCategoryId !== parent.categoryId
+      );
+      this.MENU_CATEGORIES_DATA._updateChangeSubscription();
+      return;
+    }
+
+    this.menuCategoriesService.getSubCategories(parent.categoryId!).subscribe(
+      (subcats: MenuCategories[]) => {
+        if (!subcats || subcats.length === 0) return;
+
+        const formattedSubcats = subcats.map(sub => ({
+          ...sub,
+          isSubcategory: true
+        }));
+
+        this.MENU_CATEGORIES_DATA.data.splice(parentIndex + 1, 0, ...formattedSubcats);
+
+        this.MENU_CATEGORIES_DATA._updateChangeSubscription();
+      });
+
   }
 
   applyFilter(event: Event) {
