@@ -2,7 +2,7 @@
     <div class="header-flex">
         <H1>Create Category</H1>
         <span class="spacer"></span>
-        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/categories']">
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/product-list/category']">
             Cancel
         </button>
         <button type="submit" mat-flat-button class="btnRadius">
@@ -11,8 +11,8 @@
     </div>
     <div class="container-flex">
         <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
-            @if (uploadedImage) {
-            <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
+            @if (previewImage) {
+            <img [src]="previewImage" alt="Uploaded" class="uploaded-image" />
             } @else {
             <mat-icon class="icon-image">add_a_photo</mat-icon>
             }
@@ -21,7 +21,7 @@
             <div class="grid-1cS3-1r">
                 <mat-form-field class="full-width">
                     <mat-label>Category Name</mat-label>
-                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <input matInput type="text" formControlName="categoryName" placeholder="Ex. Combo 1">
                     @if(categoryName.hasError('required')) {
                     <mat-error class="error-message">Category Name is required</mat-error>
                     }
@@ -30,28 +30,40 @@
             <div class="grid-4cS2-1r">
                 <mat-form-field class="full-width">
                     <mat-label>Second Language</mat-label>
-                    <input matInput>
+                    <input matInput type="text" formControlName="secondLanguageName"
+                        placeholder="Ex. Combo 1 in second language">
                 </mat-form-field>
             </div>
             <div class="grid-slideContainer">
-                <mat-slide-toggle formControlName="web_shop" class="toggle-button">
+                <mat-slide-toggle formControlName="webShop" class="toggle-button">
                     Web Shop
                 </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
+                <mat-slide-toggle formControlName="aggregator" class="toggle-button">
                     Aggregator
                 </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
+                <mat-slide-toggle formControlName="kiosk" class="toggle-button">
                     Kiosk
                 </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
+                <mat-slide-toggle formControlName="counterTop" class="toggle-button">
                     Counter Top
                 </mat-slide-toggle>
             </div>
             <div class="grid-1cS3-2r">
                 <mat-form-field class="full-width">
                     <mat-label>Parent Category</mat-label>
-                    <input matInput [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete"></mat-autocomplete>
+                    <input type="text" formControlName="parentCategoryId" matInput [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCategoryName">
+                        @for(option of listOfCategory; track option){
+                            <mat-option [value]="option.categoryId" >
+                                @if(option.image) {
+                                    <img alt="" class="categoryImg" [src]="option.image" height="25">
+                                } @else {
+                                    <mat-icon>{{option.icon}}</mat-icon>
+                                }
+                                <span>{{ option.categoryName }}</span>
+                            </mat-option>
+                        }
+                    </mat-autocomplete>
                 </mat-form-field>
             </div>
             <div class="grid-4cS2-2rS1">
@@ -67,10 +79,29 @@
                 </mat-chip-set>
             </div>
             <div class="grid-icon-picker">
-                <div style="font: var(--mat-sys-label-small)">
+                <div style="font: var(--mat-sys-label-small);">
+                    <span>BACKGROUND PICKER :</span>
+                </div>
+                <div>
+                    <button type="button" class="background-selector" [matMenuTriggerFor]="backgroundMenu"
+                        [style.backgroundColor]="selectedBackgroundColor" matButton="outlined">
+
+                    </button>
+                    <mat-menu #backgroundMenu="matMenu" class="background-menu">
+                        <div class="background-grid">
+                            @for(background of background_colors; track background) {
+                            <button type="button" matButton="outlined" class="background-picker" [style.backgroundColor]="background"
+                                (click)="selectBackgroundColor(background)">
+                            </button>
+                            }
+                        </div>
+                    </mat-menu>
+
+                </div>
+                <div style="font: var(--mat-sys-label-small); margin-top: 10px;">
                     <span>ICON PICKER : </span>
                 </div>
-                <button [disabled]="uploadedImage"
+                <button [disabled]="previewImage"
                     matTooltip="If no image is provided, an icon can be selected to use as the category image."
                     type="button" mat-icon-button class="iconSelector" class="icon-picker"
                     [matMenuTriggerFor]="iconMenu">
@@ -90,13 +121,14 @@
             <div class="grid-textArea">
                 <mat-form-field class="full-width">
                     <mat-label>Description</mat-label>
-                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."></textarea>
+                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."
+                        formControlName="description"></textarea>
                 </mat-form-field>
             </div>
             <div class="grid-reference">
                 <mat-form-field class="full-width">
                     <mat-label>Reference</mat-label>
-                    <input matInput>
+                    <input matInput formControlName="reference">
                 </mat-form-field>
             </div>
         </div>
