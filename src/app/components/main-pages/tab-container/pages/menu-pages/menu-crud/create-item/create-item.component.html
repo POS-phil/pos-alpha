@@ -20,7 +20,7 @@
         <div class="grid-container">
             <div class="grid-itemName">
                 <mat-form-field class="full-width">
-                    <mat-label>Category Name</mat-label>
+                    <mat-label>First Name</mat-label>
                     <input matInput type="text" placeholder="Ex. Combo 1">
                     <mat-error *ngIf="categoryName.hasError('required')">Category Name is required</mat-error>
                 </mat-form-field>       
@@ -55,6 +55,21 @@
                     }
                 </mat-chip-set>
             </div>
+                        <div class="grid-Toggle">
+                <mat-slide-toggle class="toggle-button">
+                    Web Shop
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Aggregator
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Kiosk
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Counter Top
+                </mat-slide-toggle>
+            </div>
+
             <mat-divider class="grid-Divider"></mat-divider>
             <div class="grid-SKU">
                 <mat-form-field class="full-width">
