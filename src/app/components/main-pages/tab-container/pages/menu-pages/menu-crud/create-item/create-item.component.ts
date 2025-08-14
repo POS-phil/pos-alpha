@@ -97,6 +97,8 @@ iconMenu: MatMenuPanel<any> | null | undefined;
       aggregator: [false],
       kiosk: [false],
       created_at: [new Date()],
+      webShop: [false],
+      counterTop: [false],
     });
 
     this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
