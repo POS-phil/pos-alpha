@@ -1,23 +1,29 @@
+import { SafeUrl } from "@angular/platform-browser";
+
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
     categoryId?: number;
     isActive: boolean;
-    category_name: string;
-    imagePath?: string;  // Changed from image to imagePath
-    imageUrl?: string;   // Optional - can be added for convenience
+    isDeleted?: boolean;
+    categoryName: string;
+    secondLanguageName?: string; // Optional for second language support
+    description? : string; 
+    reference: string;
+    parentCategoryId?: number; // Optional for subcategories
+    image?: File | string | null; 
     icon?: string;
+    background : string;
     withProducts: boolean;
     withSubCategories: boolean
     subCategories?: MenuCategories[];
-    reference: number;
     schedule: ScheduleEntry[];
     item: number;
-    web_shop: boolean;
+    webShop: boolean;
     aggregator: boolean;
     kiosk: boolean;
-    counter_top: boolean;
-    last_order?: Date;
-    created_at: Date;
+    counterTop: boolean;
+    lastOrder?: Date;
+    createdAt: Date;
 }
 
 // Update new interface for schedule entries

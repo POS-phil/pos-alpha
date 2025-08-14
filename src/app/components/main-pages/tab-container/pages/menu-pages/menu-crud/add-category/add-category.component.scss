@@ -47,7 +47,7 @@ form {
 
 .grid-icon-picker {
   grid-column: 6;
-  grid-row: 3;
+  grid-row: 3 / span 5;
 }
 
 .grid-slideContainer{
@@ -63,6 +63,22 @@ form {
 .grid-textArea {
   grid-column: 1 / span 3;
   grid-row: 3;
+}
+
+.background-selector {
+  width: 100px;
+  height: 100px;
+  @include mat.button-overrides((
+    outlined-container-shape: 5px,
+  ))
+}
+
+.background-picker{
+  margin: 1px;
+  margin-left: 4px;
+  @include mat.button-overrides((
+    outlined-container-shape: 5px,
+  ))
 }
 
 .icon-picker {
@@ -167,4 +183,14 @@ form {
     flex-direction: column;
   }
 
+}
+
+.categoryImg {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+[dir='rtl'] .categoryImg {
+  margin-right: 0;
+  margin-left: 8px;
 }

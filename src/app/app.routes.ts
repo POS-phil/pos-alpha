@@ -49,10 +49,11 @@ export const routes: Routes = [
                 title: 'Transaction Orders',
             },
             {
-                path: 'menu',
-                loadComponent: () => import('./components/main-pages/tab-container/menu-tab/menu-tab.component').then(m => m.MenuTabComponent),
-                title: 'Product Lists',
+                path: 'product-list/category',
+                loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
+                title: 'Product List / Category',
                 children: [
+<<<<<<< HEAD
                     {
                         path: '',
                         redirectTo: 'categories',
@@ -78,21 +79,23 @@ export const routes: Routes = [
                         loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
                         title: 'Product Lists / Modifier Option',
                     }
+=======
+>>>>>>> 5ece126b49c60a5f469bdf88b0ccab025c479371
 
                 ]
             },
             {
-                path: 'menu/categories/add-category',
+                path: 'product-list/category/add-category',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
-                title: 'Add Category'
+                title: 'Category / Add Category'
             },
             {
-                path:'menu/item/add-item',
-                loadComponent :  () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
+                path: 'menu/item/add-item',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
                 title: 'Create Item'
             },
-             {
-                path:'menu/modifier-group/create_modifier',
+            {
+                path: 'menu/modifier-group/create_modifier',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
                 title: 'Create Modifier'
             },
