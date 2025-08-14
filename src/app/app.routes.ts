@@ -72,7 +72,13 @@ export const routes: Routes = [
                         path: 'modifier-group',
                         loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/modifier-group.component').then(m => m.ModifierGroupComponent),
                         title: 'Product Lists / Modifier Group',
+                    },
+                    {
+                        path: 'modifier-option',
+                        loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
+                        title: 'Product Lists / Modifier Option',
                     }
+
                 ]
             },
             {
@@ -89,6 +95,11 @@ export const routes: Routes = [
                 path:'menu/modifier-group/create_modifier',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
                 title: 'Create Modifier'
+            },
+            {
+                path: 'menu/modifier-option/create_modifier_option',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-modifier-option/create-modifier-option.component').then(m => m.CreateModifierOptionComponent),
+                title: 'Create Modifier Option'
             }
         ]
     },
