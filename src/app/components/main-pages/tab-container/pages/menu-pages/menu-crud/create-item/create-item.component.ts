@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,7 +45,11 @@ import { MatDivider } from "@angular/material/divider";
   styleUrl: './create-item.component.scss'
 })
 export class CreateItemComponent {
-scheduleSummary: string[] = [];
+  scheduleSummary: string[] = [];
+  isAllDaysChecked = signal(true);
+  isAllDayChecked = signal(true);
+  allDayStartTime = signal<string>('00:00');
+  allDayEndTime = signal<string>('23:59');
 
   icons = [
     'breakfast_dining', 'free_breakfast', 'bakery_dining', 'brunch_dining', 'coffee',
@@ -130,7 +134,7 @@ iconMenu: MatMenuPanel<any> | null | undefined;
     });
 
   };
-
+/*
   openAvailabilityDialog(): void {
     const dialogRef = this.dialog.open(MenuCategoryAvailabilityComponent, {
       width: '500px',
@@ -145,7 +149,35 @@ iconMenu: MatMenuPanel<any> | null | undefined;
         this.scheduleSummary = this.generateScheduleSummary(result);
       }
     });
+  }*/
+
+  openAvailabilityDialog(): void {
+    const dialogRef = this.dialog.open(MenuCategoryAvailabilityComponent, {
+      width: '500px',
+      height: '550px',
+      data: {
+        schedule: this.createItemForm.get('schedule')?.value || [],
+        isAllDaysChecked: this.isAllDaysChecked(),
+        isAllDayChecked: this.isAllDayChecked(),
+        allDayStartTime: this.allDayStartTime(),
+        allDayEndTime: this.allDayEndTime()
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.createItemForm.get('schedule')?.setValue(result.schedule);
+        this.isAllDaysChecked.set(result.isAllDaysChecked);
+        this.isAllDayChecked.set(result.isAllDayChecked);
+        this.scheduleSummary = this.generateScheduleSummary(result.schedule);
+        this.allDayStartTime.set(result.allDayStartTime);
+        this.allDayEndTime.set(result.allDayEndTime);
+      }
+    });
   }
+
+
+
 
   generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
     const days = schedule.filter(d => d.day.toLowerCase() !== 'all days'); // optional filter
