@@ -7,89 +7,108 @@ form {
   border: none;
 }
 
+.container-flex2 {
+  display: grid;
+  grid-template-columns: repeat(9, 150px);
+  justify-content: center;
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+
+  .container-flex2 {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  gap: 10px;
+}
+}
+
+.container-basic-info {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  text-align: center;
+  padding: 15px;
+}
+
+.container-availability {
+  display: flex;
+  flex-direction: column;
+  grid-column: 5 / span 2;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+}
+
+.container-utility {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  grid-column: 7 / span 3;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+}
+
+.container-utlity-content {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+  grid-column: 7 / span 3;
+  grid-row: 1;
+  text-align: center;
+}
+
+.grid-image{
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.grid-toggle-buttons {
+  text-align: left;
+  align-items: center;
+  grid-column: 3;
+  grid-row: 1;
+}
+
+._grid-icon-picker{
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.grid-background-picker{
+  margin-top: 50px;
+  grid-column: 2;
+  grid-row: 2;
+}
+
 .header-flex {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.container-flex {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(6, 150px);
-  gap: 1rem;
-}
-
-.grid-1cS3-1r {
-  grid-column: 1 / span 3;
-  grid-row: 1;
-}
-
-.grid-4cS2-1r {
-  grid-column: 4 / span 2;
-  grid-row: 1;
-}
-
-.grid-1cS3-2r{
-  grid-column: 1 / span 3;
-  grid-row: 2;
-}
-
-.grid-4cS2-2rS1{
-  grid-column: 4 / span 2;
-  grid-row: 2 /span 5;
-}
-
-.grid-icon-picker {
-  grid-column: 6;
-  grid-row: 3 / span 5;
-}
-
-.grid-slideContainer{
-  grid-column: 6;
-  grid-row: 1 / span 2;
-}
-
-.grid-reference {
-  grid-column: 1 / span 3;
-  grid-row: 4;
-}
-
-.grid-textArea {
-  grid-column: 1 / span 3;
-  grid-row: 3;
-}
-
 .background-selector {
   width: 100px;
   height: 100px;
-  @include mat.button-overrides((
-    outlined-container-shape: 5px,
-  ))
+  @include mat.button-overrides((outlined-container-shape: 5px,
+    ))
 }
 
-.background-picker{
+.background-picker {
   margin: 1px;
   margin-left: 4px;
-  @include mat.button-overrides((
-    outlined-container-shape: 5px,
-  ))
+  @include mat.button-overrides((outlined-container-shape: 5px,
+    ))
 }
 
 .icon-picker {
   width: 150px;
   height: 150px;
   padding: 0;
-  @include mat.icon-button-overrides(
-    (
-      container-shape: 5px
-    )
-  );
+  @include mat.icon-button-overrides((container-shape: 5px));
   border: #aaaaaa 2px dashed;
 }
 
@@ -99,11 +118,11 @@ form {
   overflow: visible;
 }
 
-.icon-menu{
+.icon-menu {
   overflow: hidden !important;
 }
 
-.icon-grid{
+.icon-grid {
   overflow: hidden !important;
 }
 
@@ -117,22 +136,15 @@ form {
   width: 250px;
   height: 250px;
   padding: 0;
-  @include mat.icon-button-overrides(
-    (
-      container-shape: 5px
-    )
-  );
+  @include mat.icon-button-overrides((container-shape: 5px));
   border: #aaaaaa 2px dashed;
 }
 
 .btnAvailability {
   height: 40px;
   border-radius: 5px;
-  @include mat.fab-overrides(
-    (
-      extended-container-elevation-shadow: 0,
-    )
-  );
+  @include mat.fab-overrides((extended-container-elevation-shadow: 0,
+    ));
 }
 
 .icon-image {
@@ -163,51 +175,11 @@ form {
 }
 
 .toggle-button {
-  @include mat.slide-toggle-overrides((
-    handle-shape: 5px,
-    track-shape: 5px,
-    label-text-weight: 500,
-  ));
+  @include mat.slide-toggle-overrides((handle-shape: 5px,
+      track-shape: 5px,
+      label-text-weight: 500,
+    ));
   margin-bottom: 10px;
-}
-
-@media (max-width: 600px) {
-
-  .container-flex {
-    flex-direction: column;
-    align-items: center;
-    margin-left: 5px;
-  }
-  .grid-container {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .grid-1cS3-1r {
-    width: 100%;
-  }
-
-  .grid-4cS2-1r{
-    width: 100%;
-  }
-
-  .grid-4cS2-2rS1{
-    width: 100%;
-  }
-
-  .grid-1cS3-2r{
-    width: 100%;
-  }
-
-  .grid-textArea {
-    width: 100%;
-  }
-
-  .grid-reference{
-    width: 100%;
-  }
 }
 
 .categoryImg {
