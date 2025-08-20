@@ -1,7 +1,6 @@
 import { Component, Input, viewChild, ViewChild } from '@angular/core';
 import { TopNavComponent } from '../top-nav/top-nav.component';
 import { SideNavComponent } from '../side-nav/side-nav.component';
-import { MenuItemComponent } from '../menu-item/menu-item.component';
 
 @Component({
   selector: 'app-main-layout',

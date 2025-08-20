@@ -167,10 +167,6 @@ export class AddCategoryComponent implements OnInit {
     })
   }
 
-  onParentCategorySelected(parentId: number) {
-
-  }
-
   openUploadDialog(): void {
     const dialogRef = this.dialog.open(UploadImageComponent, {
       width: '800px',
@@ -286,9 +282,9 @@ export class AddCategoryComponent implements OnInit {
     }
 
     //Uncomment for debugging
-    console.log('Form Data:', formData);
-    console.log('Form Value:', formValue);
-    console.log('Category Form', this.createCategoryForm.value);
+    // console.log('Form Data:', formData);
+    // console.log('Form Value:', formValue);
+    // console.log('Category Form', this.createCategoryForm.value);
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {
