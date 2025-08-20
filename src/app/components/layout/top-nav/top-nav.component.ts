@@ -1,16 +1,24 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import {  MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
+import { map, Observable } from 'rxjs';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { LayoutService } from '../../../service/layout/layout.service';
+import { CommonModule } from '@angular/common';
+
+const EXTRA_SMALL_WIDTH_BREAKPOINT = 720;
+const SMALL_WIDTH_BREAKPOINT = 959;
 
 @Component({
   selector: 'app-top-nav',
   standalone: true,
   imports: [
+    CommonModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -21,15 +29,17 @@ import { MatInputModule } from '@angular/material/input';
   ],
   template: `
     <nav class="dash-navbar-header">
+      @if((isExtraScreenSmall | async) === true) {
         <button mat-icon-button class="burger-hidden" (click)="toggleSidenav.emit()">
             <mat-icon>menu</mat-icon>
         </button>
+      }
         <span class="spacer"></span>
-        <mat-form-field appearance="outline" class="search-field">
+        <!-- <mat-form-field appearance="outline" class="search-field">
           <mat-label>Search</mat-label>
           <input matInput matTooltip="Start Typing to Search">
           <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
+        </mat-form-field> -->
         <span class="spacer"></span>
         <span class="spacer"></span>
         <span class="spacer"></span>
@@ -51,5 +61,22 @@ import { MatInputModule } from '@angular/material/input';
 export class TopNavComponent {
 
   @Output() toggleSidenav = new EventEmitter<void>();
+
+  isExtraScreenSmall: Observable<boolean>;
+  isScreenSmall: Observable<boolean>;
+
+  constructor(
+    breakpoints: BreakpointObserver,
+    private layoutService: LayoutService
+  ) {
+    this.isExtraScreenSmall = breakpoints
+      .observe(`(max-width: ${EXTRA_SMALL_WIDTH_BREAKPOINT}px)`)
+      .pipe(map(breakpoint => breakpoint.matches))
+
+    this.isScreenSmall = breakpoints
+      .observe(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`)
+      .pipe(map(breakpoint => breakpoint.matches));
+
+  }
 
 }

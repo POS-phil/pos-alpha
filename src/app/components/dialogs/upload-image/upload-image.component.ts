@@ -121,8 +121,6 @@ export class UploadImageComponent implements OnInit {
       this.cleanUpObjectUrl();
       this.selectedImage = file;
       this.previewImage = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
-      // console.log('File dropped:', file);
-      // console.log('Preview URL:', this.previewImage);
     }
   }
 
@@ -132,8 +130,6 @@ export class UploadImageComponent implements OnInit {
       this.cleanUpObjectUrl();
       this.selectedImage = file;
       this.previewImage = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(file));
-      // console.log('File dropped:', file);
-      // console.log('Preview URL:', this.previewImage);
     }
   }
 
@@ -165,8 +161,8 @@ export class UploadImageComponent implements OnInit {
         window.URL.createObjectURL(blob)
       );
 
-      console.log('File dropped:', this.selectedImage);
-      console.log('Preview URL:', this.previewImage);
+      // console.log('File dropped:', this.selectedImage);
+      // console.log('Preview URL:', this.previewImage);
 
     } catch (error) {
       console.error('Error loading image from URL:', error);
@@ -175,13 +171,13 @@ export class UploadImageComponent implements OnInit {
   }
 
   private loadImageFromBlob(blob: Blob): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error('Invalid image'));
-    img.src = URL.createObjectURL(blob);
-  });
-}
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('Invalid image'));
+      img.src = URL.createObjectURL(blob);
+    });
+  }
 
   onUpload() {
     //console.log('Uploading:', this.previewImage);

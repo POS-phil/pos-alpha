@@ -94,12 +94,14 @@ export class SideNavComponent implements OnInit {
     this.isExtraScreenSmall.subscribe(isExtraScreenSmall => {
       if (isExtraScreenSmall) {
         this.sideNav()?.toggle();  // Toggling the sidenav on small screens
-      } else {
-        if (this.sideNavContent) {
-          this.sideNavContent.isCollapsed = !this.sideNavContent.isCollapsed;
-        }
-        this.layoutService.triggerToggleNested();
-      }
+      } 
+      
+      // else {
+      //   if (this.sideNavContent) {
+      //     this.sideNavContent.isCollapsed = !this.sideNavContent.isCollapsed;
+      //   }
+      //   this.layoutService.triggerToggleNested();
+      // }
     });
   }
 }
