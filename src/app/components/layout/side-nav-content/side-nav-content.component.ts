@@ -141,6 +141,12 @@ export class SideNavContentComponent {
           label: 'Category',
           route: 'product-list/category'
         },
+        {
+          icon: '',
+          label: 'Item',
+          route: 'menu/item'
+        },
+
       ]
     },
     
