@@ -53,7 +53,6 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
                 title: 'Product List / Category',
                 children: [
-
                 ]
             },
 
@@ -79,7 +78,7 @@ export const routes: Routes = [
                 path: 'menu/modifier-group/create_modifier',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
                 title: 'Create Modifier'
-            }
+            },
         ]
     },
 

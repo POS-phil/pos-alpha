@@ -49,7 +49,7 @@ import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
   }
 
   .active {
-    border-bottom: 5px solid blue;
+    border-bottom: 5px solid #634832;
   }
 
   @media (max-width: 599px){

@@ -1,8 +1,9 @@
 .action-bar {
   display: flex;
-  padding: 16px 8px;
+  padding: 1px 8px;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
-  text-align: right;
+  align-items: center;
+  gap: 10px;
 }
 
 .spacer{

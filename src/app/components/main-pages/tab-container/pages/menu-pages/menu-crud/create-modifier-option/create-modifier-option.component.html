@@ -1,6 +1,6 @@
 <form [formGroup]="createCategoryForm" (ngSubmit)="confirmCreate()">
     <div class="header-flex">
-        <H1>Create Modifier</H1>
+        <H1>Create modifier option</H1>
         <span class="spacer"></span>
         <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/modifier-group']">
             Cancel
@@ -27,17 +27,59 @@
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <mat-label>Second Language</mat-label>
+                    <mat-label>Modifier</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+                <div class="sku-row">
+                    <mat-form-field class="sku-field full-width">
+                        <mat-label>SKU</mat-label>
+                        <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    </mat-form-field>
+
+                    <button type="submit" mat-flat-button class="btnRadius btn-generate">
+                        Generate
+                    </button>
+                </div>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Price</mat-label>
                     <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
                     <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
-                    <mat-label>Reference</mat-label>
+                    <mat-label>Tax Group</mat-label>
+                    <mat-select>
+                        <mat-option value="Option">Option 1</mat-option>
+                        <mat-option value="Option">Option 2</mat-option>
+                        <mat-option value="Option">Option 3</mat-option>
+                        <mat-option value="Option">Option 4</mat-option>
+                    </mat-select>
+                    <!-- <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1"> -->
+                        <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Costing Method</mat-label>
+                    <mat-select>
+                        <mat-option value="Option">Option 1</mat-option>
+                        <mat-option value="Option">Option 2</mat-option>
+                        <mat-option value="Option">Option 3</mat-option>
+                        <mat-option value="Option">Option 4</mat-option>
+                    </mat-select>
+                    <!-- <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1"> -->
+                        <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+
+                 <mat-form-field class="full-width">
+                    <mat-label>Name Localized</mat-label>
                     <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
-                    <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                        <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
                 </mat-form-field>
             </div>
+            
+           
             <!-- <div class="grid-4cS2-1r">
                 <mat-form-field class="full-width">
                     <mat-label>Second Language</mat-label>
@@ -58,10 +100,6 @@
                     Counter Top
                 </mat-slide-toggle>
             </div>
-           
-            
-            
-           
         </div>
     </div>
 </form>

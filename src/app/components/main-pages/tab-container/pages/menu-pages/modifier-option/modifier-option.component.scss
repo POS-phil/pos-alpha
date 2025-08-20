@@ -63,6 +63,9 @@ va-mat-table {
   max-width: 950px;
   width: 80%;
   margin: 1.25rem auto 1.2rem auto;
+//   margin: 0 auto;
+//   margin-bottom: 1.2rem;
+//   margin-top: 1.25rem;
   padding-bottom: 24px;
   height: auto;
   display: block;
@@ -77,11 +80,9 @@ va-mat-table {
   min-width: 120px;
 }
 .button-row {
-  // max-width: 600px;
   float: right;
   display: flex;
   gap: 10px;
-  
 }
 
 .menu-tabs {
@@ -107,7 +108,7 @@ va-mat-table {
     }
 
     &.active {
-      border-bottom: 2px solid #3f51b5;
+      border-bottom: 2px solid #3f51b5; 
       font-weight: 600;
     }
   }

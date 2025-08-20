@@ -27,7 +27,7 @@ export type MenuItem = {
     <div class="dash-viewer-nav-content" [class.collapsed]="isCollapsed">
       <mat-nav-list>
         <a href="/dashboard">
-        <img class="logo-container" src="img/logo.png" />
+        <img class="logo-container" src="4f.png" />
         </a>
         @for (item of menuItems(); track item.label) {
           <app-menu-item [item]="item" />
@@ -141,12 +141,6 @@ export class SideNavContentComponent {
           label: 'Category',
           route: 'product-list/category'
         },
-         {
-          icon: '',
-          label: 'Item',
-          route: 'menu/item',
-        }
-
       ]
     },
     

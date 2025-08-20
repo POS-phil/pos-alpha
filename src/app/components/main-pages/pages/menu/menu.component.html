@@ -20,7 +20,7 @@
             <mat-icon>sort</mat-icon>
             Sort Categories
         </button>
-        <button mat-flat-button class="btnCategory" [routerLink]="['add-category']">
+        <button mat-flat-button class="btnCategory" style="margin-right: 10px;" [routerLink]="['add-category']">
             <mat-icon>add</mat-icon>
             Create Category
         </button>
@@ -33,39 +33,50 @@
     } @else {
     <va-mat-table>
         <ng-container action-bar-items>
-            <span class="spacer"></span>
-            <mat-form-field appearance="outline" class="inputSearch">
-                <mat-label>Search</mat-label>
-                <input matInput placeholder="Search Category" (keyup)="applyFilter($event)">
-            </mat-form-field>
-            <button class="btn-sorter" va-mat-table-column-sorter [(columns)]="sortableColumns"
-                [columnNames]="displayedColumnNames" [saveName]="'CategoryOrderTable'">
-                <mat-icon>view_column</mat-icon>
-                <mat-icon>keyboard_arrow_down</mat-icon>
-            </button>
-        </ng-container>
-        <div class="actionContainer">
+            @if(selectedCount() === 0) {
             <mat-button-toggle-group class="btnToggle">
                 <mat-button-toggle checked="true">All</mat-button-toggle>
                 <mat-button-toggle>Active</mat-button-toggle>
                 <mat-button-toggle>Inactive</mat-button-toggle>
                 <mat-button-toggle>Archive</mat-button-toggle>
             </mat-button-toggle-group>
+            } @else {
+            <span class="selected-count">{{ selectedCount() }} Selected</span>
+            <button matButton="filled" class="btn-action" [matMenuTriggerFor]="actions">
+                Actions
+                <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #actions="matMenu">
+                <button mat-menu-item>Archive</button>
+                <button mat-menu-item (click)="onDeleteSelected(selection.selected)">Delete</button>
+            </mat-menu>
+            }
             <span class="spacer"></span>
+            <mat-form-field appearance="outline" class="inputSearch">
+                <mat-label>Search</mat-label>
+                <input matInput placeholder="Search Category" (keyup)="applyFilter($event)">
+            </mat-form-field>
             <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons>
             </mat-paginator>
-        </div>
+            <button class="btn-sorter" va-mat-table-column-sorter [(columns)]="sortableColumns"
+                [columnNames]="displayedColumnNames" [saveName]="'CategoryOrderTable'">
+                <mat-icon>view_column</mat-icon>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+        </ng-container>
         <div class="tableContainer">
-            <table class="catTable" mat-table [dataSource]="MENU_CATEGORIES_DATA" matSort (matSortChange)="announceSortChange($event)">
+            <table class="catTable" mat-table [dataSource]="MENU_CATEGORIES_DATA" matSort
+                (matSortChange)="announceSortChange($event)">
                 <ng-container matColumnDef="check">
                     <th mat-header-cell *matHeaderCellDef class="tableTh">
-                        <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
-                            [indeterminate]="isSomeSelected()">
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
                         </mat-checkbox>
                     </th>
                     <td mat-cell *matCellDef="let row">
-                        <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
-                            [checked]="selection.isSelected(row)">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
                         </mat-checkbox>
                     </td>
                 </ng-container>
@@ -152,9 +163,10 @@
                     <td mat-cell *matCellDef="let menu_cat"> <mat-slide-toggle class="slide-toggle"
                             [(ngModel)]="menu_cat.isActive"></mat-slide-toggle> </td>
                 </ng-container>
-                
-                <tr mat-header-row *matHeaderRowDef="getFinalDisplayedColumns()" ></tr>
-                <tr mat-row *matRowDef="let row; columns: getFinalDisplayedColumns();" [class.subcategory-row]="row.parentCategoryId != null"></tr>
+
+                <tr mat-header-row *matHeaderRowDef="getFinalDisplayedColumns()"></tr>
+                <tr mat-row *matRowDef="let row; columns: getFinalDisplayedColumns();"
+                    [class.subcategory-row]="row.parentCategoryId != null"></tr>
             </table>
         </div>
     </va-mat-table>
