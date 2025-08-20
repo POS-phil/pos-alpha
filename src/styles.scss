@@ -10,6 +10,21 @@ $compact-form-theme: mat.define-theme((density: (scale: -4,
     @include mat.form-field-density($compact-form-theme )
 }
 
+:root {
+  @include mat.button-toggle-overrides((
+    selected-state-background-color: #dbc1ac,
+    selected-state-text-color: #38220f,
+    state-layer-color: #38220f
+  ));
+}
+
+:root {
+  @include mat.list-overrides((
+    list-item-focus-state-layer-color: #38220f,
+    list-item-hover-state-layer-color: #38220f
+  ));
+}
+
 html, body {
     height: 100%;
 }

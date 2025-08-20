@@ -13,10 +13,13 @@
     ));
 }
 
+::ng-deep.mat-mdc-paginator-outer-container {
+  display: contents;
+}
+
 .catTable {
-  @include mat.table-overrides((
-    header-headline-weight: 600,
-  ));
+  @include mat.table-overrides((header-headline-weight: 600,
+    ));
 }
 
 .spacer {
@@ -74,8 +77,11 @@ va-mat-table {
   text-align: center;
   justify-content: center;
   gap: 10px;
-  padding: 20px;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+H2 {
+  margin-left: 10px;
 }
 
 .container-1 {
@@ -94,8 +100,9 @@ va-mat-table {
   width: 50px;
 }
 
-.mdc-data-table__cell, .mdc-data-table__header-cell {
-    padding: 0 10px;
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+  padding: 0 10px;
 }
 
 .actionContainer {
@@ -106,16 +113,16 @@ va-mat-table {
   border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
-.mat-button-toggle-standalone.mat-button-toggle-appearance-standard, .mat-button-toggle-group-appearance-standard {
-    /* border-radius: var(--mat-button-toggle-shape, var(--mat-sys-corner-extra-large)); */
-     border: solid 0px var(--mat-button-toggle-divider-color, var(--mat-sys-outline));
+.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+.mat-button-toggle-group-appearance-standard {
+  /* border-radius: var(--mat-button-toggle-shape, var(--mat-sys-corner-extra-large)); */
+  border: solid 0px var(--mat-button-toggle-divider-color, var(--mat-sys-outline));
 }
 
 .btnToggle {
-  @include mat.button-toggle-overrides((
-    shape: 0px,
-    
-  ));
+  @include mat.button-toggle-overrides((shape: 0px,
+
+    ));
   height: 40px
 }
 
@@ -123,7 +130,15 @@ tr {
   height: 20px;
 }
 
-@media (max-width: 599px) {
+.btn-action {
+     border-radius: 5px;
+  }
+
+.selected-count {
+  font-weight: 700;
+}
+
+@media (max-width: 768px ) {
 
   .actionContainer {
     flex-direction: column;
@@ -132,7 +147,7 @@ tr {
   .tableContainer {
     overflow: auto;
   }
-  
+
   .inputSearch {
     width: 100%;
     margin-bottom: 10px;
@@ -144,5 +159,15 @@ tr {
 
   .menu-container {
     flex-direction: column;
+    margin: 20px;
+
+    .btnCategory {
+      width: 100%;
+    }
   }
+
+  ::ng-deep.mat-mdc-paginator-outer-container {
+    display: contents !important;
+  }
+
 }
