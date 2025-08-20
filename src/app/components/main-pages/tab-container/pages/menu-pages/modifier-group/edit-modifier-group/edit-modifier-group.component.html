@@ -1,0 +1,133 @@
+<form [formGroup]="createCategoryForm" (ngSubmit)="confirmCreate()">
+    <div class="header-flex">
+        <H1>Edit Modifier</H1>
+        <span class="spacer"></span>
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/modifier-group']">
+            Cancel
+        </button>
+        <button type="submit" mat-flat-button class="btnRadius">
+            Save
+        </button>
+    </div>
+    <div class="container-flex">
+        <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
+            <ng-container *ngIf="uploadedImage; else defaultIcon">
+                <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
+            </ng-container>
+            <ng-template #defaultIcon>
+                <mat-icon class="icon-image">add_a_photo</mat-icon>
+            </ng-template>
+        </button>
+        <div class="grid-container">
+            <div class="grid-1cS3-1r">
+                <mat-form-field class="full-width">
+                    <mat-label>General</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <mat-error *ngIf="categoryName.hasError('required')">General is required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Name</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Second Language</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Reference</mat-label>
+                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+            </div>
+            <div class="grid-slideContainer">
+                <mat-slide-toggle class="toggle-button">
+                    Web Shop
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Aggregator
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Kiosk
+                </mat-slide-toggle>
+                <mat-slide-toggle class="toggle-button">
+                    Counter Top
+                </mat-slide-toggle>
+            </div>   
+        </div>
+        
+        
+        
+    </div>
+
+    
+    <div class="grid-container">
+
+        <div class="grid-1cS3-1r-accord">
+        <div class="header-flex">
+        <h3>List of Category</h3>
+        <span class="spacer"></span>
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/modifier-group']">
+            Add Modifier
+        </button>
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/modifier-group']">
+            Delete Modifier
+        </button>
+        </div>
+            <mat-accordion class="full-width">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Hot Coffee
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-panel-description>
+                    <ul class="checkbox-col">
+                        
+                        <mat-checkbox>Americano</mat-checkbox>
+                        <mat-checkbox>Cappuccino</mat-checkbox>
+                        <mat-checkbox>Mocha</mat-checkbox>
+                    </ul>
+                    </mat-panel-description>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Starter
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <!-- <div *ngFor="let entry of scheduleSummary">{{ entry }}</div> -->
+                    </mat-panel-description>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Apitizer
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <!-- <div *ngFor="let entry of scheduleSummary">{{ entry }}</div> -->
+                    </mat-panel-description>
+                </mat-expansion-panel>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Soup
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-panel-description>
+                        <!-- <div *ngFor="let entry of scheduleSummary">{{ entry }}</div> -->
+                    </mat-panel-description>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+            
+    </div>
+    <!-- <div class="container-flex"> -->
+            
+    <!-- </div> -->
+</form>

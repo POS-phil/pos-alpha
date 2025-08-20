@@ -20,6 +20,7 @@ import { MatSelectModule } from "@angular/material/select";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 @Component({
   selector: 'app-modifier-option',
@@ -35,11 +36,10 @@ import { FormsModule } from '@angular/forms';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCheckbox, 
+    MatCheckbox,
     MatSelectModule,
     MatDatepickerModule,
-    FormsModule,
-  ],
+    FormsModule, MatButtonToggleModule],
   templateUrl: './modifier-option.component.html',
   styleUrls: ['./modifier-option.component.scss'],
   providers: [provideNativeDateAdapter()],

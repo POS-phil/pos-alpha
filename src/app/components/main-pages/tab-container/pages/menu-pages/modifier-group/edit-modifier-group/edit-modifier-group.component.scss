@@ -1,0 +1,204 @@
+@use '@angular/material' as mat;
+
+form {
+  display: contents;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.header-flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+}
+
+.header-flex-center{
+    justify-content: center;
+}
+
+.container-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.grid-container {
+  display: grid;
+  // grid-column: 1 / span 2;
+  grid-template-columns: repeat(6, 150px);
+  gap: 1rem;
+}
+
+.grid-container-center {
+justify-content: center;
+}
+
+.grid-1cS3-1r {
+  grid-column: 1 / span 3;
+  grid-row: 1;
+}
+.grid-1cS3-1r-gap{
+ display: flex;
+ gap: 1rem;
+  // margin-top: 200px;
+}
+
+.grid-4cS2-1r {
+  grid-column: 4 / span 2;
+  grid-row: 1;
+}
+
+.grid-1cS3-2r{
+  grid-column: 1 / span 3;
+  grid-row: 2;
+}
+
+.grid-4cS2-2rS1{
+  grid-column: 4 / span 2;
+  grid-row: 2 /span 5;
+}
+
+.grid-icon-picker {
+  grid-column: 1 /span 3;
+  grid-row: 3;
+}
+
+.grid-slideContainer{
+  grid-column: 4;
+  grid-row: 1 / span 10;
+}
+
+.grid-reference {
+  grid-column: 1 / span 3;
+  grid-row: 5;
+}
+
+.grid-textArea {
+  grid-column: 1 / span 3;
+  grid-row: 4;
+}
+
+.icon-picker {
+  width: 150px;
+  height: 150px;
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 5px
+    )
+  );
+  border: #aaaaaa 2px dashed;
+}
+
+.icon-picker-image {
+  font-size: 90px;
+  width: 90px;
+  overflow: visible;
+}
+
+.icon-menu{
+  overflow: hidden !important;
+}
+
+.icon-grid{
+  overflow: hidden !important;
+}
+
+
+.btnRadius {
+  border-radius: 5px;
+  width: 150px;
+  
+}
+.checkbox-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.btnImage {
+  width: 250px;
+  height: 250px;
+  padding: 0;
+  @include mat.icon-button-overrides(
+    (
+      container-shape: 5px
+    )
+  );
+  border: #aaaaaa 2px dashed;
+}
+
+.btnAvailability {
+  height: 40px;
+  border-radius: 5px;
+
+  @include mat.fab-overrides(
+    (
+      extended-container-elevation-shadow: 0,
+    )
+  );
+}
+
+.icon-image {
+  font-size: 120px;
+  width: 220px;
+  overflow: visible;
+}
+
+.uploaded-image {
+  width: 250px;
+  height: 250px;
+  object-fit: scale-down;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.grid-1cS3-1r-accord {
+  grid-column: 1 / span 6;
+  grid-row: 1;
+}
+
+
+.toggle-button {
+  @include mat.slide-toggle-overrides((
+    handle-shape: 5px,
+    track-shape: 5px,
+    label-text-weight: 500,
+  ));
+  margin-bottom: 10px;
+}
+
+@media (max-width: 600px) {
+
+  .container-flex {
+    flex-direction: column;
+    margin-left: 5px;
+  }
+
+.grid-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+.grid-accordion{
+  grid-column: 1 / span 6;
+  grid-row: 6;
+
+}
+
+
+}
