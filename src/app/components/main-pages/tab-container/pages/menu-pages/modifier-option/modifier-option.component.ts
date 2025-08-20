@@ -15,9 +15,14 @@ import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MenuCategories } from '../../../../../../common/menu-categories';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+// import { h } from "../../../../../../../../node_modules/@angular/material/module.d-gWBlTHnh";
+import { MatSelectModule } from "@angular/material/select";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-modifier-group',
+  selector: 'app-modifier-option',
   standalone: true,
   imports: [CommonModule,
     RouterModule,
@@ -30,13 +35,21 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCheckbox],
-  templateUrl: './modifier-group.component.html',
-  styleUrl: './modifier-group.component.scss'
+    MatCheckbox, 
+    MatSelectModule,
+    MatDatepickerModule,
+    FormsModule,
+  ],
+  templateUrl: './modifier-option.component.html',
+  styleUrls: ['./modifier-option.component.scss'],
+  providers: [provideNativeDateAdapter()],
 })
-export class ModifierGroupComponent {
-setTab(arg0: string) {
-throw new Error('Method not implemented.');
+export class ModifierOptionComponent {
+  selectedDate: Date | null = null;
+
+  setTab(arg0: string) {
+  throw new Error('Method not implemented.');
+
 }
 selectedTab: any;
 applyFilters() {
@@ -44,7 +57,7 @@ throw new Error('Method not implemented.');
 }
 // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check','name','image', 'reference', 'options', 'link_item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created'];
+  displayedColumns: string[] = ['check','name','sku', 'modifier', 'price', 'tax_group', 'active'];
   // Data source for the table
   categoryList : MenuCategories[] = [];
   MENU_CATEGORIES_DATA : any;

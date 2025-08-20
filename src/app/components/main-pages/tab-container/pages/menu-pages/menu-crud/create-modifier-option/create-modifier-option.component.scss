@@ -184,3 +184,16 @@ justify-content: center;
   }
 
 }
+.sku-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between input and button */
+}
+
+.sku-field {
+  flex: 1; /* make input take remaining space */
+}
+
+.btn-generate {
+  margin-bottom: 10px;
+}
