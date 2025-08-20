@@ -15,6 +15,7 @@ import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MenuCategories } from '../../../../../../common/menu-categories';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatButtonToggleModule } from "@angular/material/button-toggle";
 
 @Component({
   selector: 'app-modifier-group',
@@ -30,7 +31,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCheckbox],
+    MatCheckbox, MatButtonToggleModule],
   templateUrl: './modifier-group.component.html',
   styleUrl: './modifier-group.component.scss'
 })

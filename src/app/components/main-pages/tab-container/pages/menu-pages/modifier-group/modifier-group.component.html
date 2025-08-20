@@ -1,5 +1,9 @@
 <div class="main-container">
     <div class="menu-container container-2">
+        <button mat-flat-button class="btnCategory" [routerLink]="['edit_modifier_group']">
+            <mat-icon>add</mat-icon>
+            Temp Edit Modifier
+        </button>
         <button mat-stroked-button [matMenuTriggerFor]="import" class="btnCategory">
             <mat-icon>cloud_queue</mat-icon>
             Import/Export
@@ -25,11 +29,16 @@
     </div>
 
     <div class="menu-container container-1">
-        <div class="menu-tabs">
-            <a href="#">All</a>
-            <a href="#">Active</a>
-            <a href="#">Inactive</a>
-            <a href="#">Deleted</a>
+        <div class="actionContainer">
+            <mat-button-toggle-group class="btnToggle">
+                <mat-button-toggle checked="true">All</mat-button-toggle>
+                <mat-button-toggle>Active</mat-button-toggle>
+                <mat-button-toggle>Inactive</mat-button-toggle>
+                <mat-button-toggle>Archive</mat-button-toggle>
+            </mat-button-toggle-group>
+            <span class="spacer"></span>
+            <!-- <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons>
+            </mat-paginator> -->
         </div>
         
         <mat-form-field appearance="outline" class="inputSearch">

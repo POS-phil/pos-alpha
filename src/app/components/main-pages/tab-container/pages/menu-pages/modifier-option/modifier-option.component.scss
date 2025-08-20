@@ -20,6 +20,14 @@ va-mat-table {
   text-align: left !important;
 }
 
+.actionContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // padding: 10px;
+  // border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
 .btnCategory {
     border-radius: 5px;
 }

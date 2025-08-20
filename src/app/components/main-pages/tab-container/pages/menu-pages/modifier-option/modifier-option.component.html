@@ -25,11 +25,14 @@
     </div>
 
     <div class="menu-container container-1">
-        <div class="menu-tabs">
-            <a href="#">All</a>
-            <a href="#">Active</a>
-            <a href="#">Inactive</a>
-            <a href="#">Deleted</a>
+        <div class="actionContainer">
+            <mat-button-toggle-group class="btnToggle">
+                <mat-button-toggle checked="true">All</mat-button-toggle>
+                <mat-button-toggle>Active</mat-button-toggle>
+                <mat-button-toggle>Inactive</mat-button-toggle>
+                <mat-button-toggle>Archive</mat-button-toggle>
+            </mat-button-toggle-group>
+            <span class="spacer"></span>
         </div>
         
         <mat-form-field appearance="outline" class="inputSearch">
