@@ -141,6 +141,24 @@ export class SideNavContentComponent {
           label: 'Category',
           route: 'product-list/category'
         },
+<<<<<<< HEAD
+        {
+          icon: '',
+          label: 'Item',
+          route: 'menu/item'
+        },
+        {
+          icon: '',
+          label: 'Modifier Group',
+          route: 'menu/modifier-group'
+        },
+        {
+          icon: '',
+          label: 'Modifier Option',
+          route: 'menu/modifier-option'
+        }
+=======
+>>>>>>> e74802b626cd52721ec249e50e455e8e7fd3a8ce
       ]
     },
     
