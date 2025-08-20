@@ -47,7 +47,7 @@ form {
 
 .grid-icon-picker {
   grid-column: 6;
-  grid-row: 3;
+  grid-row: 3 / span 5;
 }
 
 .grid-slideContainer{
@@ -63,6 +63,22 @@ form {
 .grid-textArea {
   grid-column: 1 / span 3;
   grid-row: 3;
+}
+
+.background-selector {
+  width: 100px;
+  height: 100px;
+  @include mat.button-overrides((
+    outlined-container-shape: 5px,
+  ))
+}
+
+.background-picker{
+  margin: 1px;
+  margin-left: 4px;
+  @include mat.button-overrides((
+    outlined-container-shape: 5px,
+  ))
 }
 
 .icon-picker {
@@ -112,7 +128,6 @@ form {
 .btnAvailability {
   height: 40px;
   border-radius: 5px;
-
   @include mat.fab-overrides(
     (
       extended-container-elevation-shadow: 0,
@@ -160,11 +175,47 @@ form {
 
   .container-flex {
     flex-direction: column;
+    align-items: center;
     margin-left: 5px;
   }
   .grid-container {
-    display: flex;
+    display: flex !important;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
+  .grid-1cS3-1r {
+    width: 100%;
+  }
+
+  .grid-4cS2-1r{
+    width: 100%;
+  }
+
+  .grid-4cS2-2rS1{
+    width: 100%;
+  }
+
+  .grid-1cS3-2r{
+    width: 100%;
+  }
+
+  .grid-textArea {
+    width: 100%;
+  }
+
+  .grid-reference{
+    width: 100%;
+  }
+}
+
+.categoryImg {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+[dir='rtl'] .categoryImg {
+  margin-right: 0;
+  margin-left: 8px;
 }

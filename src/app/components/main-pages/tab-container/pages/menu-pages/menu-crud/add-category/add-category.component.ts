@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MatDialog
@@ -14,7 +14,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { Router, RouterModule } from '@angular/router';
 import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upload-image.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { SafeUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
@@ -22,6 +22,14 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ScheduleEntry } from '../../../../../../../common/menu-categories';
 import { MenuCategoriesService } from '../../../../../../../service/api/menu-categories/menu-categories.service';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
+interface CategoryIdAndName {
+  categoryId: number;
+  categoryName: string;
+  image: File | string;
+  icon: string;
+}
 
 @Component({
   selector: 'app-add-category',
@@ -41,7 +49,8 @@ import { HttpClient } from '@angular/common/http';
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSnackBarModule
   ],
   providers: [MenuCategoriesService],
   templateUrl: './add-category.component.html',
@@ -49,16 +58,20 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AddCategoryComponent implements OnInit {
 
+  private _createCategorySuccess = inject(MatSnackBar);
+
   scheduleSummary: string[] = [];
   isAllDaysChecked = signal(true);
   isAllDayChecked = signal(true);
   allDayStartTime = signal<string>('00:00');
   allDayEndTime = signal<string>('23:59');
 
-  web_shop = false;
-  aggregator = false;
-  kiosk = false;
-  counter_top = false;
+  background_colors = [
+    '#e62e2eff', '#2d30fcff', '#f2f53eff', '#5af845ff', '#35eefcff',
+    '#f751eeff', '#a817ebff', '#ececd5ff', '#9fe0dbff', '#afe0b1ff',
+    '#f0c1b2ff', '#f0b2c1ff', '#b2f0c1ff', '#b2c1f0ff', '#c1b2f0ff',
+    '#f0b2b2ff', '#b2f0f0ff', '#b2b2f0ff',
+  ];
 
   icons = [
     'breakfast_dining', 'free_breakfast', 'bakery_dining', 'brunch_dining', 'coffee',
@@ -68,28 +81,39 @@ export class AddCategoryComponent implements OnInit {
   ];
 
   selectedIcon = 'fastfood';
+  selectedBackgroundColor = '#e62e2eff';
+  previewImage: SafeUrl | null = null;
+  selectedImage: File | null = null;
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;
-    console.log('Selected icon:', this.selectedIcon);
+    this.createCategoryForm.patchValue({ icon });
   }
+
+  selectBackgroundColor(backgroundColor: string) {
+    this.selectedBackgroundColor = backgroundColor;
+    this.createCategoryForm.patchValue({})
+  }
+
+  displayCategoryName = (categoryId: number): string => {
+    const category = this.listOfCategory.find(cat => cat.categoryId === categoryId);
+    return category ? category.categoryName : '';
+  };
 
   createCategoryForm!: FormGroup;
 
   readonly dialog = inject(MatDialog);
 
-  uploadedImage: SafeUrl | null = null;
-  _uploadedImage: string | File | undefined;
-
   constructor(
     private cdr: ChangeDetectorRef,
     private menuCategoryService: MenuCategoriesService,
     private fb: FormBuilder,
-    private route: Router
+    private route: Router,
+    private sanitizer: DomSanitizer,
   ) { }
 
   get categoryName() {
-    return this.createCategoryForm.get('category_name')!;
+    return this.createCategoryForm.get('categoryName')!;
   }
 
   ngOnInit(): void {
@@ -105,16 +129,42 @@ export class AddCategoryComponent implements OnInit {
     ];
 
     this.createCategoryForm = this.fb.group({
-      category_name: ['', Validators.required],
-      schedule: this.fb.control<ScheduleEntry[]>(defaultSchedule),
-      web_shop: [false],
+      active: [true],
+      categoryName: ['', Validators.required],
+      secondLanguageName: [''],
+      parentCategoryId: [null],
+      description: [''],
+      reference: [''],
+      image: [null],
+      icon: [this.selectedIcon],
+      background: [this.selectedBackgroundColor],
+      withProducts: [false],
+      withSubCategories: [false],
+      schedule: [defaultSchedule],
+      item: [0],
+      webShop: [false],
       aggregator: [false],
       kiosk: [false],
-      counter_top: [false],
-      created_at: [new Date()],
+      counterTop: [false],
+      created_at: [new Date()]
     });
 
     this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
+    this.getListOfCategories();
+  }
+
+  listOfCategory: CategoryIdAndName[] = [];
+
+  getListOfCategories() {
+    this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
+      next: (data: CategoryIdAndName[]) => {
+        this.listOfCategory = data;
+        console.log(data);
+      },
+      error: (error) => {
+        console.error('Error fetching list categories', error);
+      }
+    })
   }
 
   openUploadDialog(): void {
@@ -123,20 +173,24 @@ export class AddCategoryComponent implements OnInit {
       height: '650px',
       maxWidth: '150vw',
       maxHeight: '190vh',
-      data: this.uploadedImage
+      data: {
+        previewImage: this.previewImage,
+        selectedImage: this.selectedImage
+      }
 
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result !== undefined) {
-        this.uploadedImage = result;
-        console.log('Image uploaded:', this.uploadedImage);
-        this._uploadedImage = result;
+        this.previewImage = result.previewImage;
+        this.selectedImage = result.selectedImage;
       }
     });
 
     dialogRef.componentInstance.imageRemoved.subscribe(() => {
-      this.uploadedImage = null;
+      this.previewImage = null;
+      this.selectedImage = null;
+      this.cleanUpObjectUrl();
       this.cdr.detectChanges();
     });
 
@@ -202,62 +256,50 @@ export class AddCategoryComponent implements OnInit {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
+  private cleanUpObjectUrl(): void {
+    if (this.previewImage) {
+      const unsafeUrl = this.sanitizer.sanitize(SecurityContext.URL, this.previewImage);
+      if (unsafeUrl) {
+        window.URL.revokeObjectURL(unsafeUrl);
+      }
+      this.previewImage = null;
+    }
+  }
+
   createCategory(): void {
     if (this.createCategoryForm.invalid) {
       this.createCategoryForm.markAllAsTouched();
       return;
     }
 
-    const formData = new FormData();
     const formValue = this.createCategoryForm.value;
 
-    // Prepare the DTO object
-    const categoryDto = {
-      reference: formValue.reference || "",
-      category_name: formValue.category_name,
-      isActive: true,
-      withProducts: false,
-      withSubCategories: false,
-      icon: !this._uploadedImage ? this.selectedIcon : null,
-      schedule: this.scheduleSummary,
-      items: 0,
-      web_shop: formValue.web_shop,
-      aggregator: formValue.aggregator,
-      kiosk: formValue.kiosk,
-      counter_top: formValue.counter_top,
-      last_order: null,
-      created_at: new Date().toISOString()
-    };
+    const formData = new FormData();
+    formData.append('category', new Blob([JSON.stringify(formValue)], { type: 'application/json' }));
 
-    // Append the DTO as JSON
-    formData.append('dto', new Blob([JSON.stringify(categoryDto)], {
-      type: 'application/json'
-    }));
-
-    // Append image file if exists
-    if (this._uploadedImage instanceof File) {
-      formData.append('image', this._uploadedImage, this._uploadedImage.name);
-    } else if (typeof this._uploadedImage === 'string') {
-      // If you need to handle base64 strings
-      const byteString = atob(this._uploadedImage.split(',')[1]);
-      const arrayBuffer = new ArrayBuffer(byteString.length);
-      const uint8Array = new Uint8Array(arrayBuffer);
-      for (let i = 0; i < byteString.length; i++) {
-        uint8Array[i] = byteString.charCodeAt(i);
-      }
-      const blob = new Blob([arrayBuffer], { type: 'image/jpeg' });
-      formData.append('image', blob, 'uploaded_image.jpg');
+    if (this.selectedImage) {
+      formData.append('image', this.selectedImage);
     }
 
-    console.log('FormData contents:');
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
+    //Uncomment for debugging
+    // console.log('Form Data:', formData);
+    // console.log('Form Value:', formValue);
+    // console.log('Category Form', this.createCategoryForm.value);
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {
         console.log('Category created:', response);
-        this.route.navigate(['/menu/categories']);
+        this.cleanUpObjectUrl();
+
+        const snackBarRef = this._createCategorySuccess.open(
+          `Category "${this.categoryName}" created successfully`,
+          'Close',
+          { duration: 5000 }
+        );
+
+        setTimeout(() => {
+          this.route.navigate(['/product-list/category']);
+        }, 100);
       },
       error: (err) => {
         console.error('Error creating category', err);

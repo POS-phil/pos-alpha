@@ -33,3 +33,9 @@ h4 {
     font: var(--mat-sys-display-medium);
     line-height: var(--mat-sys-body-medium-line-height);
 }
+
+@media (max-width: 1366px) {
+    .chart-container {
+        height: 100px;
+    }
+}

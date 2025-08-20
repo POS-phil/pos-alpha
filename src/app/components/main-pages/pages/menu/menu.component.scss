@@ -1,27 +1,70 @@
 @use '@angular/material' as mat;
 
+.slide-toggle {
+  @include mat.slide-toggle-overrides((track-width: 45px,
+      track-height: 20px,
+      selected-handle-color: rgb(100, 194, 100),
+      selected-hover-handle-color: rgb(34, 190, 34),
+      selected-focus-handle-color: rgb(34, 190, 34),
+      selected-icon-color: white,
+      unselected-handle-color: rgb(194, 100, 100),
+      unselected-hover-handle-color: rgb(180, 39, 39),
+      unselected-focus-handle-color: rgb(180, 39, 39),
+    ));
+}
+
+::ng-deep.mat-mdc-paginator-outer-container {
+  display: contents;
+}
+
+.catTable {
+  @include mat.table-overrides((header-headline-weight: 600,
+    ));
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.icon-image {
+  text-align: center;
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.category-image {
+  align-items: center;
+  max-width: 30px;
+  max-height: 30px;
+  border-radius: 5px;
+}
+
 va-mat-table {
   display: block;
   width: 100%;
   box-shadow: var(--mat-sys-level2);
 }
 
+::ng-deep .mat-button-toggle-group-appearance-standard .mat-button-toggle {
+  border: none !important;
+}
+
 ::ng-deep .mat-mdc-paginator-container {
-    justify-content: flex-start !important;
+  justify-content: flex-start !important;
 }
 
-.checkbox{
-   @include mat.checkbox-overrides((
-    
-  ));
+.checkbox {
+  @include mat.checkbox-overrides(());
 }
 
-.action-bar-1{
+.action-bar-1 {
   text-align: left !important;
 }
 
 .btnCategory {
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 .main-container {
@@ -29,25 +72,86 @@ va-mat-table {
 }
 
 .menu-container {
-    display: flex;
-    gap: 10px;
-    padding: 5px;
-    border-bottom: 1px solid var(--mat-sys-outline-variant);
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+H2 {
+  margin-left: 10px;
 }
 
 .container-1 {
   justify-content: flex-start;
 }
 
-.container-2 {
-  justify-content: flex-end;
+.inputSearch {
+  width: 250px;
 }
 
-.inputSearch{
-  width: 100%;
+.tableContainer {
+  overflow: hidden;
 }
 
-@media (max-width: 599px) {
+.tableTh {
+  width: 50px;
+}
+
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+  padding: 0 10px;
+}
+
+.actionContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+.mat-button-toggle-group-appearance-standard {
+  /* border-radius: var(--mat-button-toggle-shape, var(--mat-sys-corner-extra-large)); */
+  border: solid 0px var(--mat-button-toggle-divider-color, var(--mat-sys-outline));
+}
+
+.btnToggle {
+  @include mat.button-toggle-overrides((shape: 0px,
+
+    ));
+  height: 40px
+}
+
+tr {
+  height: 20px;
+}
+
+.btn-action {
+     border-radius: 5px;
+  }
+
+.selected-count {
+  font-weight: 700;
+}
+
+@media (max-width: 768px ) {
+
+  .actionContainer {
+    flex-direction: column;
+  }
+
+  .tableContainer {
+    overflow: auto;
+  }
+
+  .inputSearch {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 
   .main-container {
     margin-left: 10px;
@@ -55,5 +159,15 @@ va-mat-table {
 
   .menu-container {
     flex-direction: column;
+    margin: 20px;
+
+    .btnCategory {
+      width: 100%;
+    }
   }
+
+  ::ng-deep.mat-mdc-paginator-outer-container {
+    display: contents !important;
+  }
+
 }

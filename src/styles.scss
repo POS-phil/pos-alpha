@@ -2,26 +2,40 @@
 @use "@angular/material" as mat;
 @include mat.core();
 
-$compact-form-theme: mat.define-theme(
-    (
-        density: (
-            scale: -4,
-        )
-    )
-);
+$compact-form-theme: mat.define-theme((density: (scale: -4,
+            )));
 
 :root {
     //@include mat.all-component-themes($default-theme);
-    @include mat.form-field-density(
-        $compact-form-theme
-    )
+    @include mat.form-field-density($compact-form-theme )
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+  @include mat.button-toggle-overrides((
+    selected-state-background-color: #dbc1ac,
+    selected-state-text-color: #38220f,
+    state-layer-color: #38220f
+  ));
+}
+
+:root {
+  @include mat.list-overrides((
+    list-item-focus-state-layer-color: #38220f,
+    list-item-hover-state-layer-color: #38220f
+  ));
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
 
 .grid {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     align-items: center;
     padding-bottom: 1rem;
@@ -30,17 +44,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .viewReportButtonContainer {
     margin-top: 2px;
     display: flex;
-    
+
     @include mat.button-density(-3);
-    
- }
+
+}
 
 .viewReportButton {
     margin-left: auto;
 }
 
 H1 {
-    font : var(--mat-sys-headline-large);
+    font: var(--mat-sys-headline-large);
 }
 
 app-main-layout {
@@ -62,12 +76,12 @@ app-side-nav {
     flex-direction: column;
     overflow: auto;
 
-    .dash-viewer-footer{
+    .dash-viewer-footer {
         margin-top: 0;
     }
 }
 
-app-main-layout > app-side-nav {
+app-main-layout>app-side-nav {
     flex: 1;
     margin-top: 56px;
     overflow-y: auto;
@@ -81,10 +95,3 @@ app-main-layout > app-side-nav {
     font-size: 1.2rem;
     padding: 10rem;
 }
-
-
-
-
-
-
-
