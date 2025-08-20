@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +18,7 @@ import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/men
 import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upload-image.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeUrl } from '@angular/platform-browser';
+import { MatDivider } from "@angular/material/divider";
 
 @Component({
   selector: 'app-create-item',
@@ -37,13 +38,18 @@ import { SafeUrl } from '@angular/platform-browser';
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule
-  ],
+    MatChipsModule,
+    MatDivider
+],
   templateUrl: './create-item.component.html',
   styleUrl: './create-item.component.scss'
 })
 export class CreateItemComponent {
-scheduleSummary: string[] = [];
+  scheduleSummary: string[] = [];
+  isAllDaysChecked = signal(true);
+  isAllDayChecked = signal(true);
+  allDayStartTime = signal<string>('00:00');
+  allDayEndTime = signal<string>('23:59');
 
   icons = [
     'breakfast_dining', 'free_breakfast', 'bakery_dining', 'brunch_dining', 'coffee',
@@ -77,32 +83,26 @@ iconMenu: MatMenuPanel<any> | null | undefined;
 
   ngOnInit(): void {
 
-    const defaultSchedule: ScheduleEntry = {
-      day: 'All Days',
-      available: true,
-      allDay: true,
-      startTime: '00:00',
-      endTime: '23:59',
-      days: [
-        { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-      ]
-    };
+ const defaultSchedule: ScheduleEntry[] = [
+      { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+    ];
 
 
     this.createItemForm = this.fb.group({
       category_name: ['', Validators.required],
       reference: ['', Validators.required],
-      schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
-      web_shop: [false],
+      schedule: this.fb.control<ScheduleEntry[]>(defaultSchedule),
       aggregator: [false],
       kiosk: [false],
       created_at: [new Date()],
+      webShop: [false],
+      counterTop: [false],
     });
 
     this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
@@ -134,7 +134,7 @@ iconMenu: MatMenuPanel<any> | null | undefined;
     });
 
   };
-
+/*
   openAvailabilityDialog(): void {
     const dialogRef = this.dialog.open(MenuCategoryAvailabilityComponent, {
       width: '500px',
@@ -149,10 +149,38 @@ iconMenu: MatMenuPanel<any> | null | undefined;
         this.scheduleSummary = this.generateScheduleSummary(result);
       }
     });
+  }*/
+
+  openAvailabilityDialog(): void {
+    const dialogRef = this.dialog.open(MenuCategoryAvailabilityComponent, {
+      width: '500px',
+      height: '550px',
+      data: {
+        schedule: this.createItemForm.get('schedule')?.value || [],
+        isAllDaysChecked: this.isAllDaysChecked(),
+        isAllDayChecked: this.isAllDayChecked(),
+        allDayStartTime: this.allDayStartTime(),
+        allDayEndTime: this.allDayEndTime()
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.createItemForm.get('schedule')?.setValue(result.schedule);
+        this.isAllDaysChecked.set(result.isAllDaysChecked);
+        this.isAllDayChecked.set(result.isAllDayChecked);
+        this.scheduleSummary = this.generateScheduleSummary(result.schedule);
+        this.allDayStartTime.set(result.allDayStartTime);
+        this.allDayEndTime.set(result.allDayEndTime);
+      }
+    });
   }
 
-  generateScheduleSummary(schedule: ScheduleEntry): string[] {
-    const days = (schedule.days || []).filter(d => d.day !== 'All Days');
+
+
+
+  generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
+    const days = schedule.filter(d => d.day.toLowerCase() !== 'all days'); // optional filter
 
     const allAvailable = days.every(d => d.available);
     const sameAllDay = days.every(d => d.allDay === days[0].allDay);
@@ -168,8 +196,8 @@ iconMenu: MatMenuPanel<any> | null | undefined;
     return days
       .filter(day => day.available)
       .map(day => {
-        const start = this.formatTime(day.startTime!);
-        const end = this.formatTime(day.endTime!);
+        const start = this.formatTime(day.startTime || '00:00');
+        const end = this.formatTime(day.endTime || '23:59');
         return `${this.capitalize(day.day)} : ${start} - ${end}`;
       });
   }

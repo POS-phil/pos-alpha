@@ -55,6 +55,15 @@ export const routes: Routes = [
                 children: [
                 ]
             },
+
+               {
+                path: 'menu/item',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/item/item.component').then(m => m.ItemComponent),
+                title: 'Menu / Item',
+                children: [
+
+                ]
+            },
             {
                 path: 'product-list/category/add-category',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
