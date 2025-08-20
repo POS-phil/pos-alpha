@@ -90,8 +90,6 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
                 title: 'Product Lists / Modifier Option',
             },
-
-    
             {
                 path: 'product-list/category/add-category',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),

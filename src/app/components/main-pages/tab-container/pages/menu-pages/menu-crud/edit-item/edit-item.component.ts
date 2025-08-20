@@ -23,7 +23,7 @@ import { MatPaginatorModule } from "@angular/material/paginator";
 
 @Component({
   selector: 'app-create-item',
-   standalone: true,
+  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -42,34 +42,34 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     MatChipsModule,
     MatDivider,
     MatPaginatorModule
-],
+  ],
   templateUrl: './edit-item.component.html',
   styleUrl: './edit-item.component.scss'
 })
 export class EditItemComponent {
-openAvailabilityDialog() {
-throw new Error('Method not implemented.');
-}
-categoryName: any;
-editItemForm: FormGroup<any> | undefined;
-uploadedImage: unknown;
-selectedIcon: any;
-scheduleSummary: any;
-confirmCreate() {
-throw new Error('Method not implemented.');
-}
-toggleAllRows() {
-throw new Error('Method not implemented.');
-}
-isSomeSelected() {
-throw new Error('Method not implemented.');
-}
-isAllSelected() {
-throw new Error('Method not implemented.');
-}
-announceSortChange($event: Event) {
-throw new Error('Method not implemented.');
-}
-MENU_CATEGORIES_DATA: any;
+  openAvailabilityDialog() {
+    throw new Error('Method not implemented.');
+  }
+  categoryName: any;
+  editItemForm!: FormGroup;
+  uploadedImage: unknown;
+  selectedIcon: any;
+  scheduleSummary: any;
+  confirmCreate() {
+    throw new Error('Method not implemented.');
+  }
+  toggleAllRows() {
+    throw new Error('Method not implemented.');
+  }
+  isSomeSelected() {
+    throw new Error('Method not implemented.');
+  }
+  isAllSelected() {
+    throw new Error('Method not implemented.');
+  }
+  announceSortChange($event: Event) {
+    throw new Error('Method not implemented.');
+  }
+  MENU_CATEGORIES_DATA: any;
 
 }

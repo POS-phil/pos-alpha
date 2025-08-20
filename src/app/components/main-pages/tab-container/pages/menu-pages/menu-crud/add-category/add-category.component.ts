@@ -292,9 +292,12 @@ export class AddCategoryComponent implements OnInit {
         this.cleanUpObjectUrl();
 
         const snackBarRef = this._createCategorySuccess.open(
-          `Category "${this.categoryName}" created successfully`,
+          `Category "${this.createCategoryForm.value.categoryName}" created successfully`,
           'Close',
-          { duration: 5000 }
+          { duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+           }
         );
 
         setTimeout(() => {
