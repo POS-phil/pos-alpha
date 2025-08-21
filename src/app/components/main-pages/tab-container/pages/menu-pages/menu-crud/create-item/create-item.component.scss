@@ -7,191 +7,108 @@ form {
   border: none;
 }
 
+.container-flex2 {
+  display: grid;
+  grid-template-columns: repeat(9, 150px);
+  justify-content: center;
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+
+  .container-flex2 {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  gap: 10px;
+}
+}
+
+.container-basic-info {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  text-align: center;
+  padding: 15px;
+}
+
+.container-availability {
+  display: flex;
+  flex-direction: column;
+  grid-column: 5 / span 2;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+}
+
+.container-utility {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  grid-column: 7 / span 3;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+}
+
+.container-utlity-content {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+  grid-column: 7 / span 3;
+  grid-row: 1;
+  text-align: center;
+}
+
+.grid-image{
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.grid-toggle-buttons {
+  text-align: left;
+  align-items: center;
+  grid-column: 3;
+  grid-row: 1;
+}
+
+._grid-icon-picker{
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.grid-background-picker{
+  margin-top: 50px;
+  grid-column: 2;
+  grid-row: 2;
+}
+
 .header-flex {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.container-flex {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+.background-selector {
+  width: 100px;
+  height: 100px;
+  @include mat.button-overrides((outlined-container-shape: 5px,
+    ))
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(7, 150px);
-  gap: 1rem;
-
-  
-}
-
-.grid-Divider{
-    grid-column: 1 / span 6;
-  grid-row: 11;
-}
-//row 1
-.grid-itemName{
-  grid-column: 1 / span 2;
-  grid-row: 1;
-}
-
-.grid-secondLanguage{
-  grid-column: 3 / span 1;
-  grid-row: 1;
-}
-
-.grid-IconPicker{
-  grid-column: 4 / span 2;
-  grid-row: 1;
-}
-
-.grid-Availabilty {
-  grid-column: 5 / span 1;
-  grid-row: 1;
-}
-
-.grid-Toggle {
-  grid-column: 6 / span 1;
-  grid-row: 1;
-}
-
-
-
-
-//row12
-.grid-SKU{
-  grid-column: 1 / span 2;
-  grid-row: 12;
-}
-
-.buttonGenerate
-{
-  @include mat.button-overrides (( 
-    tonal-container-shape : 5px
-  ));
-  height: 40px;
-  width: 80px;
+.background-picker {
   margin: 1px;
-}
-
-.grid-itemType{
-  grid-column: 3 / span 2;
-  grid-row: 12 ;
-}
-
-.grid-Description{
-  grid-column: 5 / span 2;
-  grid-row: 12 ;
-}
-
-
-// row13
-.grid-CostingMethod{
-  grid-column: 1 / span 2;
-  grid-row: 13 /span 2;
-}
-
-.grid-Category{
-  grid-column: 3 / span 2;
-  grid-row: 13 ;
-}
-.grid-Barcode{
-  grid-column: 5 / span 2;
-  grid-row: 13 ;
-}
-
-
-
-//row14
-
-.grid-PricingMethod{
-  grid-column: 1 / span 2;
-  grid-row: 14;
-}
-.grid-TaxGroup{
-  grid-column: 3 / span 2;
-  grid-row: 14;
-}
-.grid-SellingMethod{
-  grid-column: 5 / span 2;
-  grid-row: 14 ;
-}
-
-
-//row15
-
-.grid-Price{
-  grid-column: 1 / span 2;
-  grid-row: 15 /span 2;
-}
-.grid-PreparationTime{
-  grid-column: 3 / span 2;
-  grid-row: 15;
-}
-.grid-GrossWeight{
-  grid-column: 5 / span 1;
-  grid-row: 15 ;
-}
-.grid-NetWeight{
-  grid-column: 6 / span 1;
-  grid-row: 15 ;
-}
-
-//row16
-
-.grid-PriceSchedule{
-  grid-column: 1 / span 2;
-  grid-row: 16 / span 2;
-}
-.grid-WalkingTime{
-  grid-column: 3 / span 2;
-  grid-row: 16 / span 2;
-}
-
-
-.grid-IngredientCost{
-  grid-column: 5 / span 1;
-  grid-row: 16 ;
-}
-
-.grid-Cost{
-  grid-column: 6 / span 1;
-  grid-row: 16 ;
-}
-
-
-
-.grid-icon-picker {
-  grid-column: 1 /span 3;
-  grid-row: 3;
-}
-
-.grid-slideContainer{
-  grid-column: 6;
-  grid-row: 1 / span 10;
-}
-
-.grid-reference {
-  grid-column: 1 / span 3;
-  grid-row: 5;
-}
-
-.grid-textArea {
-  grid-column: 1 / span 3;
-  grid-row: 4;
+  margin-left: 4px;
+  @include mat.button-overrides((outlined-container-shape: 5px,
+    ))
 }
 
 .icon-picker {
   width: 150px;
   height: 150px;
   padding: 0;
-  @include mat.icon-button-overrides(
-    (
-      container-shape: 5px
-    )
-  );
+  @include mat.icon-button-overrides((container-shape: 5px));
   border: #aaaaaa 2px dashed;
 }
 
@@ -201,11 +118,11 @@ form {
   overflow: visible;
 }
 
-.icon-menu{
+.icon-menu {
   overflow: hidden !important;
 }
 
-.icon-grid{
+.icon-grid {
   overflow: hidden !important;
 }
 
@@ -219,23 +136,15 @@ form {
   width: 250px;
   height: 250px;
   padding: 0;
-  @include mat.icon-button-overrides(
-    (
-      container-shape: 5px
-    )
-  );
+  @include mat.icon-button-overrides((container-shape: 5px));
   border: #aaaaaa 2px dashed;
 }
 
 .btnAvailability {
   height: 40px;
   border-radius: 5px;
-
-  @include mat.fab-overrides(
-    (
-      extended-container-elevation-shadow: 0,
-    )
-  );
+  @include mat.fab-overrides((extended-container-elevation-shadow: 0,
+    ));
 }
 
 .icon-image {
@@ -266,23 +175,19 @@ form {
 }
 
 .toggle-button {
-  @include mat.slide-toggle-overrides((
-    handle-shape: 5px,
-    track-shape: 5px,
-    label-text-weight: 500,
-  ));
+  @include mat.slide-toggle-overrides((handle-shape: 5px,
+      track-shape: 5px,
+      label-text-weight: 500,
+    ));
   margin-bottom: 10px;
 }
 
-@media (max-width: 600px) {
+.categoryImg {
+  vertical-align: middle;
+  margin-right: 8px;
+}
 
-  .container-flex {
-    flex-direction: column;
-    margin-left: 5px;
-  }
-  .grid-container {
-    display: flex;
-    flex-direction: column;
-  }
-
+[dir='rtl'] .categoryImg {
+  margin-right: 0;
+  margin-left: 8px;
 }

@@ -61,6 +61,11 @@ export class CreateItemComponent {
   selectedIcon = 'fastfood';
 picker: any;
 iconMenu: MatMenuPanel<any> | null | undefined;
+background_colors: any;
+selectedBackgroundColor: any;
+previewImage: unknown;
+listOfCategory: any;
+displayCategoryName: ((value: any) => string) | null | undefined;
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;

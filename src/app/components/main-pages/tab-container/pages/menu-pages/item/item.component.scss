@@ -16,6 +16,13 @@ va-mat-table {
   ));
 }
 
+.btnToggle {
+  @include mat.button-toggle-overrides((shape: 0px,
+
+    ));
+  height: 40px
+}
+
 .action-bar-1{
   text-align: left !important;
 }

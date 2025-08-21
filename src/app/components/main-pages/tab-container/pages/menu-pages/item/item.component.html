@@ -23,24 +23,33 @@
             Create New Item
         </button>
     </div>
-    <!--
-    @if(MENU_CATEGORIES_DATA.data.length === 0){
+    
+    @if(MENU_ITEMS_DATA.data.length === 100){
     <div class="no-data">
         <mat-icon>info</mat-icon>
-        <span>No Categories Found, Please add a category</span>
+        <span>No Items Found, Please add a Item</span>
     </div>
-    } @else {-->
+    } @else {
 
     <div class="menu-container container-1">
-        <button matButton>All </button>
-        <button matButton>Active</button>
-        <button matButton>Inactive </button>
-        <button matButton class="btnCategory">            
-            Barcode
-        </button>
-            <button matButton class="btnCategory">           
-           Deleted
-        </button>
+            @if(selectedCount() === 0) {
+            <mat-button-toggle-group class="btnToggle">
+                <mat-button-toggle checked="true">All</mat-button-toggle>
+                <mat-button-toggle>Active</mat-button-toggle>
+                <mat-button-toggle>Inactive</mat-button-toggle>
+                <mat-button-toggle>Archive</mat-button-toggle>
+            </mat-button-toggle-group>
+            } @else {
+            <span class="selected-count">{{ selectedCount() }} Selected</span>
+            <button matButton="filled" class="btn-action" [matMenuTriggerFor]="actions">
+                Actions
+                <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+            </button>
+            <mat-menu #actions="matMenu">
+                <button mat-menu-item>Archive</button>
+                <button mat-menu-item (click)="onDeleteSelected(selection.selected)">Delete</button>
+            </mat-menu>
+            }
         <mat-form-field appearance="outline" class="inputSearch">
             <mat-label>Search</mat-label>
             <input matInput placeholder="Search Category">
@@ -51,7 +60,7 @@
     </div>
     <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons>
     </mat-paginator>
-    <table mat-table [dataSource]="MENU_CATEGORIES_DATA" matSort (matSortChange)="announceSortChange($event)">
+    <table mat-table [dataSource]="MENU_ITEMS_DATA" matSort (matSortChange)="announceSortChange($event)">
 
         <ng-container matColumnDef="check">
             <th mat-header-cell *matHeaderCellDef>
@@ -155,5 +164,5 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <!--}-->
+    }
 </div>
