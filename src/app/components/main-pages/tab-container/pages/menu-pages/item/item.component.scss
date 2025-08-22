@@ -50,8 +50,8 @@ va-mat-table {
   justify-content: flex-end;
 }
 
-.inputSearch{
-  width: 80%;
+.inputSearch {
+  width: 250px;
 }
 
 @media (max-width: 599px) {
@@ -62,5 +62,13 @@ va-mat-table {
 
   .menu-container {
     flex-direction: column;
+    margin: 20px;
+
+    .btnCategory {
+      width: 100%;
+    }
+  }
+    ::ng-deep.mat-mdc-paginator-outer-container {
+    display: contents !important;
   }
 }

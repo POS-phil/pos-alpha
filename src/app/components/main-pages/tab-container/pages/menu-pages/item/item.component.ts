@@ -9,7 +9,7 @@ import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-//import { MenuCategories } from '../../../../common/menu-categories';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
@@ -25,7 +25,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 @Component({
   selector: 'app-item',
   standalone:true,
-  imports: [    CommonModule,
+  imports: [
+    CommonModule,
     FormsModule,
     RouterModule,
     MatButtonModule,
@@ -39,21 +40,30 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSortModule,
     MatCheckbox,
     MatSlideToggleModule,
-
+    CsMatTableComponent,
+    ColumnSorterComponent,
     MatTabsModule,
-    MatButtonToggleModule],
+    MatButtonToggleModule
+  ],
   templateUrl: './item.component.html',
   styleUrl: './item.component.scss'
 })
 export class ItemComponent {
+applyFilter($event: KeyboardEvent) {
+throw new Error('Method not implemented.');
+}
+//sortableColumns: any;
 onDeleteSelected(arg0: any[]) {
 throw new Error('Method not implemented.');
 }
 // Define the columns to be displayed in the table
   bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['check','image', 'item_name', 'sku', 'category', 'vat', 'price', 'status', 'created_date'];
+  sortableColumns: string[] = ['Image', 'Name', 'Sku', 'category', 'Item_Type', 'Price', 'Cost', 'Recipe', 'Created', 'Active'];
+  displayedColumns: string[] = ['check','Image', 'Name', 'Sku', 'category', 'Item_Type', 'Price', 'Cost', 'Recipe', 'Created', 'Active'];
+  displayedColumnNames: string[] = ['check','Image', 'Name', 'Sku', 'category', 'Item_Type', 'Price', 'Cost', 'Recipe', 'Created', 'Active'];
   // Data source for the table
-  categoryList : MenuCategories[] = [];
+  categoryList : ItemComponent[] = [];
+  
   selectedCount = signal(0);
   MENU_ITEMS_DATA : any;
 
