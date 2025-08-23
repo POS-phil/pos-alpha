@@ -49,6 +49,9 @@ import { MatTabsModule } from '@angular/material/tabs';
   styleUrl: './item.component.scss'
 })
 export class ItemComponent {
+expandCategory(_t111: any) {
+throw new Error('Method not implemented.');
+}
 applyFilter($event: KeyboardEvent) {
 throw new Error('Method not implemented.');
 }

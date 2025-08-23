@@ -38,12 +38,13 @@ import { MatDivider } from "@angular/material/divider";
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule,
-    MatDivider
+    MatChipsModule
+    
 ],
   templateUrl: './create-item.component.html',
   styleUrl: './create-item.component.scss'
 })
+//,MatDivider
 export class CreateItemComponent {
   scheduleSummary: string[] = [];
   isAllDaysChecked = signal(true);
