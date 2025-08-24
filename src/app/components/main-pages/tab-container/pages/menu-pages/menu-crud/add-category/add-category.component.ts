@@ -84,6 +84,7 @@ export class AddCategoryComponent implements OnInit {
   selectedBackgroundColor = '#e62e2eff';
   previewImage: SafeUrl | null = null;
   selectedImage: File | null = null;
+itemName: any;
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;

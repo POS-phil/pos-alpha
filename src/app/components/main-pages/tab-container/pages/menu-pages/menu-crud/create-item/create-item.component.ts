@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +19,9 @@ import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upl
 import { MatDialog } from '@angular/material/dialog';
 import { SafeUrl } from '@angular/platform-browser';
 import { MatDivider } from "@angular/material/divider";
+import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker";
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-create-item',
@@ -38,15 +41,26 @@ import { MatDivider } from "@angular/material/divider";
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDivider,
+    MatDatepicker,
+    MatDatepickerModule,
+    MatNativeDateModule 
     
 ],
+providers: [  
+  MatDatepickerModule,  
+],
+
   templateUrl: './create-item.component.html',
   styleUrl: './create-item.component.scss'
 })
 //,MatDivider
-export class CreateItemComponent {
+export class CreateItemComponent implements OnInit {
+
   scheduleSummary: string[] = [];
+  //itemName:string[] = [];
+  secondLanguageName: [''] | undefined;
   isAllDaysChecked = signal(true);
   isAllDayChecked = signal(true);
   allDayStartTime = signal<string>('00:00');
@@ -60,13 +74,18 @@ export class CreateItemComponent {
   ];
 
   selectedIcon = 'fastfood';
-picker: any;
+  matDatepicker = '';
+picker: Date | undefined;
 iconMenu: MatMenuPanel<any> | null | undefined;
 background_colors: any;
 selectedBackgroundColor: any;
 previewImage: unknown;
 listOfCategory: any;
 displayCategoryName: ((value: any) => string) | null | undefined;
+itemName: any;
+startDate: unknown;
+
+//itemName: any;
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;
@@ -101,8 +120,11 @@ displayCategoryName: ((value: any) => string) | null | undefined;
 
 
     this.createItemForm = this.fb.group({
-      category_name: ['', Validators.required],
+      itemName: ['', Validators.required],
+      secondLanguageName: [''],
+      description : [''],
       reference: ['', Validators.required],
+      parentCategoryId : [''],
       schedule: this.fb.control<ScheduleEntry[]>(defaultSchedule),
       aggregator: [false],
       kiosk: [false],
