@@ -68,7 +68,51 @@ form {
   margin-bottom: 15px;
 }
 
+
+.container-Column1 {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / span 3;
+  grid-row: 1;
+  height: auto;
+}
+
+
+.container-Column2 {
+  display: flex;
+  flex-direction: column;
+  grid-column: 4 / span 3;
+  grid-row: 1;
+  //box-shadow: var(--mat-sys-level3);
+  //padding: 15px;
+  //margin-bottom: 20px;
+}
+
+
+.container-Column3 {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  grid-column: 7 / span 3;
+
+}
+
+
+
+
+
+
 //Price&Costing
+
+.container-PriceCosting {
+  display: flex;
+  flex-direction: column;
+  grid-column: 4 / span 3;
+  grid-row: 4;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+  margin-bottom: 20px;
+}
 
 
 .grid-itemPriceCostingHeader {
@@ -140,10 +184,20 @@ form {
 
 // NetGrossWeight
 
+.container-NetGrossWeight  {
+  display: flex;
+  flex-direction: column;
+  grid-column: 7 / span 3;
+  grid-row: 4;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
 
 .grid-containerNetGrossWeight {
   display: grid;
-  grid-template-columns: repeat(1, 450px);
+  grid-template-columns: repeat(2, 225px);
   grid-template-rows: repeat(3, 60px);
   gap: 10px;
   margin-top: 30px;
@@ -159,6 +213,21 @@ form {
   width: 100%;
 
 }
+
+
+.grid-itemNetGrossWeight-Solo{
+  //background-color: #90caf9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  border-radius: 4px;
+  width: 100%;
+
+}
+
+
+
 
 
 // END - NetGrossWeight

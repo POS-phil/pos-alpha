@@ -65,6 +65,8 @@ export class CreateItemComponent implements OnInit {
   isAllDayChecked = signal(true);
   allDayStartTime = signal<string>('00:00');
   allDayEndTime = signal<string>('23:59');
+  sTogglechecked = false;
+  txtdisabled = false;
 
   icons = [
     'breakfast_dining', 'free_breakfast', 'bakery_dining', 'brunch_dining', 'coffee',
