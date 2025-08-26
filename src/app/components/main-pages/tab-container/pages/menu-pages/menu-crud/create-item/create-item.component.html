@@ -58,30 +58,9 @@
                                 
             </mat-form-field>  
         </div>
-        </div>
-        <!-- 2nd column -->
-        <div class="container-Column2">
-            <div class="container-availability">
-                <button type="button" mat-fab extended class="full-width btnAvailability"
-                    (click)="openAvailabilityDialog()">
-                    <mat-icon>event_repeat</mat-icon>
-                    <span>Availability</span>
-                </button>
-                <mat-chip-set>
-                    @for(item of scheduleSummary; track item){
-                    <mat-chip>{{ item }}</mat-chip>
-                    }
-                </mat-chip-set>
 
+        <div class="container-PriceCosting">
 
-            </div>
-
-
-    
-            <div class="container-PriceCosting">
-                <div class="classMargin">
-                <mat-divider></mat-divider>
-                </div>
 
                 <div class="grid-itemPriceCostingHeader">Pricing & Costing</div>
                 <div class="grid-containerPriceCosting">
@@ -154,7 +133,63 @@
 
                 </div>
 
+        </div>
+
+
+        </div>
+        <!-- 2nd column -->
+        <div class="container-Column2">
+            <div class="container-availability">
+                <button type="button" mat-fab extended class="full-width btnAvailability"
+                    (click)="openAvailabilityDialog()">
+                    <mat-icon>event_repeat</mat-icon>
+                    <span>Availability</span>
+                </button>
+                <mat-chip-set>
+                    @for(item of scheduleSummary; track item){
+                    <mat-chip>{{ item }}</mat-chip>
+                    }
+                </mat-chip-set>
+
+
             </div>
+<div class="container-NetGrossWeight">
+                <div class="grid-containerNetGrossWeight">
+                    <div class="grid-itemNetGrossWeight">
+                    <mat-form-field class="full-width">
+                    <mat-label>Gross Weight</mat-label>
+                    <input matInput type="text" placeholder="0.000">                    
+                </mat-form-field>  
+                </div>
+                <div class="grid-itemNetGrossWeight">
+                    <mat-form-field class="full-width">
+                    <mat-label>Cost</mat-label>
+                    <input matInput type="text" placeholder="0.000">                    
+                </mat-form-field>  
+                </div>
+                <div class="grid-itemNetGrossWeight">
+                    <mat-form-field class="full-width">
+                    <mat-label>Net Weight</mat-label>
+                    <input matInput type="text" placeholder="0.000">                    
+                </mat-form-field>  
+                </div>
+
+                <div class="grid-itemNetGrossWeight">
+                    <mat-form-field class="full-width">
+                    <mat-label>Markup</mat-label>
+                    <input matInput type="text" placeholder="0.000">                    
+                </mat-form-field>  
+                </div>
+                 <div class=".grid-itemNetGrossWeight-Solo">
+                    <mat-form-field class="full-width">
+                    <mat-label>Calories</mat-label>
+                    <input matInput type="text" placeholder="0.000">                    
+                </mat-form-field>  
+                </div>
+
+            </div>
+        </div>
+
         </div>
         
       <!-- 3rd column -->
@@ -239,42 +274,7 @@
 
 
         </div>
-        <div class="container-NetGrossWeight">
-                <div class="grid-containerNetGrossWeight">
-                    <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Gross Weight</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-                <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Cost</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-                <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Net Weight</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-
-                <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Markup</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-                 <div class=".grid-itemNetGrossWeight-Solo">
-                    <mat-form-field class="full-width">
-                    <mat-label>Calories</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-
-            </div>
-        </div>
+        
     </div>  
 
 

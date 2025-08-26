@@ -32,16 +32,20 @@ form {
   box-shadow: var(--mat-sys-level3);
   text-align: center;
   padding: 15px;
+  margin-bottom: 10px;
+  height: 505px;
 }
 
 .container-availability {
   display: flex;
   flex-direction: column;
   grid-column: 4 / span 3;
-  grid-row: 1;
+  grid-row: 1  / span 3;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
   margin-bottom: 20px;
+  grid-template-rows: repeat(10, 60px);
+  height: 505px;
 }
 
 .container-utility {
@@ -52,6 +56,7 @@ form {
   grid-row: 1;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
+  height: 505px;
 }
 
 .container-utlity-content {
@@ -61,6 +66,7 @@ form {
   grid-row: 1;
   text-align: center;
   margin-bottom: 20px;
+  
 }
 
 .classMargin{
@@ -104,6 +110,10 @@ form {
 
 //Price&Costing
 
+
+
+
+
 .container-PriceCosting {
   display: flex;
   flex-direction: column;
@@ -112,6 +122,15 @@ form {
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
   margin-bottom: 20px;
+}
+
+.grid-containerPriceCosting {
+  display: grid;
+  grid-template-columns: repeat(2, 225px);
+  grid-template-rows: repeat(5, 60px);
+  gap: 10px;  
+  margin-top: 10px;
+  height: 320px;
 }
 
 
@@ -127,12 +146,6 @@ form {
   margin-bottom: 10px;
 }
 
-.grid-containerPriceCosting {
-  display: grid;
-  grid-template-columns: repeat(2, 225px);
-  grid-template-rows: repeat(7, 60px);
-  gap: 10px;  
-}
 
 .grid-itemPriceCosting {
   //background-color: #90caf9;
@@ -192,15 +205,17 @@ form {
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
   margin-bottom: 20px;
+  
 }
 
 
 .grid-containerNetGrossWeight {
   display: grid;
   grid-template-columns: repeat(2, 225px);
-  grid-template-rows: repeat(3, 60px);
+  grid-template-rows: repeat(5, 60px);
   gap: 10px;
   margin-top: 30px;
+  height: 320px;
 }
 
 .grid-itemNetGrossWeight{
