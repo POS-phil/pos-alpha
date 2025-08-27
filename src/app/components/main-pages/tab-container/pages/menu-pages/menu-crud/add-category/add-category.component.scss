@@ -7,7 +7,7 @@ form {
   border: none;
 }
 
-.container-flex2 {
+.container-grid {
   display: grid;
   grid-template-columns: repeat(9, 150px);
   justify-content: center;
@@ -16,7 +16,7 @@ form {
 
 @media (max-width: 600px) {
 
-  .container-flex2 {
+  .container-grid {
   display: flex;
   flex-direction: column;
   margin-left: 20px;
