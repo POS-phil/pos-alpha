@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormField, MatInputModule } from '@angular/material/input';
@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
+import {CdkTree, CdkTreeModule} from '@angular/cdk/tree';
 
 @Component({
   selector: 'app-menu',
@@ -44,7 +45,8 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
     CsMatTableComponent,
     ColumnSorterComponent,
     MatTabsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    CdkTreeModule
   ],
   providers: [MenuCategoriesService],
   templateUrl: './menu.component.html',
@@ -56,6 +58,8 @@ export class MenuComponent implements OnInit {
   sortableColumns: string[] = ['reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
   displayedColumnNames: string[] = ['Reference', 'Category Name', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
   categoryList: MenuCategories[] = [];
+  @ViewChild(MatTable, { read: true }) table!: MatTable<any>;
+
 
   showSelectionHeader = false;
   selectedCount = signal(0);
@@ -84,27 +88,6 @@ export class MenuComponent implements OnInit {
 
   MENU_CATEGORIES_DATA = new MatTableDataSource<MenuCategories>([]);
 
-  // getCategories() {
-  //   this.menuCategoriesService.getMenuCategories().subscribe({
-  //     next: (data: MenuCategories[]) => {
-  //       console.log(data);
-  //       const topLevel = data.filter(cat => cat.parentCategoryId == null);
-  //       this.MENU_CATEGORIES_DATA.data = topLevel;
-
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching categories:', err);
-  //     }
-  //   });
-
-  //   this.MENU_CATEGORIES_DATA.paginator = this.paginator;
-  //   this.MENU_CATEGORIES_DATA.sort = this.sort;
-  // }
-
-  isSubcategory(row: MenuCategories): boolean {
-    return row.parentCategoryId != null;
-  }
-
   getCategories() {
     this.menuCategoriesService.getMenuCategories().subscribe({
       next: (data: MenuCategories[]) => {
@@ -119,40 +102,18 @@ export class MenuComponent implements OnInit {
         console.error('Error fetching menu categories', error);
       }
     });
-
-    this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
   }
 
-  expandCategory(parent: MenuCategories) {
-    const parentIndex = this.MENU_CATEGORIES_DATA.data.findIndex(
-      (c: MenuCategories) => c.categoryId === parent.categoryId
-    );
-
-    const alreadyExpanded = this.MENU_CATEGORIES_DATA.data[parentIndex + 1]?.parentCategoryId === parent.categoryId;
-
-    if (alreadyExpanded) {
-      this.MENU_CATEGORIES_DATA.data = this.MENU_CATEGORIES_DATA.data.filter(
-        (row: MenuCategories) => row.parentCategoryId !== parent.categoryId
-      );
-      this.MENU_CATEGORIES_DATA._updateChangeSubscription();
-      return;
-    }
-
-    this.menuCategoriesService.getSubCategories(parent.categoryId!).subscribe(
-      (subcats: MenuCategories[]) => {
-        if (!subcats || subcats.length === 0) return;
-
-        const formattedSubcats = subcats.map(sub => ({
-          ...sub,
-          isSubcategory: true
-        }));
-
-        this.MENU_CATEGORIES_DATA.data.splice(parentIndex + 1, 0, ...formattedSubcats);
-
-        this.MENU_CATEGORIES_DATA._updateChangeSubscription();
-      });
-
-  }
+  // private transformer = (node: MenuCategories, level: number) => {
+  //   return {
+  //     expandable: !!node.subCategories && node.subCategories.length > 0,
+  //     level: level,
+  //     categoryId: node.categoryId,
+  //     isActive: node.isActive,
+  //     isDeleted: node.isDeleted,
+      
+  //   }
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

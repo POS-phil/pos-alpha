@@ -89,7 +89,7 @@
                     </th>
                     <td mat-cell *matCellDef="let menu_cat">
                         @if(menu_cat.withSubCategories) {
-                        <button matIconButton (click)="expandCategory(menu_cat)">
+                        <button matIconButton >
                             <mat-icon>{{ menu_cat.expanded ? 'remove' : 'add' }}</mat-icon>
                         </button>
                         }
@@ -102,7 +102,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="category_name">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
                     <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.categoryName}} </td>
                 </ng-container>
 
