@@ -11,8 +11,6 @@
     </div>
     <div class="container-flex2">
 
-        <div class="container-Column1">
-
         <div class="container-basic-info">
             <h3>Basic Info</h3>
             <mat-form-field class="full-width">
@@ -58,143 +56,21 @@
                                 
             </mat-form-field>  
         </div>
-
-        <div class="container-PriceCosting">
-
-
-                <div class="grid-itemPriceCostingHeader">Pricing & Costing</div>
-                <div class="grid-containerPriceCosting">
-                    
-                    <div class="grid-itemPriceCosting">
-                        <mat-form-field class="full-width">
-                            <mat-label>Costing Method</mat-label>
-                            <input matInput type="text" placeholder="SKU">                    
-                        </mat-form-field>  
-                    </div>
-                    <div class="grid-itemPriceCosting">   
-                        <mat-form-field class="full-width">
-                            <mat-label>Cost %</mat-label>
-                            <input matInput type="text" placeholder="Cost %">                    
-                        </mat-form-field> 
-                    </div>
-                    <div class="grid-itemPriceCosting">
-                        <mat-form-field  class="full-width">
-                        <mat-label>Selling Method</mat-label>
-                        <select matNativeControl required>
-                            <option value="Category 1">Category 1</option>
-                            <option value="Category 2">Category 2</option>
-                        </select>
-                        </mat-form-field>
-                    </div>
-                    <div class="grid-itemPriceCosting">
-                        <mat-form-field class="full-width">
-                        <mat-label>Tax Group </mat-label>
-                        <select matNativeControl required>
-                            <option value="Menu">Menu Item</option>
-                            <option value="Retail">Retail Item</option>
-                        </select>
-                        </mat-form-field>
-                    </div>
-                    <div class="grid-itemPriceCosting">                    
-                    <div class="grid-containerOpenPrice">
-                        <div class="grid-itemOpenPrice">
-                            <mat-slide-toggle #slideToggle >Open Price</mat-slide-toggle>
-                        </div>
-                        <div class="grid-itemOpenPrice">
-                    <mat-form-field class="full-width">
-                            <mat-label>Enter Price</mat-label>
-                            <input matInput type="text" placeholder="Enter Price" [disabled]="!slideToggle.checked">                    
-                        </mat-form-field> 
-                        </div>   
-                        </div>
-                    </div>
-                    <div class="grid-itemPriceCosting">                    
-                        <mat-form-field class="full-width">
-                            <mat-label>Preparation Time</mat-label>
-                            <input matInput type="text" placeholder="Preparation Time">                    
-                        </mat-form-field> 
-                    </div>
-                    <div class="grid-itemPriceCosting">
-                        <mat-form-field>
-                        <mat-label>Choose a date</mat-label>
-                        <input matInput [matDatepicker]="picker">
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-                        
-                    </div>
-                    <div class="grid-itemPriceCosting">
-                       <mat-form-field class="full-width">
-                        <mat-label>Tags</mat-label>
-                        <input matInput type="text" placeholder="TAGS">                    
-                    </mat-form-field>  
-                    </div>
-
-                </div>
-
-        </div>
+        <div class="container-availability">
+            <button type="button" mat-fab extended class="full-width btnAvailability"
+                (click)="openAvailabilityDialog()">
+                <mat-icon>event_repeat</mat-icon>
+                <span>Availability</span>
+            </button>
+            <mat-chip-set>
+                @for(item of scheduleSummary; track item){
+                <mat-chip>{{ item }}</mat-chip>
+                }
+            </mat-chip-set>
 
 
         </div>
-        <!-- 2nd column -->
-        <div class="container-Column2">
-            <div class="container-availability">
-                <button type="button" mat-fab extended class="full-width btnAvailability"
-                    (click)="openAvailabilityDialog()">
-                    <mat-icon>event_repeat</mat-icon>
-                    <span>Availability</span>
-                </button>
-                <mat-chip-set>
-                    @for(item of scheduleSummary; track item){
-                    <mat-chip>{{ item }}</mat-chip>
-                    }
-                </mat-chip-set>
 
-
-            </div>
-<div class="container-NetGrossWeight">
-                <div class="grid-containerNetGrossWeight">
-                    <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Gross Weight</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-                <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Cost</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-                <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Net Weight</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-
-                <div class="grid-itemNetGrossWeight">
-                    <mat-form-field class="full-width">
-                    <mat-label>Markup</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-                 <div class=".grid-itemNetGrossWeight-Solo">
-                    <mat-form-field class="full-width">
-                    <mat-label>Calories</mat-label>
-                    <input matInput type="text" placeholder="0.000">                    
-                </mat-form-field>  
-                </div>
-
-            </div>
-        </div>
-
-        </div>
-        
-      <!-- 3rd column -->
-
-    <div class="container-Column3">
         <div class="container-utility">
             <h3>Utilities</h3>
             <div class="container-utlity-content">
@@ -206,8 +82,6 @@
                         <mat-icon class="icon-image">add_a_photo</mat-icon>
                         }
                     </button>
-                     
-
                 </div>
                 <div class="grid-toggle-buttons">
                     <mat-slide-toggle formControlName="webShop" class="toggle-button">
@@ -267,13 +141,153 @@
 
                 </div>
             </div>
-            
+        </div>
+
+        <div class="container-PriceCosting">
+
+            <h3>Pricing</h3>
+ 
+                    <div class="grid-itemPriceCosting">
+                        <mat-form-field  class="full-width">
+                        <mat-label>Selling Method</mat-label>
+                        <select matNativeControl required>
+                            <option value="Category 1">Category 1</option>
+                            <option value="Category 2">Category 2</option>
+                        </select>
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-itemPriceCosting">
+                        <mat-form-field class="full-width">
+                        <mat-label>Tax Group </mat-label>
+                        <select matNativeControl required>
+                            <option value="Menu">Menu Item</option>
+                            <option value="Retail">Retail Item</option>
+                        </select>
+                        </mat-form-field>
+                    </div>
+                    <div class="grid-itemPriceCosting">                    
+                    <div class="grid-containerOpenPrice">
+                     
+                        <div class="grid-itemOpenPrice">
+                            <mat-form-field class="full-width">
+                            <mat-label>Enter Price</mat-label>
+                                <input matInput type="text" placeholder="Enter Price" [disabled]="!slideToggle.checked">                    
+                            </mat-form-field> 
+                        </div>  
+                        <div class="grid-itemOpenPrice">
+                            <mat-slide-toggle #slideToggle >Open Price</mat-slide-toggle>
+                        </div>
+                        
+                        </div>
+                    </div>
+                    <div class="grid-itemPriceCosting">                    
+                        <mat-form-field class="full-width">
+                            <mat-label>Preparation Time</mat-label>
+                            <input matInput type="text" placeholder="Preparation Time">                    
+                        </mat-form-field> 
+                    </div>
+                    <div class="grid-itemPriceCosting">
+                        <mat-form-field>
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        
+                    </div>
+                    <div class="grid-itemPriceCosting">
+                                                   <mat-form-field  class="full-width">
+                        <mat-label>Tags</mat-label>
+                        <select matNativeControl required>
+                            <option value="Tags 1">Tags 1</option>
+                            <option value="Tags 2">Tags 2</option>
+                        </select>
+                        </mat-form-field>  
+                    </div>
+
+        </div>
+
+        <div class="container-NetGrossWeight">
+            <h3>Costing</h3>
+                <div class="grid-containerNetGrossWeight">
+                    
+                    <div class="grid-itemNetGrossWeight">
+                           <mat-form-field  class="full-width">
+                        <mat-label>Costing Method</mat-label>
+                        <select matNativeControl required>
+                            <option value="Category 1">From Ingredient</option>
+                            <option value="Category 2">Category 2</option>
+                        </select>
+                        </mat-form-field> 
+                    </div>
+                    <div class="grid-itemNetGrossWeight">   
+                        <mat-form-field class="full-width">
+                            <mat-label>Cost %</mat-label>
+                            <input matInput type="text" placeholder="Cost %"  [disabled]="true">
+                        </mat-form-field> 
+                    </div>
+     <div class="grid-itemNetGrossWeight">
+                        <mat-form-field class="full-width">
+                        <mat-label>Net Weight</mat-label>
+                        <input matInput type="text" placeholder="0.000">                    
+                    </mat-form-field>  
+                    </div>
+
+                    <div class="grid-itemNetGrossWeight">
+                        <mat-form-field class="full-width">
+                        <mat-label>Gross Weight</mat-label>
+                        <input matInput type="text" placeholder="0.000">                    
+                    </mat-form-field>  
+                    </div>
+
+                    <div class="grid-itemNetGrossWeight">
+                        <mat-form-field class="full-width">
+                        <mat-label>Calories</mat-label>
+                        <input matInput type="text" placeholder="0.000">                    
+                    </mat-form-field>  
+                    </div>
+                    <div class="grid-itemNetGrossWeight">
+                        <mat-form-field class="full-width">
+                        <mat-label>Cost Amount</mat-label>
+                        <input matInput type="text" [disabled]="true">                    
+                    </mat-form-field>  
+                    </div>
+
+                    <div class="grid-itemNetGrossWeight">     
+   
+                        <mat-checkbox class="full-width">High Salt Content</mat-checkbox>        
+                    </div>
+               
+
+                    <div class="grid-itemNetGrossWeight">
+                        <mat-form-field class="full-width">
+                        <mat-label>Markup</mat-label>
+                        <input matInput type="text"[disabled]="true">                    
+                    </mat-form-field>  
+                    </div>
+
+                
+        </div>
+</div>
+
+        <div class="container-Column1">
 
 
 
 
 
         </div>
+        <!-- 2nd column -->
+        <div class="container-Column2">
+            
+
+        </div>
+        
+      <!-- 3rd column -->
+
+    <div class="container-Column3">
+        
         
     </div>  
 

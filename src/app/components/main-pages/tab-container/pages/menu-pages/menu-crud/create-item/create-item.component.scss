@@ -117,11 +117,12 @@ form {
 .container-PriceCosting {
   display: flex;
   flex-direction: column;
-  grid-column: 4 / span 3;
-  grid-row: 4;
+  grid-column: 1 / span 3;
+  grid-row: 2  / span 3;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
   margin-bottom: 20px;
+  height: 400px;
 }
 
 .grid-containerPriceCosting {
@@ -130,12 +131,11 @@ form {
   grid-template-rows: repeat(5, 60px);
   gap: 10px;  
   margin-top: 10px;
-  height: 320px;
+
 }
 
 
 .grid-itemPriceCostingHeader {
-  //background-color: #90caf9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -160,7 +160,7 @@ form {
 
 .grid-containerOpenPrice {
   display: grid;
-  grid-template-columns: repeat(2, 100px);
+  grid-template-columns: repeat(2, 225px);
   grid-template-rows: repeat(1, 40px);
   gap: 10px;
 
@@ -190,6 +190,7 @@ form {
   grid-template-columns: repeat(1, 225px);
   grid-template-rows: repeat(1, 300px);
   gap: 10px;
+   height: 350px;
 }
 
 // END - Utilities
@@ -200,33 +201,34 @@ form {
 .container-NetGrossWeight  {
   display: flex;
   flex-direction: column;
-  grid-column: 7 / span 3;
-  grid-row: 4;
+  grid-column: 4 / span 6;
+  grid-row: 2  / span 6;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
   margin-bottom: 20px;
+  height: 400px;
   
 }
 
 
 .grid-containerNetGrossWeight {
   display: grid;
-  grid-template-columns: repeat(2, 225px);
-  grid-template-rows: repeat(5, 60px);
-  gap: 10px;
-  margin-top: 30px;
-  height: 320px;
+  grid-template-columns: repeat(2, 450px);
+  //grid-template-rows: repeat(5, 60px);
+  gap: 10px; 
 }
 
 .grid-itemNetGrossWeight{
   //background-color: #90caf9;
+
   display: flex;
+  grid-template-columns: repeat(2, 450px);  
+
   align-items: center;
   justify-content: center;
   font-weight: bold;
   border-radius: 4px;
-  width: 100%;
-
+ 
 }
 
 

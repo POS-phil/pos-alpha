@@ -21,6 +21,8 @@ import { SafeUrl } from '@angular/platform-browser';
 import { MatDivider } from "@angular/material/divider";
 import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker";
 import { MatNativeDateModule } from '@angular/material/core';
+import { BooleanInput } from '@angular/cdk/coercion';
+import { MatCheckbox } from "@angular/material/checkbox";
 
 
 @Component({
@@ -42,11 +44,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatMenuModule,
     MatTooltipModule,
     MatChipsModule,
-    MatDivider,
     MatDatepicker,
     MatDatepickerModule,
-    MatNativeDateModule 
-    
+    MatNativeDateModule,
+    MatCheckbox
 ],
 providers: [  
   MatDatepickerModule,  
@@ -86,6 +87,7 @@ listOfCategory: any;
 displayCategoryName: ((value: any) => string) | null | undefined;
 itemName: any;
 startDate: unknown;
+isEditable: false | undefined;
 
 //itemName: any;
 
