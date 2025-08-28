@@ -24,6 +24,11 @@ form {
 }
 }
 
+.buttonGenerate
+{
+  height: 35px;
+}
+
 .container-basic-info {
   display: flex;
   flex-direction: column;
@@ -163,7 +168,7 @@ form {
   grid-template-columns: repeat(2, 225px);
   grid-template-rows: repeat(1, 40px);
   gap: 10px;
-
+  margin-bottom: 10px;
 }
 
 .grid-itemOpenPrice {
