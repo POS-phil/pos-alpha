@@ -22,7 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
-import {CdkTree, CdkTreeModule} from '@angular/cdk/tree';
+import { CdkTree, CdkTreeModule } from '@angular/cdk/tree';
 
 @Component({
   selector: 'app-menu',
@@ -55,17 +55,15 @@ import {CdkTree, CdkTreeModule} from '@angular/cdk/tree';
 
 export class MenuComponent implements OnInit {
 
-  sortableColumns: string[] = ['reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
-  displayedColumnNames: string[] = ['Reference', 'Category Name', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
-  categoryList: MenuCategories[] = [];
-  @ViewChild(MatTable, { read: true }) table!: MatTable<any>;
-
-
-  showSelectionHeader = false;
-  selectedCount = signal(0);
-
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  sortableColumns: string[] = ['reference', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
+  displayedColumnNames: string[] = ['Reference', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
+  categoryList: MenuCategories[] = [];
+  @ViewChild(MatTable, { read: true }) table!: MatTable<any>;
+  showSelectionHeader = false;
+  selectedCount = signal(0);
 
   private _liveAnnouncer = inject(LiveAnnouncer);
 
@@ -83,7 +81,7 @@ export class MenuComponent implements OnInit {
   ) { }
 
   getFinalDisplayedColumns(): string[] {
-    return ['check', 'plus', ...this.sortableColumns];
+    return ['check', 'plus', 'category_name', ...this.sortableColumns];
   }
 
   MENU_CATEGORIES_DATA = new MatTableDataSource<MenuCategories>([]);
@@ -103,17 +101,6 @@ export class MenuComponent implements OnInit {
       }
     });
   }
-
-  // private transformer = (node: MenuCategories, level: number) => {
-  //   return {
-  //     expandable: !!node.subCategories && node.subCategories.length > 0,
-  //     level: level,
-  //     categoryId: node.categoryId,
-  //     isActive: node.isActive,
-  //     isDeleted: node.isDeleted,
-      
-  //   }
-  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -167,21 +154,21 @@ export class MenuComponent implements OnInit {
   }
 
   onDeleteSelected(rows: any[]) {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: {
-      title: 'Delete Confirmation',
-      message: `Are you sure you want to delete ${rows.length} selected row(s)?`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel'
-    }
-  });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Confirmation',
+        message: `Are you sure you want to delete ${rows.length} selected row(s)?`,
+        confirmText: 'Delete',
+        cancelText: 'Cancel'
+      }
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      // perform delete logic
-      console.log('Deleting rows', rows);
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // perform delete logic
+        console.log('Deleting rows', rows);
+      }
+    });
+  }
 
 }
