@@ -283,9 +283,9 @@ itemName: any;
     }
 
     //Uncomment for debugging
-    // console.log('Form Data:', formData);
-    // console.log('Form Value:', formValue);
-    // console.log('Category Form', this.createCategoryForm.value);
+    console.log('Form Data:', formData);
+    console.log('Form Value:', formValue);
+    console.log('Category Form', this.createCategoryForm.value);
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {
