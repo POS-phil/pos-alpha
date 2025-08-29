@@ -48,25 +48,24 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/pages/transaction-orders/transaction-orders.component').then(m => m.TransactionOrdersComponent),
                 title: 'Transaction Orders',
             },
+            // {
+            //     path: 'product-list/category',
+            //     loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
+            //     title: 'Product List / Category',
+            //     children: [
+            //         {
+            //             path: '',
+            //             redirectTo: 'categories',
+            //             pathMatch: 'full'
+            //         },
+            //         {
+            //             path: 'categories',
+            //             loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
+            //             title: 'Product Lists / Categories',
+            //         },
+            //     ]
+            // },
             {
-                path: 'product-list/category',
-                loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
-                title: 'Product List / Category',
-                children: [
-                    {
-                        path: '',
-                        redirectTo: 'categories',
-                        pathMatch: 'full'
-                    },
-                    {
-                        path: 'categories',
-                        loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
-                        title: 'Product Lists / Categories',
-                    },
-                    ]
-            },
-
-               {
                 path: 'menu/item',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/item/item.component').then(m => m.ItemComponent),
                 title: 'Menu / Item',
@@ -109,16 +108,21 @@ export const routes: Routes = [
                 path: 'menu/modifier-option/create_modifier_option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-modifier-option/create-modifier-option.component').then(m => m.CreateModifierOptionComponent),
                 title: 'Create Modifier Option'
-            },  
+            },
             {
                 path: 'menu/modifier-group/edit_modifier_group',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/edit-modifier-group/edit-modifier-group.component').then(m => m.EditModifierGroupComponent),
                 title: 'Edit Modifier Group'
-            },  
+            },
             {
                 path: 'menu/modifier-option/edit_modifier_option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/edit-modifier-option/edit-modifier-option.component').then(m => m.EditModifierOptionComponent),
                 title: 'Edit Modifier Option'
+            },
+            {
+                path: 'product-list/category',
+                loadComponent : () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
+                title: 'Product List / Categories'
             }
         ]
     },
