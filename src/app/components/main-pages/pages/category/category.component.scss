@@ -1,0 +1,225 @@
+@use '@angular/material' as mat;
+
+.main-container {
+  box-shadow: var(--mat-sys-level3);
+}
+
+.menu-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  gap: 10px;
+  // border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.category-name {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.checkbox-cell {
+  width: 35px;
+}
+
+.col-name {
+  width: 220px;
+}
+
+.col-image {
+  width: 80px;
+}
+
+.col-item {
+  width: 120px;
+}
+
+.col-toggle {
+  width: 100px;
+}
+
+.col-toggle-counter-top {
+  width: 120px;
+}
+
+.col-created {
+  width: 160px;
+}
+
+.col-toggle-active {
+  width: 100px;
+}
+
+H2 {
+  margin-left: 10px;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.btnCategory {
+  border-radius: 5px;
+}
+
+.btn-action {
+  border-radius: 5px;
+}
+
+.selected-count {
+  font-weight: 700;
+}
+
+.action-bar {
+  display: flex;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  align-items: center;
+  gap: 10px;
+}
+
+.mat-button-toggle-standalone.mat-button-toggle-appearance-standard,
+.mat-button-toggle-group-appearance-standard {
+  /* border-radius: var(--mat-button-toggle-shape, var(--mat-sys-corner-extra-large)); */
+  border: solid 0px var(--mat-button-toggle-divider-color, var(--mat-sys-outline));
+}
+
+.btnToggle {
+  @include mat.button-toggle-overrides((shape: 0px,
+
+    ));
+  height: 40px
+}
+
+::ng-deep .mat-button-toggle-group-appearance-standard .mat-button-toggle {
+  border: none !important;
+}
+
+.slide-toggle {
+  @include mat.slide-toggle-overrides((track-width: 45px,
+      track-height: 20px,
+      selected-handle-color: rgb(100, 194, 100),
+      selected-hover-handle-color: rgb(34, 190, 34),
+      selected-focus-handle-color: rgb(34, 190, 34),
+      selected-icon-color: white,
+      unselected-handle-color: rgb(194, 100, 100),
+      unselected-hover-handle-color: rgb(180, 39, 39),
+      unselected-focus-handle-color: rgb(180, 39, 39),
+    ));
+}
+
+.icon-edit {
+  color: #38220f;
+}
+
+.icon-image {
+  text-align: center;
+  font-size: 25px;
+  width: 25px;
+  height: 25px;
+  border-radius: 5px;
+}
+
+.category-image {
+  align-items: center;
+  max-width: 25px;
+  max-height: 25px;
+  border-radius: 5px;
+}
+
+:host ::ng-deep .p-treetable.p-treetable-sm .p-treetable-tbody>tr>td {
+  padding: 0 !important;
+  padding-left: 0.4rem !important;
+}
+
+:host ::ng-deep .p-treetable-hoverable-rows .p-treetable-tbody>tr {
+  cursor: default;
+}
+
+:host ::ng-deep .p-paginator-page.p-paginator-page-selected {
+  background: #38220f;
+  color: #ffffff;
+}
+
+.checkbox {
+  --p-checkbox-checked-border-color: #dbc1ac;
+  --p-checkbox-checked-hover-border-color: #634832;
+  --p-checkbox-checked-focus-border-color: #967259;
+  --p-checkbox-checked-background: #634832;
+  --p-checkbox-checked-hover-background: #967259;
+}
+
+.customized-tree-table {
+  font-size: 14px;
+  --p-checkbox-checked-border-color: #dbc1ac;
+  --p-checkbox-checked-hover-border-color: #634832;
+  --p-checkbox-checked-focus-border-color: #967259;
+  --p-checkbox-checked-background: #634832;
+  --p-checkbox-checked-hover-background: #967259;
+  --p-inputtext-focus-border-color: #38220f;
+  --p-treetable-loading-icon-size: 2rem;
+  --p-treetable-sort-icon-color: var(--p-text-muted-color);
+  --p-treetable-sort-icon-hover-color: var(--p-text-hover-muted-color);
+  --p-treetable-sort-icon-size: 0.875rem;
+  --p-treetable-resize-indicator-width: 1px;
+  --p-treetable-resize-indicator-color: var(--p-primary-color);
+  --p-treetable-column-resizer-width: 0.5rem;
+  --p-treetable-footer-background: var(--mat-sys-surface);
+  --p-treetable-footer-color: var(--p-content-color);
+  --p-treetable-footer-cell-background: var(--mat-sys-surface);
+  --p-treetable-footer-cell-padding: 0.75rem 1rem;
+  --p-treetable-body-cell-padding: 0.75rem 1rem;
+  --p-treetable-body-cell-gap: 0.5rem;
+  --p-treetable-row-background: var(--mat-sys-surfaced);
+  --p-treetable-row-hover-background: #dbc1ac;
+  --p-treetable-row-selected-background: #dbc1ac;
+  --p-treetable-row-color: var(--p-content-color);
+  --p-treetable-row-hover-color: var(--p-content-hover-color);
+  --p-treetable-row-selected-color: #424242;
+  --p-treetable-column-title-font-weight: 600;
+  --p-treetable-header-cell-background: var(--mat-sys-surface);
+  --p-treetable-header-cell-gap: 0;
+  --p-treetable-header-cell-padding: 0.75rem 1rem;
+  --p-treetable-header-background: var(--mat-sys-surface);
+  --p-treetable-header-border-width: 0 0 1px 0;
+  --p-treetable-header-padding: 0.75rem 1rem;;
+  --p-select-hover-border-color: #dbc1ac;
+  --p-select-focus-border-color: #dbc1ac;
+  --p-select-option-focus-background: #dbc1ac;
+  --p-select-option-selected-background: #dbc1ac;
+  --p-select-option-selected-color: #000;
+  --p-paginator-padding: 0.5rem 1rem;
+  --p-paginator-gap: 0.25rem;
+}
+
+:host ::ng-deep .p-treetable-scrollable-body {
+  overflow-y: hidden !important;
+  overflow-x: auto;
+}
+
+:host ::ng-deep .p-select-option.p-select-option-selected.p-focus {
+  background: #dbc1ac;
+  color: #000000;
+}
+
+:host ::ng-deep .p-button {
+  border: transparent !important;
+}
+
+:host ::ng-deep .p-paginator {
+  background: var(--mat-sys-surface);
+}
+
+.btn-primeng {
+  --p-button-text-primary-active-background: #967259;
+  --p-button-text-primary-hover-background: #dbc1ac;
+  --p-button-text-primary-color: #252525;
+  --p-button-outlined-primary-hover-background: #dbc1ac;
+  --p-button-outlined-primary-active-background: #967259;
+  --p-button-outlined-primary-color: #634832;
+
+}

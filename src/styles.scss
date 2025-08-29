@@ -1,5 +1,6 @@
 @use "@angular/material" as mat;
 @include mat.core();
+@import "primeicons/primeicons.css";
 
 $compact-form-theme: mat.define-theme((density: (scale: -4,
             )));
@@ -31,6 +32,8 @@ html, body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif; 
+    background: var(--mat-sys-background) !important;
+  color: var(--mat-sys-on-background) !important;
 }
 
 .grid {
