@@ -126,7 +126,7 @@
                     @if (col.filter) {
                     @if(col.header === 'Created'){
                     <input pInputText [placeholder]="'Filter by Date'" type="text"
-                        (input)="dt.filter($any($event.target).value, col.field, 'contains')" />
+                        (input)="dt.filter($any($event.target).value, 'createdAtFormatted', 'contains')" />
                     } @else {
                     <input pInputText [placeholder]="'Filter by ' + col.header" type="text"
                         (input)="dt.filter($any($event.target).value, col.field, 'contains')" />
@@ -159,7 +159,7 @@
                     } @else if (['webShop','aggregator','kiosk','counterTop','isActive'].includes(col.field)) {
                         <mat-slide-toggle class="slide-toggle" [(ngModel)]="rowData[col.field]"></mat-slide-toggle>
                     } @else if (col.field === 'createdAt') {
-                    {{ formatCreatedAt(rowData.createdAt) }}
+                    {{ rowData.createdAtFormatted }}
                     }
                 </td>
                 }
