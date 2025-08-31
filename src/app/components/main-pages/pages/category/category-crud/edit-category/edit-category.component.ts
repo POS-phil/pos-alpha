@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { UploadImageComponent } from '../../../../../dialogs/upload-image/upload-image.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -19,7 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ScheduleEntry } from '../../../../../../common/menu-categories';
+import { MenuCategories, ScheduleEntry } from '../../../../../../common/menu-categories';
 import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, switchMap } from 'rxjs';
@@ -76,10 +76,13 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
     MatTooltipModule,
     MatChipsModule,
     MatSnackBarModule,
+    AsyncPipe,
+    Breadcrumb
 
   ],
   templateUrl: './edit-category.component.html',
-  styleUrl: './edit-category.component.css'
+  styleUrl: './edit-category.component.scss',
+  providers: [MenuCategoriesService, NotificationService]
 })
 export class EditCategoryComponent implements OnInit {
 
@@ -89,11 +92,23 @@ export class EditCategoryComponent implements OnInit {
     private fb: FormBuilder,
     private route: Router,
     private sanitizer: DomSanitizer,
+    private router: ActivatedRoute,
     private notification: NotificationService,
   ) { }
 
-  editCategoryForm!: FormGroup;
+  selectedIcon = 'fastfood';
+  selectedBackgroundColor = '#e62e2eff';
+  previewImage: SafeUrl | null = null;
+  selectedImage: File | null = null;
   listOfCategory: CategoryIdAndName[] = [];
+  filteredCategories: CategoryIdAndName[] = [];
+  private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);
+  filteredCategories$!: Observable<CategoryIdAndName[]>;
+  editCategoryForm! : FormGroup;
+
+  currentSchedule : ScheduleEntry[] = []
+
+  items: MenuItem[] | undefined;
 
   background_colors = [
     '#e62e2eff', '#2d30fcff', '#f2f53eff', '#5af845ff', '#35eefcff',
@@ -109,13 +124,28 @@ export class EditCategoryComponent implements OnInit {
     'egg_alt', 'fastfood', 'set_meal', 'room_service', 'tapas', 'takeout_dining',
   ];
 
-  selectedIcon = 'fastfood';
-  selectedBackgroundColor = '#e62e2eff';
-
   ngOnInit(): void {
 
+    this.items = [
+      { label: 'Categories', routerLink: '/product-list/category' },
+      { label: 'Edit Categoy' }
+    ]
+
+    this.router.params.subscribe(params => {
+      const categoryId = +params['categoryId'];
+      console.log(categoryId)
+      this.menuCategoryService.getCategory(categoryId).subscribe({
+        next : (category : MenuCategories) => {
+          console.log(category)
+          this.populateForm(category);
+        }
+      })
+    });
+    
+
+
     this.editCategoryForm = this.fb.group({
-      active: [true],
+      active: [''],
       categoryName: ['',
         {
           validators: [Validators.required, Validators.maxLength(50)],
@@ -137,16 +167,81 @@ export class EditCategoryComponent implements OnInit {
       }],
       image: [null],
       icon: [this.selectedIcon],
-      backgroundColor: [this.selectedBackgroundColor],
-      withProducts: [false],
+      backgroundColor: [''],
+      //withProducts: [false],
       schedule: [],
-      item: [0],
+      //item: [0],
       webShop: [false],
       aggregator: [false],
       kiosk: [false],
       counterTop: [false],
-      created_at: [new Date()]
+      //created_at: [new Date()]
     });
+
+    this.filteredCategories = this.listOfCategory.slice();
+
+    this.filteredCategories$ = combineLatest([
+      this.categoriesSubject.asObservable(),
+      this.editCategoryForm.get('parentCategoryId')!.valueChanges.pipe(
+        startWith('')
+      )
+    ]).pipe(
+      map(([categories, value]) => {
+        const name = typeof value === 'string' ? value : value?.categoryName;
+        return name ? this._filterCategories(name, categories) : categories;
+      })
+    );
+
+    this.getListOfCategories();
+  }
+
+  populateForm(category: MenuCategories) {
+    this.currentSchedule = category.schedule;
+    console.log(this.currentSchedule)
+    this.editCategoryForm.patchValue({
+      categoryName : category.categoryName,
+      secondLanguageName : category.secondLanguageName,
+      
+
+    });
+  }
+
+  get categoryName() {
+    return this.editCategoryForm.get('categoryName')!;
+  }
+
+  get secondLanguageName() {
+    return this.editCategoryForm.get('secondLanguageName')
+  }
+
+  get description() {
+    return this.editCategoryForm.get('description');
+  }
+
+  get reference() {
+    return this.editCategoryForm.get('reference');
+  }
+
+  //PARENT CATEGORY
+
+  getListOfCategories() {
+    this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
+      next: (data: CategoryIdAndName[]) => {
+        this.listOfCategory = data;
+        this.categoriesSubject.next(data); // update subject
+        //console.log(data);
+      },
+      error: (error) => {
+        console.error('Error fetching list categories', error);
+      }
+    });
+  }
+
+  private _filterCategories(name: string, categories: CategoryIdAndName[]): CategoryIdAndName[] {
+    const filterValue = name.toLowerCase();
+    return categories.filter(option =>
+      option.categoryName.toLowerCase().includes(filterValue)
+    );
   }
 
   parentCategoryValidator(control: AbstractControl): ValidationErrors | null {
@@ -159,6 +254,137 @@ export class EditCategoryComponent implements OnInit {
     );
 
     return isValid ? null : { invalidSelection: true };
+  }
+
+  selectIcon(icon: string) {
+    this.selectedIcon = icon;
+    this.editCategoryForm.patchValue({ icon });
+  }
+
+  selectBackgroundColor(backgroundColor: string) {
+    this.selectedBackgroundColor = backgroundColor;
+    this.editCategoryForm.patchValue({ backgroundColor })
+  }
+
+  displayCategoryName(category: CategoryIdAndName): string {
+    return category ? category.categoryName : '';
+  }
+
+  //SCHEDULE
+
+  //scheduleSummary: string[] = [];
+  isAllDaysChecked = signal(true);
+  isAllDayChecked = signal(true);
+  allDayStartTime = signal<string>('00:00');
+  allDayEndTime = signal<string>('23:59');
+
+  readonly dialog = inject(MatDialog);
+
+  //scheduleSummary = this.generateScheduleSummary(this.currentSchedule);
+  
+  generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
+    const days = schedule.filter(d => d.day.toLowerCase() !== 'all days'); // optional filter
+
+    const allAvailable = days.every(d => d.available);
+    const sameAllDay = days.every(d => d.allDay === days[0].allDay);
+    const sameStart = days.every(d => d.startTime === days[0].startTime);
+    const sameEnd = days.every(d => d.endTime === days[0].endTime);
+
+    if (allAvailable && sameAllDay && sameStart && sameEnd) {
+      const start = this.formatTime(days[0].startTime || '00:00');
+      const end = this.formatTime(days[0].endTime || '23:59');
+      return [`All Days : ${start} - ${end}`];
+    }
+
+    return days
+      .filter(day => day.available)
+      .map(day => {
+        const start = this.formatTime(day.startTime || '00:00');
+        const end = this.formatTime(day.endTime || '23:59');
+        return `${this.capitalize(day.day)} : ${start} - ${end}`;
+      });
+  }
+
+  formatTime(time: string): string {
+    const [hourStr, minute] = time.split(':');
+    let hour = +hourStr;
+    const suffix = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12 || 12;
+    return `${hour}:${minute}${suffix}`;
+  }
+
+  capitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  openAvailabilityDialog(): void {
+    const dialogRef = this.dialog.open(MenuCategoryAvailabilityComponent, {
+      width: '500px',
+      height: '550px',
+      data: {
+        schedule: this.editCategoryForm.get('schedule')?.value || [],
+        isAllDaysChecked: this.isAllDaysChecked(),
+        isAllDayChecked: this.isAllDayChecked(),
+        allDayStartTime: this.allDayStartTime(),
+        allDayEndTime: this.allDayEndTime()
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.editCategoryForm.get('schedule')?.setValue(result.schedule);
+        this.isAllDaysChecked.set(result.isAllDaysChecked);
+        this.isAllDayChecked.set(result.isAllDayChecked);
+        //this.scheduleSummary = this.generateScheduleSummary(result.schedule);
+        this.allDayStartTime.set(result.allDayStartTime);
+        this.allDayEndTime.set(result.allDayEndTime);
+      }
+    });
+  }
+
+  //IMAGE
+
+  openUploadDialog(): void {
+    const dialogRef = this.dialog.open(UploadImageComponent, {
+      width: '800px',
+      height: '650px',
+      maxWidth: '150vw',
+      maxHeight: '190vh',
+      data: {
+        previewImage: this.previewImage,
+        selectedImage: this.selectedImage
+      }
+
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        this.previewImage = result.previewImage;
+        this.selectedImage = result.selectedImage;
+      }
+    });
+
+    dialogRef.componentInstance.imageRemoved.subscribe(() => {
+      this.previewImage = null;
+      this.selectedImage = null;
+      this.cleanUpObjectUrl();
+      this.cdr.detectChanges();
+    });
+
+  };
+
+  private cleanUpObjectUrl(): void {
+    if (this.previewImage) {
+      const unsafeUrl = this.sanitizer.sanitize(SecurityContext.URL, this.previewImage);
+      if (unsafeUrl) {
+        window.URL.revokeObjectURL(unsafeUrl);
+      }
+      this.previewImage = null;
+    }
+  }
+
+  updateCategory(){
+    this.notification.info('TESTING MUNA! HEHEHE');
   }
 
 }

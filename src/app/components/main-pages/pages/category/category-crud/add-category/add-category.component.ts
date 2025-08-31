@@ -121,7 +121,7 @@ export class AddCategoryComponent implements OnInit {
 
   selectBackgroundColor(backgroundColor: string) {
     this.selectedBackgroundColor = backgroundColor;
-    this.createCategoryForm.patchValue({})
+    this.createCategoryForm.patchValue({ backgroundColor })
   }
 
   createCategoryForm!: FormGroup;
@@ -195,7 +195,7 @@ export class AddCategoryComponent implements OnInit {
       }],
       image: [null],
       icon: [this.selectedIcon],
-      backgroundColor: [this.selectedBackgroundColor],
+      backgroundColor: [''],
       withProducts: [false],
       schedule: [defaultSchedule],
       item: [0],
@@ -240,7 +240,7 @@ export class AddCategoryComponent implements OnInit {
   onAutocompleteBlur() {
   const control = this.createCategoryForm.get('parentCategoryId');
   if (control?.value && typeof control.value === 'string') {
-    control.setValue(null); // clear invalid text
+    control.setValue(null); 
     control.setErrors({ invalidSelection: true });
   }
 }
@@ -249,7 +249,7 @@ export class AddCategoryComponent implements OnInit {
     this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
       next: (data: CategoryIdAndName[]) => {
         this.listOfCategory = data;
-        this.categoriesSubject.next(data); // update subject
+        this.categoriesSubject.next(data);
         //console.log(data);
       },
       error: (error) => {
