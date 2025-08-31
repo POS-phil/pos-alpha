@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -119,7 +119,6 @@ interface Column {
     MatInputModule,
     MatFormFieldModule,
     MatMenuModule,
-    MatPaginatorModule,
     MatSlideToggleModule,
     MatTabsModule,
     MatButtonToggleModule,
@@ -184,6 +183,7 @@ export class CategoryComponent implements OnInit {
     this.menuCategoriesService.getMenuCategories().subscribe({
       next: (data: MenuCategories[]) => {
         //this.categories = sortCategoriesAlphabetically(data);
+        console.log(data)
         this.categories = data;
         this.applyStatusFilter();
         this.loading.set(false);
@@ -223,21 +223,13 @@ export class CategoryComponent implements OnInit {
   }
 
 
-  toggleApplications() {
-    if (!this.treeNodes) return;
-
-    const shouldExpand = this.expandState !== 'expanded';
-
-    this.treeNodes.forEach(node => node.expanded = shouldExpand);
-  }
+  toggleApplications() { if (!this.treeNodes) return; const shouldExpand = this.expandState !== 'expanded'; this.treeNodes = this.treeNodes.map(node => ({ ...node, expanded: shouldExpand, children: node.children ?? [] })); }
 
   get expandState(): 'collapsed' | 'expanded' | 'mixed' {
     if (!this.treeNodes || this.treeNodes.length === 0) return 'collapsed';
 
-    // Only include nodes that have children
     const nodesWithChildren = this.treeNodes.filter(node => node.children && node.children.length > 0);
 
-    // If no nodes have children, consider collapsed
     if (nodesWithChildren.length === 0) return 'collapsed';
 
     const allExpanded = nodesWithChildren.every(node => !!node.expanded);
@@ -248,14 +240,6 @@ export class CategoryComponent implements OnInit {
 
     return 'mixed';
   }
-
-  // toggleApplications() {
-  //       if (this.treeNodes && this.treeNodes.length > 0) {
-  //           const newFiles = [...this.treeNodes];
-  //           newFiles[0] = { ...newFiles[0], expanded: !newFiles[0].expanded };
-  //           this.treeNodes = newFiles;
-  //       }
-  //   }
 
   toggleAll(checked: boolean) {
     const flat = this.flattenTree(this.treeNodes);
@@ -394,6 +378,9 @@ export class CategoryComponent implements OnInit {
     return null;
   }
 
-
+  onEdit(data: TreeNode<any>, event: MouseEvent) {
+    event.stopPropagation();
+    console.log('Edit clicked:', data);
+  }
 
 }

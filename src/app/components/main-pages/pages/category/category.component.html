@@ -1,6 +1,5 @@
 <div class="main-container">
     <div class="menu-container">
-        <p-toast appendTo="body"></p-toast>
         <H2 class="title">Categories</H2>
         <span class="spacer"></span>
         <button mat-stroked-button [matMenuTriggerFor]="import" class="btnCategory">
@@ -176,7 +175,9 @@
                 </td>
                 }
                 <td>
-                    <button matIconButton class="icon-edit"><mat-icon>edit</mat-icon></button>
+                    <button type="button" matIconButton class="icon-edit-container" (click)="onEdit(rowData, $event)">
+                        <mat-icon class="icon-edit">note_alt</mat-icon>
+                    </button>
                 </td>
             </tr>
         </ng-template>

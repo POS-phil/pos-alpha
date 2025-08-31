@@ -77,7 +77,13 @@ H2 {
 }
 
 .selected-count {
+  margin-left: 20px;
+  color: #634832;
   font-weight: 700;
+  font-size: 13px;
+  border: 1px solid #38220f;
+  padding: 11px;
+  border-radius: 5px;
 }
 
 .action-bar {
@@ -118,8 +124,17 @@ H2 {
     ));
 }
 
-.icon-edit {
+.icon-edit-container {
   color: #38220f;
+  // border: 1px solid #38220f;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  padding-top: 3px;
+}
+
+.icon-edit {
+
 }
 
 .icon-image {
@@ -141,10 +156,6 @@ H2 {
   padding: 0 !important;
   padding-left: 0.4rem !important;
 }
-
-// :host ::ng-deep .p-treetable-hoverable-rows .p-treetable-tbody>tr {
-//   cursor: default;
-// }
 
 .icon-check {
   color: var(--mat-sys-surface);
