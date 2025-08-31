@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
       <div class="dash-footer-container">
         <div class="dash-footer-container-version">
           <span>Development Build : Alpha Version {{year}}.</span>
-          <span> Build no. 29072025. </span>
+          <span> Build no. 01092025. </span>
         </div>
       </div>
     </footer>

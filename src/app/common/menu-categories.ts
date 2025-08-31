@@ -36,6 +36,13 @@ export interface ScheduleEntry {
   days?: ScheduleEntry[];
 }
 
+export interface CategoryIdAndName {
+  categoryId: number;
+  categoryName: string;
+  image: string;
+  icon: string;
+}
+
 
 export type ToggleableFields =
   | "isActive"
@@ -43,3 +50,4 @@ export type ToggleableFields =
   | "aggregator"
   | "kiosk"
   | "counterTop";
+
