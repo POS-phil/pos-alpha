@@ -1,6 +1,6 @@
 <div class="main-container">
     <div class="menu-container">
-        <H2 class="title">Categories</H2>
+        <p-breadcrumb class="breadcrumb" [model]="items" />
         <span class="spacer"></span>
         <button mat-stroked-button [matMenuTriggerFor]="import" class="btnCategory">
             <mat-icon>cloud_queue</mat-icon>
@@ -25,6 +25,12 @@
             Create Category
         </button>
     </div>
+    @if(categories.length === 0){
+    <div class="no-data">
+        <mat-icon>info</mat-icon>
+        <span>No Categories Found, Please add a category</span>
+    </div>
+    } @else { 
     <div class="action-bar">
         @if(selectedCount() === 0) {
         <mat-button-toggle-group class="btnToggle" [(value)]="statusFilter" (change)="onStatusFilterChange($event)"
@@ -66,6 +72,7 @@
             }
         </mat-menu>
     </div>
+    <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  -->
     <p-treetable #dt [value]="treeNodes" 
         selectionMode="multiple" 
         [(selection)]="selectedNodes"
@@ -75,7 +82,6 @@
         [class]="selectedSize" class="customized-tree-table" 
         scrollable="true" 
         [tableStyle]="{'min-width': '800px'}"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" 
         [loading]="loading()"
         filterMode="strict" 
         [filterDelay]="0" 
@@ -181,6 +187,9 @@
                 </td>
             </tr>
         </ng-template>
+        <ng-template #paginatorleft>
+            
+        </ng-template>
     </p-treetable>
-
+    }
 </div>

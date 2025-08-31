@@ -14,7 +14,7 @@
 }
 
 .category-name {
-  max-width: 200px;
+  max-width: 500px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -111,12 +111,23 @@ H2 {
   border: none !important;
 }
 
+:host ::ng-deep .mdc-switch__track::before, .mdc-switch__track::after{
+  //border-color: #634832;
+  border-width: 0px !important;
+}
+
 .slide-toggle {
   @include mat.slide-toggle-overrides((track-width: 45px,
-      track-height: 20px,
+      track-height: 17px,
       selected-handle-color: rgb(100, 194, 100),
       selected-hover-handle-color: rgb(34, 190, 34),
       selected-focus-handle-color: rgb(34, 190, 34),
+      selected-focus-track-color: #634832,
+      unselected-track-color: #634832,
+      unselected-hover-track-color: #634832,
+      unselected-hover-state-layer-color: #634832,
+      unselected-focus-track-color: #634832,
+      unselected-pressed-track-color: #634832,
       selected-icon-color: white,
       unselected-handle-color: rgb(194, 100, 100),
       unselected-hover-handle-color: rgb(180, 39, 39),
@@ -133,9 +144,9 @@ H2 {
   padding-top: 3px;
 }
 
-.icon-edit {
+// .icon-edit {
 
-}
+// }
 
 .icon-image {
   text-align: center;
@@ -245,3 +256,4 @@ H2 {
   top: 70px !important;
   z-index: 9999 !important;
 }
+

@@ -14,7 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TreeTableModule } from 'primeng/treetable';
 import { MenuCategories, ToggleableFields } from '../../../../common/menu-categories';
-import { MessageService, TreeNode } from 'primeng/api';
+import { TreeNode } from 'primeng/api';
 import { MenuCategoriesService } from '../../../../service/api/menu-categories/menu-categories.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -23,12 +23,15 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 import { ToastModule } from 'primeng/toast';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { MenuItem } from 'primeng/api';
+import { NotificationService } from '../../../../service/notifications/notification.service';
 
 export function convertCategoriesToTreeNodes(
   categories: MenuCategories[]
 ): TreeNode<MenuCategories>[] {
   return categories.map(category => {
-    // Ensure createdAtFormatted exists for both parent and children
+    
     const formattedCategory = {
       ...category,
       createdAtFormatted: category.createdAt ? new Date(category.createdAt).toLocaleString('en-US', {
@@ -108,7 +111,7 @@ interface Column {
 @Component({
   selector: 'app-category',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   imports: [
     CommonModule,
     FormsModule,
@@ -128,17 +131,25 @@ interface Column {
     CheckboxModule,
     InputTextModule,
     MultiSelectModule,
-    ToastModule
+    Breadcrumb
 
   ],
   providers: [
     MenuCategoriesService,
-    MessageService
+    NotificationService
   ],
   templateUrl: './category.component.html',
   styleUrl: './category.component.scss'
 })
 export class CategoryComponent implements OnInit {
+
+  constructor(
+    private menuCategoriesService: MenuCategoriesService,
+    private dialog: MatDialog,
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef,
+    private notification : NotificationService
+  ) { }
 
   categories: MenuCategories[] = [];
   treeNodes: TreeNode<MenuCategories>[] = [];
@@ -151,10 +162,12 @@ export class CategoryComponent implements OnInit {
   selectedCount = signal(0);
   statusFilter: 'all' | 'active' | 'inactive' | 'archive' = 'all';
   filteredCategories: MenuCategories[] = [];
+  items: MenuItem[] | undefined;
 
   loading = signal(true);
 
   ngOnInit(): void {
+    this.items = [ { label: 'Categories' }]
     this.getCategories();
 
     this.cols = [
@@ -172,18 +185,10 @@ export class CategoryComponent implements OnInit {
     this.selectedColumns = this.cols;
   }
 
-  constructor(
-    private menuCategoriesService: MenuCategoriesService,
-    private dialog: MatDialog,
-    private messageService: MessageService,
-    private cdr: ChangeDetectorRef
-  ) { }
-
   getCategories() {
     this.menuCategoriesService.getMenuCategories().subscribe({
       next: (data: MenuCategories[]) => {
-        //this.categories = sortCategoriesAlphabetically(data);
-        console.log(data)
+        
         this.categories = data;
         this.applyStatusFilter();
         this.loading.set(false);
@@ -208,7 +213,6 @@ export class CategoryComponent implements OnInit {
   applyStatusFilter() {
     this.filteredCategories = filterCategoriesByStatus(this.categories, this.statusFilter);
     this.treeNodes = convertCategoriesToTreeNodes(this.filteredCategories);
-
     this.onSelectionChange();
   }
 
@@ -221,7 +225,6 @@ export class CategoryComponent implements OnInit {
   getItemLabel(rowData: MenuCategories) {
     return rowData.item >= 0 ? `Items (${rowData.item})` : 'Items (0)';
   }
-
 
   toggleApplications() { if (!this.treeNodes) return; const shouldExpand = this.expandState !== 'expanded'; this.treeNodes = this.treeNodes.map(node => ({ ...node, expanded: shouldExpand, children: node.children ?? [] })); }
 
@@ -291,13 +294,13 @@ export class CategoryComponent implements OnInit {
 
         this.menuCategoriesService.deleteCategories(categoryId).subscribe({
           next: (response: string) => {
-            this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: response, sticky: true });
+            this.notification.info(response);
             this.getCategories()
             this.selectedCount.set(0);
             this.selectedNodes = [];
           }, error: (err) => {
             console.error('Delete failed:', err);
-            this.messageService.add({ severity: 'error', summary: 'Delete failed', detail: err });
+            this.notification.info('error Delete failed' + err );
           }
         })
       }
@@ -380,7 +383,8 @@ export class CategoryComponent implements OnInit {
 
   onEdit(data: TreeNode<any>, event: MouseEvent) {
     event.stopPropagation();
-    console.log('Edit clicked:', data);
+    //console.log('Edit clicked:', data);
+    this.notification.info('test');
   }
 
 }

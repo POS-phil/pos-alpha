@@ -90,8 +90,14 @@ export const routes: Routes = [
                 title: 'Product Lists / Modifier Option',
             },
             {
+                path: 'product-list/category',
+                loadComponent : () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
+                title: 'Product List / Categories'
+                
+            },
+            {
                 path: 'product-list/category/add-category',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
                 title: 'Category / Add Category'
             },
             {
@@ -119,11 +125,6 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/edit-modifier-option/edit-modifier-option.component').then(m => m.EditModifierOptionComponent),
                 title: 'Edit Modifier Option'
             },
-            {
-                path: 'product-list/category',
-                loadComponent : () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
-                title: 'Product List / Categories'
-            }
         ]
     },
 

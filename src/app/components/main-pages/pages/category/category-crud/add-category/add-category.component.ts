@@ -1,6 +1,6 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   MatDialog
 } from '@angular/material/dialog';
@@ -12,18 +12,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Router, RouterModule } from '@angular/router';
-import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upload-image.component';
+import { UploadImageComponent } from '../../../../../dialogs/upload-image/upload-image.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
+import { MenuCategoryAvailabilityComponent } from '../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ScheduleEntry } from '../../../../../../../common/menu-categories';
-import { MenuCategoriesService } from '../../../../../../../service/api/menu-categories/menu-categories.service';
-import { HttpClient } from '@angular/common/http';
+import { ScheduleEntry } from '../../../../../../common/menu-categories';
+import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { BehaviorSubject, combineLatest, map, Observable, startWith } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { NotificationService } from '../../../../../../service/notifications/notification.service';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { MenuItem } from 'primeng/api';
 
 interface CategoryIdAndName {
   categoryId: number;
@@ -31,6 +33,35 @@ interface CategoryIdAndName {
   image: string;
   icon: string;
 }
+
+export function categoryNameDuplicateValidator(service: MenuCategoriesService): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value) return of(null);
+
+    return of(control.value).pipe(
+      debounceTime(300),
+      switchMap(name => service.checkCategoryExists(name)),
+      map(res => (res.exists ? { duplicateName: true } : null)),
+      catchError(() => of(null))
+    );
+  };
+}
+
+export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const inputValue = control.value;
+
+    if (!inputValue) return null;
+
+    const isValid = options.some(option =>
+      (typeof inputValue === 'object' && inputValue?.categoryId === option.categoryId) ||
+      (typeof inputValue === 'string' && inputValue === option.categoryName)
+    );
+
+    return isValid ? null : { invalidSelection: true };
+  };
+}
+
 
 @Component({
   selector: 'app-add-category',
@@ -52,9 +83,10 @@ interface CategoryIdAndName {
     MatTooltipModule,
     MatChipsModule,
     MatSnackBarModule,
-    AsyncPipe
+    AsyncPipe,
+    Breadcrumb
   ],
-  providers: [MenuCategoriesService],
+  providers: [MenuCategoriesService, NotificationService],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.scss',
 })
@@ -101,7 +133,6 @@ export class AddCategoryComponent implements OnInit {
     this.createCategoryForm.patchValue({})
   }
 
-
   createCategoryForm!: FormGroup;
 
   readonly dialog = inject(MatDialog);
@@ -112,13 +143,33 @@ export class AddCategoryComponent implements OnInit {
     private fb: FormBuilder,
     private route: Router,
     private sanitizer: DomSanitizer,
+    private notification: NotificationService,
   ) { }
 
   get categoryName() {
     return this.createCategoryForm.get('categoryName')!;
   }
 
+  get secondLanguageName() {
+    return this.createCategoryForm.get('secondLanguageName')
+  }
+
+  get description() {
+    return this.createCategoryForm.get('description');
+  }
+
+  get reference() {
+    return this.createCategoryForm.get('reference');
+  }
+
+  items: MenuItem[] | undefined;
+
   ngOnInit(): void {
+
+    this.items = [
+      { label: 'Categories', routerLink: '/product-list/category' },
+      { label: 'Add Categoy' }
+    ]
 
     const defaultSchedule: ScheduleEntry[] = [
       { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
@@ -132,16 +183,29 @@ export class AddCategoryComponent implements OnInit {
 
     this.createCategoryForm = this.fb.group({
       active: [true],
-      categoryName: ['', Validators.required],
-      secondLanguageName: [''],
-      parentCategoryId: [null],
-      description: [''],
-      reference: [''],
+      categoryName: ['',
+        {
+          validators: [Validators.required, Validators.maxLength(50)],
+          asyncValidators: [categoryNameDuplicateValidator(this.menuCategoryService)],
+          updateOn: 'change'
+        }],
+      secondLanguageName: ['', {
+        validators: [Validators.maxLength(50)],
+        updateOn: 'change'
+      }],
+      parentCategoryId: [null, [this.parentCategoryValidator.bind(this)]],
+      description: ['', {
+        validators: [Validators.maxLength(100)],
+        updateOn: 'change'
+      }],
+      reference: ['', {
+        validators: [Validators.maxLength(50)],
+        updateOn: 'change'
+      }],
       image: [null],
       icon: [this.selectedIcon],
-      background: [this.selectedBackgroundColor],
+      backgroundColor: [this.selectedBackgroundColor],
       withProducts: [false],
-      withSubCategories: [false],
       schedule: [defaultSchedule],
       item: [0],
       webShop: [false],
@@ -170,12 +234,32 @@ export class AddCategoryComponent implements OnInit {
 
   }
 
+  parentCategoryValidator(control: AbstractControl): ValidationErrors | null {
+    const inputValue = control.value;
+    if (!inputValue) return null;
+
+    const isValid = this.listOfCategory.some(option =>
+      (typeof inputValue === 'object' && inputValue?.categoryId === option.categoryId) ||
+      (typeof inputValue === 'string' && inputValue.toLowerCase() === option.categoryName.toLowerCase())
+    );
+
+    return isValid ? null : { invalidSelection: true };
+  }
+
+  onAutocompleteBlur() {
+  const control = this.createCategoryForm.get('parentCategoryId');
+  if (control?.value && typeof control.value === 'string') {
+    control.setValue(null); // clear invalid text
+    control.setErrors({ invalidSelection: true });
+  }
+}
+
   getListOfCategories() {
     this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
       next: (data: CategoryIdAndName[]) => {
         this.listOfCategory = data;
         this.categoriesSubject.next(data); // update subject
-        console.log(data);
+        //console.log(data);
       },
       error: (error) => {
         console.error('Error fetching list categories', error);
@@ -313,24 +397,16 @@ export class AddCategoryComponent implements OnInit {
     }
 
     //Uncomment for debugging
-    console.log('Form Data:', formData);
-    console.log('Form Value:', formValue);
-    console.log('Category Form', this.createCategoryForm.value);
+    //console.log('Form Data:', formData);
+    //console.log('Form Value:', formValue);
+    //console.log('Category Form', this.createCategoryForm.value);
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {
-        console.log('Category created:', response);
+        //console.log('Category created:', response);
         this.cleanUpObjectUrl();
 
-        const snackBarRef = this._createCategorySuccess.open(
-          `Category "${this.createCategoryForm.value.categoryName}" created successfully`,
-          'Close',
-          {
-            duration: 5000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          }
-        );
+        this.notification.success(this.createCategoryForm.value.categoryName + " created successfully")
 
         setTimeout(() => {
           this.route.navigate(['/product-list/category']);

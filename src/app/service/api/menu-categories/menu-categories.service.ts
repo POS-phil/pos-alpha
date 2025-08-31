@@ -37,4 +37,10 @@ export class MenuCategoriesService {
       {}
     );
   }
+
+  checkCategoryExists(categoryName: string): Observable<{ exists: boolean }> {
+  return this.http.get<{ exists: boolean }>(`${this.menuCategoriesApiUrl}/exists`, {
+    params: { categoryName }
+  });
+}
 }
