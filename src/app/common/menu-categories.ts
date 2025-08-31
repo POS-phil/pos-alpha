@@ -4,12 +4,12 @@ import { SafeUrl } from "@angular/platform-browser";
 export interface MenuCategories {
   categoryId?: number;
   isActive: boolean;
-  isDeleted?: boolean;
+  isArchived?: boolean;
   categoryName: string;
-  secondLanguageName?: string; // Optional for second language support
+  secondLanguageName?: string;
   description?: string;
   reference: string;
-  parentCategoryId?: number; // Optional for subcategories
+  parentCategoryId?: number;
   image?: File | string | null;
   icon?: string;
   background: string;
@@ -24,6 +24,7 @@ export interface MenuCategories {
   counterTop: boolean;
   lastOrder?: Date;
   createdAt: Date;
+  selected?: boolean;
 }
 
 export interface ScheduleEntry {
@@ -35,31 +36,10 @@ export interface ScheduleEntry {
   days?: ScheduleEntry[];
 }
 
-// export interface categoryFlatNode {
-//   expandable: boolean;
-//   level : number;
-//   categoryId?: number;
-//   isActive: boolean;
-//   isDeleted?: boolean;
-//   categoryName: string;
-//   secondLanguageName?: string; // Optional for second language support
-//   description?: string;
-//   reference: string;
-//   parentCategoryId?: number; // Optional for subcategories
-//   image?: File | string | null;
-//   icon?: string;
-//   background: string;
-//   withProducts: boolean;
-//   withSubCategories: boolean
-//   subCategories?: MenuCategories[];
-//   schedule: ScheduleEntry[];
-//   item: number;
-//   webShop: boolean;
-//   aggregator: boolean;
-//   kiosk: boolean;
-//   counterTop: boolean;
-//   lastOrder?: Date;
-//   createdAt: Date;
 
-// }
-
+export type ToggleableFields =
+  | "isActive"
+  | "webShop"
+  | "aggregator"
+  | "kiosk"
+  | "counterTop";

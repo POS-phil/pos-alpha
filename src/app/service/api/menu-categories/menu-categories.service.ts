@@ -15,7 +15,7 @@ export class MenuCategoriesService {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
   }
 
-  getSubCategories(parentId : number) : Observable<MenuCategories[]>{
+  getSubCategories(parentId: number): Observable<MenuCategories[]> {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}/subcategories/${parentId}`);
   }
 
@@ -23,7 +23,24 @@ export class MenuCategoriesService {
     return this.http.post<any>(`${this.menuCategoriesApiUrl}/create`, formData);
   }
 
-  getMenuCategoryIdAndName(): Observable<any>{
+  deleteCategories(categoryId: number[]) : Observable<any> {
+    return this.http.delete(`${this.menuCategoriesApiUrl}/delete`, { body: categoryId, responseType: 'text' });
+  }
+
+  getMenuCategoryIdAndName(): Observable<any> {
     return this.http.get<any>(`${this.menuCategoriesApiUrl}/id_name`);
   }
+
+  updateCategoryField(categoryId: number, field: string, value: boolean): Observable<any> {
+    return this.http.patch<any>(
+      `${this.menuCategoriesApiUrl}/${categoryId}/toggle?field=${field}&value=${value}`,
+      {}
+    );
+  }
+
+  checkCategoryExists(categoryName: string): Observable<{ exists: boolean }> {
+  return this.http.get<{ exists: boolean }>(`${this.menuCategoriesApiUrl}/exists`, {
+    params: { categoryName }
+  });
+}
 }
