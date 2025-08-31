@@ -8,14 +8,14 @@ export class MenuCategoriesService {
 
   constructor(private http: HttpClient) { }
 
-  //private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
-  private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
+  private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
+  //private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
 
   getMenuCategories(): Observable<MenuCategories[]> {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
   }
 
-  getSubCategories(parentId : number) : Observable<MenuCategories[]>{
+  getSubCategories(parentId: number): Observable<MenuCategories[]> {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}/subcategories/${parentId}`);
   }
 
@@ -23,7 +23,18 @@ export class MenuCategoriesService {
     return this.http.post<any>(`${this.menuCategoriesApiUrl}/create`, formData);
   }
 
-  getMenuCategoryIdAndName(): Observable<any>{
+  deleteCategories(categoryId: number[]) : Observable<any> {
+    return this.http.delete(`${this.menuCategoriesApiUrl}/delete`, { body: categoryId, responseType: 'text' });
+  }
+
+  getMenuCategoryIdAndName(): Observable<any> {
     return this.http.get<any>(`${this.menuCategoriesApiUrl}/id_name`);
+  }
+
+  updateCategoryField(categoryId: number, field: string, value: boolean): Observable<any> {
+    return this.http.patch<any>(
+      `${this.menuCategoriesApiUrl}/${categoryId}/toggle?field=${field}&value=${value}`,
+      {}
+    );
   }
 }

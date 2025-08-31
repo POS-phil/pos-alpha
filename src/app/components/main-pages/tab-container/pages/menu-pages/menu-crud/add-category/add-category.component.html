@@ -41,8 +41,8 @@
                 <mat-label>Parent Category</mat-label>
                 <input type="text" formControlName="parentCategoryId" matInput [matAutocomplete]="auto">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCategoryName">
-                    @for(option of listOfCategory; track option){
-                    <mat-option [value]="option.categoryId">
+                    @for(option of filteredCategories$ | async; track option){
+                    <mat-option [value]="option">
                         @if(option.image) {
                         <img alt="" class="categoryImg" [src]="option.image" height="25">
                         } @else {

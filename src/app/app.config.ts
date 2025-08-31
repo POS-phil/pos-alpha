@@ -7,7 +7,7 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideHttpClient } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import Material from '@primeuix/themes/aura';
+import Aura from '@primeuix/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,9 +15,11 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: Material,
+        preset: Aura,
         options: {
-            darkModeSelector: false || 'none'
+            prefix: 'p',
+            darkModeSelector: false || 'none',
+            cssLayer: false
         }
       }
     }),

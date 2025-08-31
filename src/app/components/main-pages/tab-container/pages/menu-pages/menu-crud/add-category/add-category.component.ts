@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MatDialog
 } from '@angular/material/dialog';
@@ -23,11 +23,12 @@ import { ScheduleEntry } from '../../../../../../../common/menu-categories';
 import { MenuCategoriesService } from '../../../../../../../service/api/menu-categories/menu-categories.service';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { BehaviorSubject, combineLatest, map, Observable, startWith } from 'rxjs';
 
 interface CategoryIdAndName {
   categoryId: number;
   categoryName: string;
-  image: File | string;
+  image: string;
   icon: string;
 }
 
@@ -50,7 +51,8 @@ interface CategoryIdAndName {
     MatMenuModule,
     MatTooltipModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    AsyncPipe
   ],
   providers: [MenuCategoriesService],
   templateUrl: './add-category.component.html',
@@ -84,6 +86,10 @@ export class AddCategoryComponent implements OnInit {
   selectedBackgroundColor = '#e62e2eff';
   previewImage: SafeUrl | null = null;
   selectedImage: File | null = null;
+  listOfCategory: CategoryIdAndName[] = [];
+  filteredCategories: CategoryIdAndName[] = [];
+  private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);
+  filteredCategories$!: Observable<CategoryIdAndName[]>;
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;
@@ -95,10 +101,6 @@ export class AddCategoryComponent implements OnInit {
     this.createCategoryForm.patchValue({})
   }
 
-  displayCategoryName = (categoryId: number): string => {
-    const category = this.listOfCategory.find(cat => cat.categoryId === categoryId);
-    return category ? category.categoryName : '';
-  };
 
   createCategoryForm!: FormGroup;
 
@@ -150,21 +152,46 @@ export class AddCategoryComponent implements OnInit {
     });
 
     this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
-    this.getListOfCategories();
-  }
+    this.filteredCategories = this.listOfCategory.slice();
 
-  listOfCategory: CategoryIdAndName[] = [];
+    this.filteredCategories$ = combineLatest([
+      this.categoriesSubject.asObservable(),
+      this.createCategoryForm.get('parentCategoryId')!.valueChanges.pipe(
+        startWith('')
+      )
+    ]).pipe(
+      map(([categories, value]) => {
+        const name = typeof value === 'string' ? value : value?.categoryName;
+        return name ? this._filterCategories(name, categories) : categories;
+      })
+    );
+
+    this.getListOfCategories();
+
+  }
 
   getListOfCategories() {
     this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
       next: (data: CategoryIdAndName[]) => {
         this.listOfCategory = data;
+        this.categoriesSubject.next(data); // update subject
         console.log(data);
       },
       error: (error) => {
         console.error('Error fetching list categories', error);
       }
-    })
+    });
+  }
+
+  private _filterCategories(name: string, categories: CategoryIdAndName[]): CategoryIdAndName[] {
+    const filterValue = name.toLowerCase();
+    return categories.filter(option =>
+      option.categoryName.toLowerCase().includes(filterValue)
+    );
+  }
+
+  displayCategoryName(category: CategoryIdAndName): string {
+    return category ? category.categoryName : '';
   }
 
   openUploadDialog(): void {
@@ -274,6 +301,10 @@ export class AddCategoryComponent implements OnInit {
 
     const formValue = this.createCategoryForm.value;
 
+    if (formValue.parentCategoryId && typeof formValue.parentCategoryId === 'object') {
+      formValue.parentCategoryId = formValue.parentCategoryId.categoryId;
+    }
+
     const formData = new FormData();
     formData.append('category', new Blob([JSON.stringify(formValue)], { type: 'application/json' }));
 
@@ -294,10 +325,11 @@ export class AddCategoryComponent implements OnInit {
         const snackBarRef = this._createCategorySuccess.open(
           `Category "${this.createCategoryForm.value.categoryName}" created successfully`,
           'Close',
-          { duration: 5000,
+          {
+            duration: 5000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
-           }
+          }
         );
 
         setTimeout(() => {
