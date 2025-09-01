@@ -25,12 +25,12 @@
             Create Category
         </button>
     </div>
-    @if(!hasCategories){
+    <!-- @if(!hasCategories){
     <div class="no-data">
         <mat-icon>info</mat-icon>
         <span>No Categories Found, Please add a category</span>
     </div>
-    } @else { 
+    } @else { -->
     <div class="action-bar">
         @if(selectedCount() === 0) {
         <mat-button-toggle-group class="btnToggle" [(value)]="statusFilter" (change)="onStatusFilterChange($event)"
@@ -53,7 +53,8 @@
         }
         <span class="spacer"></span>
         <mat-form-field appearance="outline" class="inputSearch">
-            <mat-label>Global Search</mat-label>
+            <mat-label>Search Keyword</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
             <input matInput (input)="dt.filterGlobal($event.target.value, 'contains')">
         </mat-form-field>
         <!-- <p-multiselect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ width: '20em' }" placeholder="Choose Columns" display="chip" /> -->
@@ -73,23 +74,12 @@
         </mat-menu>
     </div>
     <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  -->
-    <p-treetable #dt [value]="treeNodes" 
-        selectionMode="multiple" 
-        [(selection)]="selectedNodes"
-        (onNodeSelect)="onSelectionChange()" 
-        (onNodeUnselect)="onSelectionChange()" 
-        [columns]="selectedColumns"
-        [class]="selectedSize" class="customized-tree-table" 
-        scrollable="true" 
-        [tableStyle]="{'min-width': '800px'}"
-        [loading]="loading()"
-        filterMode="strict" 
-        [filterDelay]="0" 
-        [globalFilterFields]="['categoryName', 'createdAtFormatted']"
-        [paginator]="true" [rows]="50" 
-        [rowsPerPageOptions]="[50, 100]" 
-        [showCurrentPageReport]="true"
-        [rowHover]="true">
+    <p-treetable #dt [value]="treeNodes" selectionMode="multiple" [(selection)]="selectedNodes"
+        (onNodeSelect)="onSelectionChange()" (onNodeUnselect)="onSelectionChange()" [columns]="selectedColumns"
+        [class]="selectedSize" class="customized-tree-table" scrollable="true" [tableStyle]="{'min-width': '800px'}"
+        [loading]="loading()" filterMode="lenient" [filterDelay]="0"
+        [globalFilterFields]="['categoryName', 'createdAtFormatted']" [paginator]="true" [rows]="25"
+        [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true" [rowHover]="true">
         <ng-template #colgroup>
             <colgroup>
                 <col class="checkbox-cell" />
@@ -151,18 +141,18 @@
             </tr>
 
         </ng-template>
-        <ng-template #body let-rowNode let-rowData="rowData" >
+        <ng-template #body let-rowNode let-rowData="rowData">
             <tr [ttSelectableRow]="rowNode">
                 <td class="checkbox-cell">
                     <mat-icon class="icon-check">check_circle</mat-icon>
                 </td>
                 @for (col of selectedColumns; track col.field; let i = $index) {
-                    <td class="{{col.styleClass}}" >
+                <td class="{{col.styleClass}}">
                     @if (col.field === 'categoryName') {
-                        @if(i === 0){
-                            <p-treetable-toggler [rowNode]="rowNode" (click)="$event.stopPropagation()" />
-                        }
-                        <span class="category-name">{{ rowData.categoryName }}</span>
+                    @if(i === 0){
+                    <p-treetable-toggler [rowNode]="rowNode" (click)="$event.stopPropagation()" />
+                    }
+                    <span class="category-name" [ngClass]="{ 'parent-category': (rowNode.node?.children?.length ?? 0) > 0 || rowNode.node?.leaf === false }">{{ rowData.categoryName }}</span>
                     } @else if (col.field === 'image') {
                     @if (rowData.image) {
                     <img [src]="rowData.image" class="category-image" />
@@ -188,8 +178,10 @@
             </tr>
         </ng-template>
         <ng-template #paginatorleft>
-            
+            <button matIconButton (click)="getCategories()" [disabled]="loading()">
+                <mat-icon>refresh</mat-icon>
+            </button>
         </ng-template>
     </p-treetable>
-    }
+    <!-- } -->
 </div>

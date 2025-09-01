@@ -2,29 +2,29 @@ import { SafeUrl } from "@angular/platform-browser";
 
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
-  categoryId?: number;
-  isActive: boolean;
-  isArchived?: boolean;
-  categoryName: string;
-  secondLanguageName?: string;
-  description?: string;
-  reference: string;
-  parentCategoryId?: number;
-  image?: File | string | null;
-  icon?: string;
-  background: string;
-  withProducts: boolean;
-  withSubCategories: boolean
-  subCategories?: MenuCategories[];
-  schedule: ScheduleEntry[];
-  item: number;
-  webShop: boolean;
-  aggregator: boolean;
-  kiosk: boolean;
-  counterTop: boolean;
-  lastOrder?: Date;
-  createdAt: Date;
-  selected?: boolean;
+  categoryId?: number; //maybe important?
+  isActive: boolean; //important
+  isArchived?: boolean; //important
+  categoryName: string; //important
+  secondLanguageName?: string; //not important
+  description?: string; //not important
+  reference: string; //not important
+  parentCategoryId?: number; //important
+  image?: File | string | null; //important
+  icon?: string; //important
+  backgroundColor: string; // not important
+  withProducts: boolean; //not important
+  withSubCategories: boolean //not important
+  subCategories?: MenuCategories[]; //important
+  schedule: ScheduleEntry[]; // not important
+  item: number; //important
+  webShop: boolean; //important
+  aggregator: boolean; //important
+  kiosk: boolean; //important
+  counterTop: boolean; //important
+  lastOrder?: Date; // not important
+  createdAt: Date; //important
+  lastModified?: Date; //important
 }
 
 export interface ScheduleEntry {

@@ -179,6 +179,7 @@ H2 {
 
 .customized-tree-table {
   font-size: 14px;
+  letter-spacing: 0.3px;
   --p-treetable-node-toggle-button-size: 25px;
   --p-inputtext-focus-ring-color: #38220f;
   --p-checkbox-checked-border-color: #dbc1ac;
@@ -255,5 +256,9 @@ H2 {
 :host ::ng-deep .p-toast {
   top: 70px !important;
   z-index: 9999 !important;
+}
+
+.parent-category {
+  font-weight: 700;
 }
 

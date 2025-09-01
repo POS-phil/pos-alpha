@@ -130,6 +130,11 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/edit-modifier-option/edit-modifier-option.component').then(m => m.EditModifierOptionComponent),
                 title: 'Edit Modifier Option'
             },
+            {
+                path: 'test',
+                loadComponent: () => import('./components/layout/spinner-loader/spinner-loader.component').then(m => m.SpinnerLoaderComponent),
+                title: 'Test Page'
+            }
         ]
     },
 

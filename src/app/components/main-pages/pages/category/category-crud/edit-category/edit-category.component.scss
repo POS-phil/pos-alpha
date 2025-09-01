@@ -65,6 +65,11 @@ form {
   text-align: center;
 }
 
+.container-accordion{
+  grid-column: 1 / span 9;
+  grid-row: 2;
+}
+
 .grid-image{
   grid-column: 1;
   grid-row: 1;
@@ -194,4 +199,46 @@ form {
 [dir='rtl'] .categoryImg {
   margin-right: 0;
   margin-left: 8px;
+}
+
+.accordion-container {
+  @include mat.expansion-overrides((
+    container-shape: 0px,
+    container-elevation-shadow: var(--mat-sys-level3),
+  ));
+}
+
+.creation-details-table-container {
+  display: flex;
+  justify-content: center;
+}
+
+th {
+  font-weight: 500;
+  font-size: 14px;
+  color: #777777;
+  text-align: left;
+}
+
+td {
+  font-size: 15px;
+}
+
+.creation-details-table{
+  width: 230px;
+}
+
+::ng-deep .mat-expansion-panel-body{
+  border: 1px solid #38220f;
+  margin-left: 65px;
+  margin-right: 50px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 3px 3px #ece0d1;
+  padding: 30px !important;
+  margin-bottom: 50px;
+}
+
+::ng-deep .mat-expansion-panel-header.mat-expanded {
+    height: var(--mat-expansion-header-expanded-state-height, 50px);
 }

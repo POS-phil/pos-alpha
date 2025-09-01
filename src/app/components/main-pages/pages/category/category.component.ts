@@ -55,17 +55,6 @@ export function convertCategoriesToTreeNodes(
   });
 }
 
-function sortCategoriesAlphabetically(categories: MenuCategories[]): MenuCategories[] {
-  return categories
-    .map(cat => ({
-      ...cat,
-      subCategories: cat.subCategories
-        ? sortCategoriesAlphabetically(cat.subCategories)
-        : []
-    }))
-    .sort((a, b) => (a.categoryName ?? '').localeCompare(b.categoryName ?? ''));
-}
-
 function filterCategoriesByStatus(
   categories: MenuCategories[],
   status: 'all' | 'active' | 'inactive' | 'archive'

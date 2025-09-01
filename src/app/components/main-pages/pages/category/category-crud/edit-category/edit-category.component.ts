@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal, viewChild } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   MatDialog
@@ -27,6 +27,7 @@ import { NotificationService } from '../../../../../../service/notifications/not
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { CategoryIdAndName } from '../../../../../../common/menu-categories';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 
 export function categoryNameDuplicateValidator(service: MenuCategoriesService): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -77,12 +78,15 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
     MatChipsModule,
     MatSnackBarModule,
     AsyncPipe,
-    Breadcrumb
+    Breadcrumb,
+    MatExpansionModule,
+    MatChipsModule
 
   ],
   templateUrl: './edit-category.component.html',
   styleUrl: './edit-category.component.scss',
-  providers: [MenuCategoriesService, NotificationService]
+  providers: [MenuCategoriesService, NotificationService],
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class EditCategoryComponent implements OnInit {
 
@@ -96,7 +100,7 @@ export class EditCategoryComponent implements OnInit {
     private notification: NotificationService,
   ) { }
 
-  selectedIcon = 'fastfood';
+  selectedIcon = '';
   selectedBackgroundColor = '#e62e2eff';
   previewImage: SafeUrl | null = null;
   selectedImage: File | null = null;
@@ -104,9 +108,11 @@ export class EditCategoryComponent implements OnInit {
   filteredCategories: CategoryIdAndName[] = [];
   private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);
   filteredCategories$!: Observable<CategoryIdAndName[]>;
-  editCategoryForm! : FormGroup;
+  editCategoryForm!: FormGroup;
 
-  currentSchedule : ScheduleEntry[] = []
+  accordion = viewChild.required(MatAccordion);
+
+  currentSchedule: ScheduleEntry[] = []
 
   items: MenuItem[] | undefined;
 
@@ -133,16 +139,14 @@ export class EditCategoryComponent implements OnInit {
 
     this.router.params.subscribe(params => {
       const categoryId = +params['categoryId'];
-      console.log(categoryId)
+      //console.log(categoryId)
       this.menuCategoryService.getCategory(categoryId).subscribe({
-        next : (category : MenuCategories) => {
-          console.log(category)
+        next: (category: MenuCategories) => {
+          console.log(category);
           this.populateForm(category);
         }
       })
     });
-    
-
 
     this.editCategoryForm = this.fb.group({
       active: [''],
@@ -169,7 +173,7 @@ export class EditCategoryComponent implements OnInit {
       icon: [this.selectedIcon],
       backgroundColor: [''],
       //withProducts: [false],
-      schedule: [],
+      schedule: this.fb.control<ScheduleEntry[]>([]),
       //item: [0],
       webShop: [false],
       aggregator: [false],
@@ -196,13 +200,35 @@ export class EditCategoryComponent implements OnInit {
   }
 
   populateForm(category: MenuCategories) {
-    this.currentSchedule = category.schedule;
-    console.log(this.currentSchedule)
-    this.editCategoryForm.patchValue({
-      categoryName : category.categoryName,
-      secondLanguageName : category.secondLanguageName,
-      
+    const parentCategory = this.listOfCategory.find(
+      c => c.categoryId === category.parentCategoryId
+    ) || null;
 
+    // console.log('From category:', category.parentCategoryId, typeof category.parentCategoryId);
+    // console.log('From listOfCategory:', this.listOfCategory.map(c => ({ id: c.categoryId, type: typeof c.categoryId })));
+    //console.log(parentCategory);
+    this.selectedIcon = category.icon || '';
+    this.currentSchedule = category.schedule || [];
+    this.scheduleSummary = this.generateScheduleSummary(this.currentSchedule);
+    this.selectedBackgroundColor = category.backgroundColor || '#e62e2eff';
+
+    const allDays = this.currentSchedule.every(d => d.available);
+    this.isAllDaysChecked.set(allDays);
+
+    if(allDays){
+      this.isAllDayChecked.set(true);
+    } else {
+      this.isAllDayChecked.set(false);
+    }
+    
+
+    this.editCategoryForm.patchValue({
+      categoryName: category.categoryName,
+      secondLanguageName: category.secondLanguageName,
+      description: category.description,
+      reference: category.reference,
+      parentCategoryId: parentCategory,
+      schedule: this.currentSchedule
     });
   }
 
@@ -272,7 +298,7 @@ export class EditCategoryComponent implements OnInit {
 
   //SCHEDULE
 
-  //scheduleSummary: string[] = [];
+  scheduleSummary: string[] = [];
   isAllDaysChecked = signal(true);
   isAllDayChecked = signal(true);
   allDayStartTime = signal<string>('00:00');
@@ -280,8 +306,6 @@ export class EditCategoryComponent implements OnInit {
 
   readonly dialog = inject(MatDialog);
 
-  //scheduleSummary = this.generateScheduleSummary(this.currentSchedule);
-  
   generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
     const days = schedule.filter(d => d.day.toLowerCase() !== 'all days'); // optional filter
 
@@ -335,7 +359,7 @@ export class EditCategoryComponent implements OnInit {
         this.editCategoryForm.get('schedule')?.setValue(result.schedule);
         this.isAllDaysChecked.set(result.isAllDaysChecked);
         this.isAllDayChecked.set(result.isAllDayChecked);
-        //this.scheduleSummary = this.generateScheduleSummary(result.schedule);
+        this.scheduleSummary = this.generateScheduleSummary(result.schedule);
         this.allDayStartTime.set(result.allDayStartTime);
         this.allDayEndTime.set(result.allDayEndTime);
       }
@@ -383,7 +407,7 @@ export class EditCategoryComponent implements OnInit {
     }
   }
 
-  updateCategory(){
+  updateCategory() {
     this.notification.info('TESTING MUNA! HEHEHE');
   }
 

@@ -16,11 +16,11 @@
                 <mat-label>Category Name</mat-label>
                 <input matInput type="text" formControlName="categoryName" placeholder="Ex. Combo 1">
                 @if(categoryName.hasError('required')) {
-                    <mat-error class="error-message">Category Name is required</mat-error>
+                <mat-error class="error-message">Category Name is required</mat-error>
                 } @else if (categoryName.hasError('maxlength')) {
-                    <mat-error class="error-message">Maximum character is (50) only</mat-error>
+                <mat-error class="error-message">Maximum character is (50) only</mat-error>
                 } @else if (categoryName.hasError('duplicateName')){
-                    <mat-error class="error-message">Category name already exists.</mat-error>
+                <mat-error class="error-message">Category name already exists.</mat-error>
                 }
             </mat-form-field>
             <mat-form-field class="full-width">
@@ -80,9 +80,9 @@
                 <span>Availability</span>
             </button>
             <mat-chip-set>
-                <!-- @for(item of scheduleSummary; track item){
+                @for(item of scheduleSummary; track item){
                 <mat-chip>{{ item }}</mat-chip>
-                } -->
+                }
             </mat-chip-set>
         </div>
         <div class="container-utility">
@@ -96,7 +96,6 @@
                         <mat-icon class="icon-image">add_a_photo</mat-icon>
                         }
                     </button>
-
                 </div>
                 <div class="grid-toggle-buttons">
                     <mat-slide-toggle formControlName="webShop" class="toggle-button">
@@ -154,6 +153,108 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="container-accordion">
+            <button matButton type="button" (click)="accordion().openAll()">Expand All</button>
+            <button matButton type="button" (click)="accordion().closeAll()">Collapse All</button>
+            <mat-accordion multi class="accordion-container">
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">menu_book</mat-icon>
+                            Mapped Item </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <mat-chip>
+                            Example only no backend yet
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Two fish
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Three fish
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Four fish
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">insert_invitation</mat-icon>
+                            Creation Details </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="creation-details-table-container">
+                        <table>
+                            <colgroup>
+                                <col span="4" class="creation-details-table">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Created By</th>
+                                    <th>Created At</th>
+                                    <th>Last Modified By</th>
+                                    <th>Last Modified At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Agie Arellano</td>
+                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                    <td>Agie Arellano</td>
+                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">store</mat-icon>
+                            Assigned Store(s) </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <mat-chip>
+                            Example only no backend yet
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 1
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 2
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 3
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
     </div>
 </form>
