@@ -98,7 +98,12 @@ export const routes: Routes = [
             {
                 path: 'product-list/category/add-category',
                 loadComponent: () => import('./components/main-pages/pages/category/category-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
-                title: 'Category / Add Category'
+                title: 'Product List/ Category / Add Category'
+            },
+            {
+                path: 'product-list/category/:categoryId/edit-category',
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/edit-category/edit-category.component').then(m => m.EditCategoryComponent),
+                title: 'Product List/ Category / Edit Category'
             },
             {
                 path: 'menu/item/add-item',
@@ -125,6 +130,11 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/edit-modifier-option/edit-modifier-option.component').then(m => m.EditModifierOptionComponent),
                 title: 'Edit Modifier Option'
             },
+            {
+                path: 'test',
+                loadComponent: () => import('./components/layout/spinner-loader/spinner-loader.component').then(m => m.SpinnerLoaderComponent),
+                title: 'Test Page'
+            }
         ]
     },
 

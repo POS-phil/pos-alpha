@@ -4,4 +4,9 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 Development Build : Alpha Version 2025.
 
-Build no. 29072025.
+Build no. 01092025.
+
+category = 60% finish
+  -- table = 90%
+  -- category creation = 90%
+  -- edit category = 1%

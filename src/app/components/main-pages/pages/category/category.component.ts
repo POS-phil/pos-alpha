@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -53,17 +53,6 @@ export function convertCategoriesToTreeNodes(
         : []
     };
   });
-}
-
-function sortCategoriesAlphabetically(categories: MenuCategories[]): MenuCategories[] {
-  return categories
-    .map(cat => ({
-      ...cat,
-      subCategories: cat.subCategories
-        ? sortCategoriesAlphabetically(cat.subCategories)
-        : []
-    }))
-    .sort((a, b) => (a.categoryName ?? '').localeCompare(b.categoryName ?? ''));
 }
 
 function filterCategoriesByStatus(
@@ -146,9 +135,8 @@ export class CategoryComponent implements OnInit {
   constructor(
     private menuCategoriesService: MenuCategoriesService,
     private dialog: MatDialog,
-    private notificationService: NotificationService,
-    private cdr: ChangeDetectorRef,
-    private notification : NotificationService
+    private notification : NotificationService,
+    private router: Router,
   ) { }
 
   categories: MenuCategories[] = [];
@@ -183,6 +171,10 @@ export class CategoryComponent implements OnInit {
     ];
 
     this.selectedColumns = this.cols;
+  }
+
+  get hasCategories(): boolean {
+    return Array.isArray(this.categories) && this.categories.length > 0;
   }
 
   getCategories() {
@@ -381,10 +373,10 @@ export class CategoryComponent implements OnInit {
     return null;
   }
 
-  onEdit(data: TreeNode<any>, event: MouseEvent) {
+  onEdit(category: MenuCategories, event: MouseEvent) {
     event.stopPropagation();
-    //console.log('Edit clicked:', data);
-    this.notification.info('test');
+    const categoryId = category.categoryId
+    this.router.navigate(['product-list/category/', categoryId, 'edit-category']);
   }
 
 }
