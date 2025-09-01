@@ -11,29 +11,26 @@ $compact-form-theme: mat.define-theme((density: (scale: -4,
 }
 
 :root {
-  @include mat.button-toggle-overrides((
-    selected-state-background-color: #dbc1ac,
-    selected-state-text-color: #38220f,
-    state-layer-color: #38220f
-  ));
+    @include mat.button-toggle-overrides((selected-state-background-color: #dbc1ac,
+            selected-state-text-color: #38220f,
+            state-layer-color: #38220f));
 }
 
 :root {
-  @include mat.list-overrides((
-    list-item-focus-state-layer-color: #38220f,
-    list-item-hover-state-layer-color: #38220f
-  ));
+    @include mat.list-overrides((list-item-focus-state-layer-color: #38220f,
+            list-item-hover-state-layer-color: #38220f));
 }
 
-html, body {
+html,
+body {
     height: 100%;
 }
 
 body {
     margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif; 
+    font-family: Roboto, "Helvetica Neue", sans-serif;
     background: var(--mat-sys-background) !important;
-  color: var(--mat-sys-on-background) !important;
+    color: var(--mat-sys-on-background) !important;
 }
 
 .grid {
@@ -98,6 +95,46 @@ app-main-layout>app-side-nav {
     padding: 10rem;
 }
 
+.snackbar-success {
+    @include mat.snack-bar-overrides((
+            container-shape: 0px,
+            container-color: #ece0d1,
+            supporting-text-color: #38220f,
+            button-color: #38220f));
+    border-left: 16px solid #00ff00;
+    border-radius: 15px;
+}
+
+.snackbar-info {
+    @include mat.snack-bar-overrides((
+            container-shape: 0px,
+            container-color: #ece0d1,
+            supporting-text-color: #38220f,
+            button-color: #38220f));
+    border-left: 16px solid #2196f3;
+    border-radius: 15px;
+}
+
+app-info-snackbar {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-align: center;
+    gap: 20px;
+}
+
+app-success-snackbar {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-align: center;
+    gap: 20px;
+}
+
+.breadcrumb {
+  --p-breadcrumb-background: var(--mat-sys-surface);
+}
+
 html {
     --mat-sys-background: #faf9fd;
     --mat-sys-error: #ba1a1a;
@@ -150,7 +187,7 @@ html {
     --mat-sys-tertiary-fixed-dim: #bec2ff;
     --mat-sys-neutral-variant20: #2d3038;
     --mat-sys-neutral10: #1a1b1f;
-    --mat-button-toggle-legacy-selected-state-text-color : #2d3038;
+    --mat-button-toggle-legacy-selected-state-text-color: #2d3038;
     --mat-sys-level0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
     --mat-sys-level1: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
     --mat-sys-level2: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);

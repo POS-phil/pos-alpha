@@ -165,7 +165,6 @@ export class MenuComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // perform delete logic
         console.log('Deleting rows', rows);
       }
     });

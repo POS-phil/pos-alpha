@@ -14,7 +14,7 @@
 }
 
 .category-name {
-  max-width: 200px;
+  max-width: 500px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -22,12 +22,18 @@
   vertical-align: middle;
 }
 
+.table-utility-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .checkbox-cell {
-  width: 35px;
+  width: 50px;
 }
 
 .col-name {
-  width: 220px;
+  width: 400px;
 }
 
 .col-image {
@@ -39,11 +45,11 @@
 }
 
 .col-toggle {
-  width: 100px;
+  width: 80px;
 }
 
 .col-toggle-counter-top {
-  width: 120px;
+  width: 100px;
 }
 
 .col-created {
@@ -51,7 +57,7 @@
 }
 
 .col-toggle-active {
-  width: 100px;
+  width: 60px;
 }
 
 H2 {
@@ -71,7 +77,13 @@ H2 {
 }
 
 .selected-count {
+  margin-left: 20px;
+  color: #634832;
   font-weight: 700;
+  font-size: 13px;
+  border: 1px solid #38220f;
+  padding: 11px;
+  border-radius: 5px;
 }
 
 .action-bar {
@@ -99,12 +111,23 @@ H2 {
   border: none !important;
 }
 
+:host ::ng-deep .mdc-switch__track::before, .mdc-switch__track::after{
+  //border-color: #634832;
+  border-width: 0px !important;
+}
+
 .slide-toggle {
   @include mat.slide-toggle-overrides((track-width: 45px,
-      track-height: 20px,
+      track-height: 17px,
       selected-handle-color: rgb(100, 194, 100),
       selected-hover-handle-color: rgb(34, 190, 34),
       selected-focus-handle-color: rgb(34, 190, 34),
+      selected-focus-track-color: #634832,
+      unselected-track-color: #634832,
+      unselected-hover-track-color: #634832,
+      unselected-hover-state-layer-color: #634832,
+      unselected-focus-track-color: #634832,
+      unselected-pressed-track-color: #634832,
       selected-icon-color: white,
       unselected-handle-color: rgb(194, 100, 100),
       unselected-hover-handle-color: rgb(180, 39, 39),
@@ -112,9 +135,18 @@ H2 {
     ));
 }
 
-.icon-edit {
+.icon-edit-container {
   color: #38220f;
+  // border: 1px solid #38220f;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  padding-top: 3px;
 }
+
+// .icon-edit {
+
+// }
 
 .icon-image {
   text-align: center;
@@ -136,8 +168,8 @@ H2 {
   padding-left: 0.4rem !important;
 }
 
-:host ::ng-deep .p-treetable-hoverable-rows .p-treetable-tbody>tr {
-  cursor: default;
+.icon-check {
+  color: var(--mat-sys-surface);
 }
 
 :host ::ng-deep .p-paginator-page.p-paginator-page-selected {
@@ -145,16 +177,10 @@ H2 {
   color: #ffffff;
 }
 
-.checkbox {
-  --p-checkbox-checked-border-color: #dbc1ac;
-  --p-checkbox-checked-hover-border-color: #634832;
-  --p-checkbox-checked-focus-border-color: #967259;
-  --p-checkbox-checked-background: #634832;
-  --p-checkbox-checked-hover-background: #967259;
-}
-
 .customized-tree-table {
   font-size: 14px;
+  --p-treetable-node-toggle-button-size: 25px;
+  --p-inputtext-focus-ring-color: #38220f;
   --p-checkbox-checked-border-color: #dbc1ac;
   --p-checkbox-checked-hover-border-color: #634832;
   --p-checkbox-checked-focus-border-color: #967259;
@@ -176,10 +202,10 @@ H2 {
   --p-treetable-body-cell-gap: 0.5rem;
   --p-treetable-row-background: var(--mat-sys-surfaced);
   --p-treetable-row-hover-background: #dbc1ac;
-  --p-treetable-row-selected-background: #dbc1ac;
+  --p-treetable-row-selected-background: #967259;
+  --p-treetable-row-selected-color: #ffff;
   --p-treetable-row-color: var(--p-content-color);
   --p-treetable-row-hover-color: var(--p-content-hover-color);
-  --p-treetable-row-selected-color: #424242;
   --p-treetable-column-title-font-weight: 600;
   --p-treetable-header-cell-background: var(--mat-sys-surface);
   --p-treetable-header-cell-gap: 0;
@@ -214,12 +240,20 @@ H2 {
   background: var(--mat-sys-surface);
 }
 
-.btn-primeng {
-  --p-button-text-primary-active-background: #967259;
-  --p-button-text-primary-hover-background: #dbc1ac;
-  --p-button-text-primary-color: #252525;
-  --p-button-outlined-primary-hover-background: #dbc1ac;
-  --p-button-outlined-primary-active-background: #967259;
-  --p-button-outlined-primary-color: #634832;
-
+.btn-expand {
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  padding-top: 2px;
+  background-color: #dbc1ac;
 }
+
+.icon-expand {
+  font-size: 20px;
+}
+
+:host ::ng-deep .p-toast {
+  top: 70px !important;
+  z-index: 9999 !important;
+}
+
