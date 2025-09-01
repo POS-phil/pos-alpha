@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   MatDialog
@@ -21,18 +21,12 @@ import { MenuCategoryAvailabilityComponent } from '../../../../../dialogs/menu-c
 import { MatChipsModule } from '@angular/material/chips';
 import { ScheduleEntry } from '../../../../../../common/menu-categories';
 import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { NotificationService } from '../../../../../../service/notifications/notification.service';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
-
-interface CategoryIdAndName {
-  categoryId: number;
-  categoryName: string;
-  image: string;
-  icon: string;
-}
+import { CategoryIdAndName } from '../../../../../../common/menu-categories';
 
 export function categoryNameDuplicateValidator(service: MenuCategoriesService): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -62,7 +56,6 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
   };
 }
 
-
 @Component({
   selector: 'app-add-category',
   standalone: true,
@@ -91,8 +84,6 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
   styleUrl: './add-category.component.scss',
 })
 export class AddCategoryComponent implements OnInit {
-
-  private _createCategorySuccess = inject(MatSnackBar);
 
   scheduleSummary: string[] = [];
   isAllDaysChecked = signal(true);
@@ -134,7 +125,7 @@ itemName: any;
 
   selectBackgroundColor(backgroundColor: string) {
     this.selectedBackgroundColor = backgroundColor;
-    this.createCategoryForm.patchValue({})
+    this.createCategoryForm.patchValue({ backgroundColor })
   }
 
   createCategoryForm!: FormGroup;
@@ -208,7 +199,7 @@ itemName: any;
       }],
       image: [null],
       icon: [this.selectedIcon],
-      backgroundColor: [this.selectedBackgroundColor],
+      backgroundColor: [''],
       withProducts: [false],
       schedule: [defaultSchedule],
       item: [0],
@@ -253,7 +244,7 @@ itemName: any;
   onAutocompleteBlur() {
   const control = this.createCategoryForm.get('parentCategoryId');
   if (control?.value && typeof control.value === 'string') {
-    control.setValue(null); // clear invalid text
+    control.setValue(null); 
     control.setErrors({ invalidSelection: true });
   }
 }
@@ -262,7 +253,7 @@ itemName: any;
     this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
       next: (data: CategoryIdAndName[]) => {
         this.listOfCategory = data;
-        this.categoriesSubject.next(data); // update subject
+        this.categoriesSubject.next(data);
         //console.log(data);
       },
       error: (error) => {

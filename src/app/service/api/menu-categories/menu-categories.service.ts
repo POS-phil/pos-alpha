@@ -15,6 +15,10 @@ export class MenuCategoriesService {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
   }
 
+  getCategory(categoryId : number) : Observable<MenuCategories> {
+    return this.http.get<MenuCategories>(`${this.menuCategoriesApiUrl}/${categoryId}`)
+  }
+
   getSubCategories(parentId: number): Observable<MenuCategories[]> {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}/subcategories/${parentId}`);
   }
