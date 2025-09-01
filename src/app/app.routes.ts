@@ -48,28 +48,6 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/pages/transaction-orders/transaction-orders.component').then(m => m.TransactionOrdersComponent),
                 title: 'Transaction Orders',
             },
-            // {
-            //     path: 'product-list/category',
-            //     loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
-            //     title: 'Product List / Category',
-            //     children: [
-            //         {
-            //             path: '',
-            //             redirectTo: 'categories',
-            //             pathMatch: 'full'
-            //         },
-            //         {
-            //             path: 'categories',
-            //             loadComponent: () => import('./components/main-pages/pages/menu/menu.component').then(m => m.MenuComponent),
-            //             title: 'Product Lists / Categories',
-            //         },
-            //     ]
-            // },
-            {
-                path: 'menu/item',
-                loadComponent: () => import('./components/main-pages/pages/item/item.component').then(m => m.ItemComponent),
-                title: 'Product Lists / Item',
-            },
             {
                 path: 'addons-builder',
                 loadComponent: () =>
