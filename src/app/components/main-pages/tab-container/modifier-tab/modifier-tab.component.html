@@ -1,0 +1,18 @@
+<div class="tab-viewer-container">
+    <div class="tab-viewer">
+        <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="docs-component-viewer-tabbed-content" style="outline: none;"
+            mat-stretch-tabs="false">
+
+            <a routerLink="modifier-group" routerLinkActive="active" mat-tab-link>
+                Modifier Group
+            </a>
+            <a routerLink="modifier-option" routerLinkActive="active" mat-tab-link>
+                Modifier Option
+            </a>
+            
+        </nav>
+        <mat-tab-nav-panel #tabPanel class="docs-component-viewer-content">
+            <router-outlet></router-outlet>
+        </mat-tab-nav-panel>
+    </div>
+</div>

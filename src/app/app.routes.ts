@@ -79,16 +79,29 @@ export const routes: Routes = [
                 title: 'Product Lists / Item',
             },
             {
-                path: 'menu/modifier-group',
+                path: 'addons-builder',
+                loadComponent: () =>
+                    import('./components/main-pages/tab-container/modifier-tab/modifier-tab.component').then(m => m.ModifierTabComponent),
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'modifier-group',
+                        pathMatch: 'full'
+                    },
+                               {
+                path: 'modifier-group',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/modifier-group.component').then(m => m.ModifierGroupComponent),
                 title: 'Product Lists / Modifier Group',
             },
 
             {
-                path: 'menu/modifier-option',
+                path: 'modifier-option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
                 title: 'Product Lists / Modifier Option',
             },
+                ]
+            },
+ 
             {
                 path: 'product-list/category',
                 loadComponent : () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
@@ -111,22 +124,22 @@ export const routes: Routes = [
                 title: 'Create Item'
             },
             {
-                path: 'menu/modifier-group/create_modifier',
+                path: 'addons-builder/modifier-group/create_modifier',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
                 title: 'Create Modifier'
             },
             {
-                path: 'menu/modifier-option/create_modifier_option',
+                path: 'addons-builder/modifier-option/create_modifier_option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-modifier-option/create-modifier-option.component').then(m => m.CreateModifierOptionComponent),
                 title: 'Create Modifier Option'
             },
             {
-                path: 'menu/modifier-group/edit_modifier_group',
+                path: 'addons-builder/modifier-group/edit_modifier_group',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/edit-modifier-group/edit-modifier-group.component').then(m => m.EditModifierGroupComponent),
                 title: 'Edit Modifier Group'
             },
             {
-                path: 'menu/modifier-option/edit_modifier_option',
+                path: 'addons-builder/modifier-option/edit_modifier_option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/edit-modifier-option/edit-modifier-option.component').then(m => m.EditModifierOptionComponent),
                 title: 'Edit Modifier Option'
             },
