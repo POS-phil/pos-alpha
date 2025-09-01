@@ -24,6 +24,12 @@
             <mat-icon>add</mat-icon>
             Create New Item
         </button>
+
+        <button mat-flat-button class="btnCategory" [routerLink]="['edit-item']">
+            <mat-icon>edit</mat-icon>
+            Edit Item
+        </button>
+
     </div>
     
     @if(MENU_ITEMS_DATA.data.length === 100){

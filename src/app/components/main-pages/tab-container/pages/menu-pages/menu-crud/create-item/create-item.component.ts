@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule, MatMenuPanel } from '@angular/material/menu';
@@ -32,7 +32,6 @@ import { MatCheckbox } from "@angular/material/checkbox";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
     MatButtonModule,
     MatStepperModule,
     MatIconModule,
@@ -44,7 +43,6 @@ import { MatCheckbox } from "@angular/material/checkbox";
     MatMenuModule,
     MatTooltipModule,
     MatChipsModule,
-    MatDatepicker,
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckbox
@@ -76,8 +74,8 @@ export class CreateItemComponent implements OnInit {
     'egg_alt', 'fastfood', 'set_meal', 'room_service', 'tapas', 'takeout_dining',
   ];
 
-  selectedIcon = 'fastfood';
-  matDatepicker = '';
+selectedIcon = 'fastfood';
+matDatepicker = '';
 picker: Date | undefined;
 iconMenu: MatMenuPanel<any> | null | undefined;
 background_colors: any;
@@ -88,6 +86,7 @@ displayCategoryName: ((value: any) => string) | null | undefined;
 itemName: any;
 startDate: unknown;
 isEditable: false | undefined;
+dateRangeValue: any;
 
 //itemName: any;
 

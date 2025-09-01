@@ -109,14 +109,11 @@ export class AddCategoryComponent implements OnInit {
   selectedBackgroundColor = '#e62e2eff';
   previewImage: SafeUrl | null = null;
   selectedImage: File | null = null;
-<<<<<<< HEAD:src/app/components/main-pages/tab-container/pages/menu-pages/menu-crud/add-category/add-category.component.ts
-itemName: any;
-=======
+
   listOfCategory: CategoryIdAndName[] = [];
   filteredCategories: CategoryIdAndName[] = [];
   private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);
   filteredCategories$!: Observable<CategoryIdAndName[]>;
->>>>>>> 21ce99f367f1fb61a282f2254e9429c24e3edceb:src/app/components/main-pages/pages/category/category-crud/add-category/add-category.component.ts
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;

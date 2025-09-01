@@ -32,24 +32,34 @@
 
             <mat-form-field class="full-width">
                 <mat-label>Category</mat-label>
-                <select matNativeControl required>
-                    <option value="Category 1">Category 1</option>
-                    <option value="Category 2">Category 2</option>
-                </select>
+                <mat-select required>
+                    <mat-option value="Option">Category 1</mat-option>
+                    <mat-option value="Option">Category 2</mat-option>
+                    <mat-option value="Option">Category 3</mat-option>
+                    <mat-option value="Option">Category 4</mat-option>
+                </mat-select>
             </mat-form-field>
-            <mat-form-field class="full-width">
-            <mat-label>Item Type</mat-label>
-            <select matNativeControl required>
-                <option value="Menu">Menu Item</option>
-                <option value="Retail">Retail Item</option>
-            </select>
+
+           <mat-form-field class="full-width">
+                <mat-label>Item Type</mat-label>
+                <mat-select required>
+                    <mat-option value="Option">Menu Item</mat-option>
+                    <mat-option value="Option">Retail Item</mat-option>
+                </mat-select>
             </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>SKU</mat-label>
-                <input matInput type="text" placeholder="SKU"> 
-                <button matFab extended class="buttonGenerate" matSuffix  >Generate</button>   
-                                
-            </mat-form-field>  
+
+
+            <div class="sku-row">
+                <mat-form-field class="sku-field full-width">
+                
+                    <mat-label>SKU</mat-label>
+                        <input matInput type="text" placeholder="SKU">
+                    </mat-form-field>
+
+                <button type="submit" mat-flat-button class="btnRadius btn-generate">
+                    Generate
+                </button>
+            </div> 
 
             <mat-form-field class="full-width">
                 <mat-label>Barcode</mat-label>
@@ -149,22 +159,35 @@
             <h3>Pricing</h3>
  
                     <div class="grid-itemPriceCosting">
-                        <mat-form-field  class="full-width">
-                        <mat-label>Selling Method</mat-label>
-                        <select matNativeControl required>
-                            <option value="Category 1">Category 1</option>
-                            <option value="Category 2">Category 2</option>
-                        </select>
-                        </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                    <mat-label>Selling Method</mat-label>
+                        <mat-select>
+                            <mat-option value="Option">Category 1</mat-option>
+                            <mat-option value="Option">Category 2</mat-option>
+                            <mat-option value="Option">Category 3</mat-option>
+                            <mat-option value="Option">Category 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                        
                     </div>
                     <div class="grid-itemPriceCosting">
                         <mat-form-field class="full-width">
-                        <mat-label>Tax Group </mat-label>
-                        <select matNativeControl required>
-                            <option value="Menu">Menu Item</option>
-                            <option value="Retail">Retail Item</option>
-                        </select>
-                        </mat-form-field>
+    
+
+                    <mat-label>Tax Group</mat-label>
+                        <mat-select>
+                            <mat-option value="Option">Menu Item</mat-option>
+                            <mat-option value="Option">Retail Item</mat-option>
+                            <mat-option value="Option">Category 3</mat-option>
+                            <mat-option value="Option">Category 4</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+
+
                     </div>
                     <div class="grid-itemPriceCosting">                    
                     <div class="grid-containerOpenPrice">                     
@@ -186,40 +209,62 @@
                             <input matInput type="text" placeholder="Preparation Time (Minutes)">                    
                         </mat-form-field> 
                     </div>
-                    <div class="grid-itemPriceCosting">
+                    
+                        <div class="priceSched-row">     
+
+                            <mat-form-field class="priceSched-field">
+                                    <mat-label>Enter Price Schedule</mat-label>
+                                    <input matInput type="text"  placeholder="Enter Price Schedule" [disabled]="dateRangeValue === ''">
+                            </mat-form-field>                            
+                            <mat-form-field class="priceSched-field" id="dateRangeValue">
+                                <mat-label>Enter a date range</mat-label>
+                                <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate placeholder="Start date">
+                                <input matEndDate placeholder="End date">
+                                </mat-date-range-input>
+                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-date-range-picker #picker></mat-date-range-picker>
+                            </mat-form-field>
+
+
+
+
+                        </div>
+                    <div class="grid-itemPriceCosting"></div>
+                    <div class="grid-itemPriceCosting">                      
                         <mat-form-field class="full-width">
-                        <mat-label>Choose a date</mat-label>
-                        <input matInput [matDatepicker]="picker">
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
+                            <mat-label>Tags</mat-label>
+                            <mat-select required>
+                                <mat-option value="Tags 1">Tags 1</mat-option>
+                                <mat-option value="Tags 2">Tags 2</mat-option>
+                                <mat-option value="Tags 3">Tags 3</mat-option>
+                                <mat-option value="Tags 4">Tags 4</mat-option>
+                            </mat-select>
                         </mat-form-field>
-                        
-                    </div>
-                    <div class="grid-itemPriceCosting">
-                                                   <mat-form-field  class="full-width">
-                        <mat-label>Tags</mat-label>
-                        <select matNativeControl required>
-                            <option value="Tags 1">Tags 1</option>
-                            <option value="Tags 2">Tags 2</option>
-                        </select>
-                        </mat-form-field>  
+
+
+
                     </div>
 
         </div>
 
         <div class="container-NetGrossWeight">
+
             <h3>Costing</h3>
                 <div class="grid-containerNetGrossWeight">
                     
                     <div class="grid-itemNetGrossWeight">
-                           <mat-form-field  class="full-width">
-                        <mat-label>Costing Method</mat-label>
-                        <select matNativeControl required>
-                            <option value="Category 1">From Ingredient</option>
-                            <option value="Category 2">Category 2</option>
-                        </select>
-                        </mat-form-field> 
+
+                        <mat-form-field class="full-width">
+                            <mat-label>Costing Method</mat-label>
+                            <mat-select>
+                                <mat-option value="From Cost">Fix Cost</mat-option>
+                                <mat-option value="From recipe">From recipe</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+
+
                     </div>
                     <div class="grid-itemNetGrossWeight">   
                         <mat-form-field class="full-width">
@@ -227,7 +272,7 @@
                             <input matInput type="text" placeholder="0.0"  [readonly]="true">
                         </mat-form-field> 
                     </div>
-     <div class="grid-itemNetGrossWeight">
+                    <div class="grid-itemNetGrossWeight">
                         <mat-form-field class="full-width">
                         <mat-label>Net Weight</mat-label>
                         <input matInput type="text" placeholder="0.000">                    
@@ -268,65 +313,19 @@
                     </div>
 
                 
+                </div>
         </div>
-</div>
 
-        <div class="container-Column1">
-
-
-
-
-
+<!--
+        <div class="container-CreationDetail">
+            <h3>Creation Details</h3>
         </div>
-        <!-- 2nd column -->
-        <div class="container-Column2">
-            
 
+        <div class="container-Store">
+            <h3>Assigned Store</h3>
         </div>
-        
-      <!-- 3rd column -->
 
-    <div class="container-Column3">
-        
-        
-    </div>  
-
+   -->     
 
     </div>
 </form>
-
-<!--
-
-
-
-<div class="grid-5cS3-7r">
-    <mat-form-field class="full-width">
-        <mat-label>Ingredient Cost</mat-label>
-        <input matInput type="text" placeholder="Ingredient Cost">                    
-    </mat-form-field>  
-    <mat-form-field class="full-width">
-        <mat-label>Calories</mat-label>
-        <input matInput type="text" placeholder="Calories">                    
-    </mat-form-field> 
-</div>
-
-
-
-            
-            <div class="grid-Cost">
-                <mat-form-field class="full-width">
-                    <mat-label>Cost %</mat-label>
-                    <input matInput type="text" placeholder="Cost %">                    
-                </mat-form-field> 
-                <mat-form-field class="full-width">
-                    <mat-label>Salt Content</mat-label>
-                    <input matInput type="text" placeholder="Salt Content">                    
-                </mat-form-field>  
-            </div>
-
-
-        -->
-
-
-
-
