@@ -148,14 +148,15 @@ export class SideNavContentComponent {
         },
         {
           icon: '',
-          label: 'Modifier Group',
-          route: 'menu/modifier-group'
+          label: 'Add-ons Builder',
+          route: 'addons-builder'
         },
-        {
-          icon: '',
-          label: 'Modifier Option',
-          route: 'menu/modifier-option'
-        }
+        // {
+        //   icon: '',
+        //   label: 'Modifier Option',
+        //   route: 'menu/modifier-option'
+        // }
+        
       ]
     },
     

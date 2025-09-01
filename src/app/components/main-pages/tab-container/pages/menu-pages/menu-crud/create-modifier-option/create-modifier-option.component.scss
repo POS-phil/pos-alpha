@@ -18,6 +18,52 @@ form {
     justify-content: center;
 }
 
+.container-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 150px);
+  justify-content: center;
+  gap: 20px;
+}
+.container-textbox {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / span 4;;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+  text-align: center;
+}
+
+.container-utility {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  grid-column: 5 / span 3;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+}
+
+.container-utlity-content {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+  grid-column: 7 / span 3;
+  grid-row: 1;
+  text-align: center;
+}
+.grid-image{
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.grid-toggle-buttons {
+  text-align: left;
+  align-items: center;
+  grid-column: 3;
+  grid-row: 1;
+}
+
+
 .container-flex {
   display: flex;
   flex-wrap: wrap;
@@ -182,18 +228,124 @@ justify-content: center;
     display: flex;
     flex-direction: column;
   }
-
+.container-add-recipe {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / span 20;
+  // grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  // padding: 150px;
+  margin-top: 3px;
+  justify-content: right;
+}
 }
 .sku-row {
   display: flex;
   align-items: center;
-  gap: 8px; /* space between input and button */
+  gap: 8px; 
 }
 
 .sku-field {
-  flex: 1; /* make input take remaining space */
+  flex: 1; 
 }
 
 .btn-generate {
   margin-bottom: 10px;
 }
+.container-sub-modifier {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  grid-column: 8 / span 13;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.container-recipe {
+  display: grid;
+  grid-template-columns: repeat(9, 150px);
+  justify-content: center;
+  margin-top: 20px;
+  // box-shadow: var(--mat-sys-level3);
+  gap: 20px;
+}
+
+.recipe-textbox{
+  display: flex;
+  flex-direction: column;
+  // text-align: center;
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  padding: 15px;
+}
+.recipe-table{
+  display: flex;
+  flex-direction: column;
+  // text-align: center;
+  // grid-column: 8 / span 6;
+  // grid-row: 1;
+  padding: 15px;
+}
+.flex-add-sub-mod-opt{
+  display: flex;
+  justify-content: right;
+}
+
+.grid-save{
+  display: flex;
+  justify-content: right;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+.container-recipe-controls {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+  grid-column: 7 / span 3;
+  grid-row: 1;
+  text-align: center;
+  margin-top: 20px;
+}
+.container-add-recipe {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / span 20;
+  // grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  // padding: 150px;
+  margin-top: 3px;
+  justify-content: right;
+}
+
+.btn-recipe {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  grid-column: 8 / span 6;
+  grid-row: 1;
+  padding: 15px;
+}
+
+.grid-recipe-textbox{
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  margin-left: 20px;
+}
+
+.grid-recipe-btn{
+  // text-align: left;
+  // align-items: center;
+  display: flex;
+  // grid-column: 13;
+  justify-content: right;
+  margin-right: 20px;
+  grid-row: 1;
+  
+}
+

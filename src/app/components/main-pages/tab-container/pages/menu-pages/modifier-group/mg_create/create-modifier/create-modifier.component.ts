@@ -62,7 +62,7 @@ export class CreateModifierComponent implements OnInit {
     this.selectedIcon = icon;
   }
 
-  createCategoryForm!: FormGroup;
+  createModifierForm!: FormGroup;
 
   readonly dialog = inject(MatDialog);
 
@@ -74,7 +74,7 @@ export class CreateModifierComponent implements OnInit {
   ) { }
 
   get categoryName() {
-    return this.createCategoryForm.get('category_name')!;
+    return this.createModifierForm.get('category_name')!;
   }
 
   ngOnInit(): void {
@@ -97,9 +97,10 @@ export class CreateModifierComponent implements OnInit {
     };
 
 
-    this.createCategoryForm = this.fb.group({
-      category_name: ['', Validators.required],
-      reference: ['', Validators.required],
+    this.createModifierForm = this.fb.group({
+      category_name: ['', [Validators.required, Validators.maxLength(50)]],
+      second_language: [''],
+      reference: [''],
       schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
       web_shop: [false],
       aggregator: [false],
@@ -142,12 +143,12 @@ export class CreateModifierComponent implements OnInit {
       width: '500px',
       height: '750px',
       maxWidth: '90vw',
-      data: this.createCategoryForm.get('schedule')?.value || []
+      data: this.createModifierForm.get('schedule')?.value || []
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.createCategoryForm.get('schedule')?.setValue(result);
+        this.createModifierForm.get('schedule')?.setValue(result);
         this.scheduleSummary = this.generateScheduleSummary(result);
       }
     });

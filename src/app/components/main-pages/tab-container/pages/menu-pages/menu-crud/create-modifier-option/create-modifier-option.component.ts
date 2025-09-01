@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   MatDialog
@@ -19,13 +19,19 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ScheduleEntry } from '../../../../../../../common/menu-categories';
-
+import { MenuCategories, ScheduleEntry } from '../../../../../../../common/menu-categories';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatCheckbox } from "@angular/material/checkbox";
+import { MatSort, MatSortModule,Sort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-create-modifier-option',
   standalone: true,
- imports: [
+  imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -40,10 +46,13 @@ import { ScheduleEntry } from '../../../../../../../common/menu-categories';
     MatSelectModule,
     MatMenuModule,
     MatTooltipModule,
-    MatChipsModule
+    MatChipsModule,
+    // MatCheckbox,
+    MatTableModule,
+    MatSortModule,
   ],
-    templateUrl: './create-modifier-option.component.html',
-    styleUrls: ['./create-modifier-option.component.scss']
+  templateUrl: './create-modifier-option.component.html',
+  styleUrls: ['./create-modifier-option.component.scss']
 })
 export class CreateModifierOptionComponent {
 
@@ -73,41 +82,68 @@ export class CreateModifierOptionComponent {
     private fb: FormBuilder,
   ) { }
 
-  get categoryName() {
-    return this.createCategoryForm.get('category_name')!;
+  get modifier_name() {
+    return this.createCategoryForm.get('modifier_name')!;
   }
+  // Define the columns to be displayed in the table
+  bulkColumns: string[] = ['bulk'];
+  displayedColumns: string[] = ['name', 'net_qty', 'yield', 'waste_qty', 'prep_wastage', 'gross_qty', 'modifier', 'incl_in_cost', 'cost_per_unit'];
+  // Data source for the table
+  categoryList: MenuCategories[] = [];
+  MENU_CATEGORIES_DATA: any;
 
+  // Injecting LiveAnnouncer for accessibility announcements
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  private _liveAnnouncer = inject(LiveAnnouncer);
   ngOnInit(): void {
 
-    const defaultSchedule: ScheduleEntry = {
-      day: 'All Days',
-      available: true,
-      allDay: true,
-      startTime: '00:00',
-      endTime: '23:59',
-      days: [
-        { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-        { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
-      ]
-    };
-
-
     this.createCategoryForm = this.fb.group({
-      category_name: ['', Validators.required],
+      modifier_name: ['', Validators.required],
       reference: ['', Validators.required],
-      schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
+      // schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
       web_shop: [false],
       aggregator: [false],
       kiosk: [false],
       created_at: [new Date()],
     });
 
-    this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
+    // this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
+  }
+  getCategories() {
+    this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+  }
+
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
+
+  selection = new SelectionModel<any>(true, []);
+
+  get selectedCount(): number {
+    return this.selection.selected.length;
+  }
+
+  isAllSelected() {
+    const data = this.MENU_CATEGORIES_DATA.data ?? [];
+    return this.selection.selected.length > data.length;
+  }
+  isSomeSelected() {
+    const data = this.MENU_CATEGORIES_DATA.data ?? [];
+    const numSelected = this.selection.selected.length;
+    return numSelected > 0 && numSelected < data.length;
+  }
+
+  toggleAllRows() {
+    const data = this.MENU_CATEGORIES_DATA.data ?? [];
+    this.isAllSelected()
+      ? this.selection.clear()
+      : data.forEach((row: any) => this.selection.select(row));
   }
 
   confirmCreate(): void {
