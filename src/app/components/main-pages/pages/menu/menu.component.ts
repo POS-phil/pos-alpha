@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormField, MatInputModule } from '@angular/material/input';
@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
+import { CdkTree, CdkTreeModule } from '@angular/cdk/tree';
 
 @Component({
   selector: 'app-menu',
@@ -44,7 +45,8 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
     CsMatTableComponent,
     ColumnSorterComponent,
     MatTabsModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    CdkTreeModule
   ],
   providers: [MenuCategoriesService],
   templateUrl: './menu.component.html',
@@ -53,15 +55,15 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
 
 export class MenuComponent implements OnInit {
 
-  sortableColumns: string[] = ['reference', 'category_name', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
-  displayedColumnNames: string[] = ['Reference', 'Category Name', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
-  categoryList: MenuCategories[] = [];
-
-  showSelectionHeader = false;
-  selectedCount = signal(0);
-
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  sortableColumns: string[] = ['reference', 'image', 'item', 'web_shop', 'aggregator', 'kiosk', 'counter_top', 'created_at', 'isActive'];
+  displayedColumnNames: string[] = ['Reference', 'Image', 'Item', 'Web Shop', 'Aggregator', 'Kiosk', 'Counter Top', 'Created', 'Active']
+  categoryList: MenuCategories[] = [];
+  @ViewChild(MatTable, { read: true }) table!: MatTable<any>;
+  showSelectionHeader = false;
+  selectedCount = signal(0);
 
   private _liveAnnouncer = inject(LiveAnnouncer);
 
@@ -79,31 +81,10 @@ export class MenuComponent implements OnInit {
   ) { }
 
   getFinalDisplayedColumns(): string[] {
-    return ['check', 'plus', ...this.sortableColumns];
+    return ['check', 'plus', 'category_name', ...this.sortableColumns];
   }
 
   MENU_CATEGORIES_DATA = new MatTableDataSource<MenuCategories>([]);
-
-  // getCategories() {
-  //   this.menuCategoriesService.getMenuCategories().subscribe({
-  //     next: (data: MenuCategories[]) => {
-  //       console.log(data);
-  //       const topLevel = data.filter(cat => cat.parentCategoryId == null);
-  //       this.MENU_CATEGORIES_DATA.data = topLevel;
-
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching categories:', err);
-  //     }
-  //   });
-
-  //   this.MENU_CATEGORIES_DATA.paginator = this.paginator;
-  //   this.MENU_CATEGORIES_DATA.sort = this.sort;
-  // }
-
-  isSubcategory(row: MenuCategories): boolean {
-    return row.parentCategoryId != null;
-  }
 
   getCategories() {
     this.menuCategoriesService.getMenuCategories().subscribe({
@@ -119,39 +100,6 @@ export class MenuComponent implements OnInit {
         console.error('Error fetching menu categories', error);
       }
     });
-
-    this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
-  }
-
-  expandCategory(parent: MenuCategories) {
-    const parentIndex = this.MENU_CATEGORIES_DATA.data.findIndex(
-      (c: MenuCategories) => c.categoryId === parent.categoryId
-    );
-
-    const alreadyExpanded = this.MENU_CATEGORIES_DATA.data[parentIndex + 1]?.parentCategoryId === parent.categoryId;
-
-    if (alreadyExpanded) {
-      this.MENU_CATEGORIES_DATA.data = this.MENU_CATEGORIES_DATA.data.filter(
-        (row: MenuCategories) => row.parentCategoryId !== parent.categoryId
-      );
-      this.MENU_CATEGORIES_DATA._updateChangeSubscription();
-      return;
-    }
-
-    this.menuCategoriesService.getSubCategories(parent.categoryId!).subscribe(
-      (subcats: MenuCategories[]) => {
-        if (!subcats || subcats.length === 0) return;
-
-        const formattedSubcats = subcats.map(sub => ({
-          ...sub,
-          isSubcategory: true
-        }));
-
-        this.MENU_CATEGORIES_DATA.data.splice(parentIndex + 1, 0, ...formattedSubcats);
-
-        this.MENU_CATEGORIES_DATA._updateChangeSubscription();
-      });
-
   }
 
   applyFilter(event: Event) {
@@ -206,21 +154,20 @@ export class MenuComponent implements OnInit {
   }
 
   onDeleteSelected(rows: any[]) {
-  const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-    data: {
-      title: 'Delete Confirmation',
-      message: `Are you sure you want to delete ${rows.length} selected row(s)?`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel'
-    }
-  });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Confirmation',
+        message: `Are you sure you want to delete ${rows.length} selected row(s)?`,
+        confirmText: 'Delete',
+        cancelText: 'Cancel'
+      }
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      // perform delete logic
-      console.log('Deleting rows', rows);
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Deleting rows', rows);
+      }
+    });
+  }
 
 }

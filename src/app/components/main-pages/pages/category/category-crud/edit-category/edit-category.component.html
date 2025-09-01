@@ -1,0 +1,260 @@
+<form [formGroup]="editCategoryForm" (ngSubmit)="updateCategory()">
+    <div class="header-flex">
+        <p-breadcrumb class="breadcrumb" [model]="items" />
+        <span class="spacer"></span>
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/product-list/category']">
+            Cancel
+        </button>
+        <button type="submit" [disabled]="editCategoryForm.invalid" mat-flat-button class="btnRadius">
+            Save
+        </button>
+    </div>
+    <div class="container-grid">
+        <div class="container-basic-info">
+            <h3>Basic Info</h3>
+            <mat-form-field class="full-width">
+                <mat-label>Category Name</mat-label>
+                <input matInput type="text" formControlName="categoryName" placeholder="Ex. Combo 1">
+                @if(categoryName.hasError('required')) {
+                <mat-error class="error-message">Category Name is required</mat-error>
+                } @else if (categoryName.hasError('maxlength')) {
+                <mat-error class="error-message">Maximum character is (50) only</mat-error>
+                } @else if (categoryName.hasError('duplicateName')){
+                <mat-error class="error-message">Category name already exists.</mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Second Language</mat-label>
+                <input matInput type="text" formControlName="secondLanguageName"
+                    placeholder="Ex. Combo 1 in second language">
+                @if (secondLanguageName?.hasError('maxlength')) {
+                <mat-error class="error-message">Maximum character is (50) only</mat-error>
+                }
+            </mat-form-field>
+
+            <div class="grid-textArea">
+                <mat-form-field class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."
+                        formControlName="description"></textarea>
+                    @if (description?.hasError('maxlength')) {
+                    <mat-error class="error-message">Maximum character is (100) only</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <div class="grid-reference">
+                <mat-form-field class="full-width">
+                    <mat-label>Reference</mat-label>
+                    <input matInput formControlName="reference">
+                    @if (reference?.hasError('maxlength')) {
+                    <mat-error class="error-message">Maximum character is (50) only</mat-error>
+                    }
+                </mat-form-field>
+            </div>
+            <mat-form-field class="full-width">
+                <mat-label>Parent Category</mat-label>
+                <input type="text" formControlName="parentCategoryId" matInput [matAutocomplete]="auto">
+                @if(editCategoryForm.get('parentCategoryId')?.hasError('invalidSelection')){
+                <mat-error class="error-message">
+                    Please select a valid category from the list
+                </mat-error>
+                }
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCategoryName">
+                    @for(option of filteredCategories$ | async; track option){
+                    <mat-option [value]="option">
+                        @if(option.image) {
+                        <img alt="" class="categoryImg" [src]="option.image" height="25">
+                        } @else {
+                        <mat-icon>{{option.icon}}</mat-icon>
+                        }
+                        <span>{{ option.categoryName }}</span>
+                    </mat-option>
+                    }
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="container-availability">
+            <button type="button" mat-fab extended class="full-width btnAvailability"
+                (click)="openAvailabilityDialog()">
+                <mat-icon>event_repeat</mat-icon>
+                <span>Availability</span>
+            </button>
+            <mat-chip-set>
+                @for(item of scheduleSummary; track item){
+                <mat-chip>{{ item }}</mat-chip>
+                }
+            </mat-chip-set>
+        </div>
+        <div class="container-utility">
+            <h3>Utilities</h3>
+            <div class="container-utlity-content">
+                <div class="grid-image">
+                    <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
+                        @if (previewImage) {
+                        <img [src]="previewImage" alt="Uploaded" class="uploaded-image" />
+                        } @else {
+                        <mat-icon class="icon-image">add_a_photo</mat-icon>
+                        }
+                    </button>
+                </div>
+                <div class="grid-toggle-buttons">
+                    <mat-slide-toggle formControlName="webShop" class="toggle-button">
+                        Web Shop
+                    </mat-slide-toggle>
+                    <mat-slide-toggle formControlName="aggregator" class="toggle-button">
+                        Aggregator
+                    </mat-slide-toggle>
+                    <mat-slide-toggle formControlName="kiosk" class="toggle-button">
+                        Kiosk
+                    </mat-slide-toggle>
+                    <mat-slide-toggle formControlName="counterTop" class="toggle-button">
+                        Counter Top
+                    </mat-slide-toggle>
+                </div>
+                <div class="_grid-icon-picker">
+                    <div style="font: var(--mat-sys-label-small); margin-top: 10px;">
+                        <span>ICON PICKER : </span>
+                    </div>
+                    <button [disabled]="previewImage"
+                        matTooltip="If no image is provided, an icon can be selected to use as the category image."
+                        type="button" mat-icon-button class="iconSelector" class="icon-picker"
+                        [matMenuTriggerFor]="iconMenu">
+                        <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
+                    </button>
+
+                    <mat-menu #iconMenu="matMenu" class="icon-menu">
+                        <div class="icon-grid">
+                            @for(icon of icons; track icon) {
+                            <button mat-icon-button (click)="selectIcon(icon)">
+                                <mat-icon>{{ icon }}</mat-icon>
+                            </button>
+                            }
+                        </div>
+                    </mat-menu>
+                </div>
+                <div class="grid-background-picker">
+                    <div style="font: var(--mat-sys-label-small);">
+                        <span>BACKGROUND PICKER :</span>
+                    </div>
+                    <div>
+                        <button type="button" class="background-selector" [matMenuTriggerFor]="backgroundMenu"
+                            [style.backgroundColor]="selectedBackgroundColor" matButton="outlined">
+
+                        </button>
+                        <mat-menu #backgroundMenu="matMenu" class="background-menu">
+                            <div class="background-grid">
+                                @for(background of background_colors; track background) {
+                                <button type="button" matButton="outlined" class="background-picker"
+                                    [style.backgroundColor]="background" (click)="selectBackgroundColor(background)">
+                                </button>
+                                }
+                            </div>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-accordion">
+            <button matButton type="button" (click)="accordion().openAll()">Expand All</button>
+            <button matButton type="button" (click)="accordion().closeAll()">Collapse All</button>
+            <mat-accordion multi class="accordion-container">
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">menu_book</mat-icon>
+                            Mapped Item </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <mat-chip>
+                            Example only no backend yet
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Two fish
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Three fish
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Four fish
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">insert_invitation</mat-icon>
+                            Creation Details </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="creation-details-table-container">
+                        <table>
+                            <colgroup>
+                                <col span="4" class="creation-details-table">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Created By</th>
+                                    <th>Created At</th>
+                                    <th>Last Modified By</th>
+                                    <th>Last Modified At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Agie Arellano</td>
+                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                    <td>Agie Arellano</td>
+                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">store</mat-icon>
+                            Assigned Store(s) </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <mat-chip>
+                            Example only no backend yet
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 1
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 2
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 3
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </div>
+</form>
