@@ -184,6 +184,10 @@ export class CategoryComponent implements OnInit {
     this.selectedColumns = this.cols;
   }
 
+  get hasCategories(): boolean {
+    return Array.isArray(this.categories) && this.categories.length > 0;
+  }
+
   getCategories() {
     this.menuCategoriesService.getMenuCategories().subscribe({
       next: (data: MenuCategories[]) => {
