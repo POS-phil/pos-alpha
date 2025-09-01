@@ -141,11 +141,13 @@ export class SideNavContentComponent {
           label: 'Category',
           route: 'product-list/category'
         },
+
         {
           icon: '',
           label: 'Item',
           route: 'menu/item'
         },
+
         {
           icon: '',
           label: 'Modifier Group',
@@ -156,6 +158,7 @@ export class SideNavContentComponent {
           label: 'Modifier Option',
           route: 'menu/modifier-option'
         }
+
       ]
     },
     
