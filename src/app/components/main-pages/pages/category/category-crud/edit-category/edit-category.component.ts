@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal, viewChild, WritableSignal } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   MatDialog
@@ -29,9 +29,14 @@ import { MenuItem } from 'primeng/api';
 import { CategoryIdAndName } from '../../../../../../common/menu-categories';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 
-export function categoryNameDuplicateValidator(service: MenuCategoriesService): AsyncValidatorFn {
+export function categoryNameDuplicateValidator(service: MenuCategoriesService, originalName?: string): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
     if (!control.value) return of(null);
+
+    // If editing and value = original, skip validation
+    if (originalName && control.value.trim().toLowerCase() === originalName.trim().toLowerCase()) {
+      return of(null);
+    }
 
     return of(control.value).pipe(
       debounceTime(300),
@@ -102,13 +107,16 @@ export class EditCategoryComponent implements OnInit {
 
   selectedIcon = '';
   selectedBackgroundColor = '#e62e2eff';
-  previewImage: SafeUrl | null = null;
-  selectedImage: File | null = null;
+  previewImage: string | SafeUrl | null = null;
+  selectedImage: string | File | null = null;
   listOfCategory: CategoryIdAndName[] = [];
   filteredCategories: CategoryIdAndName[] = [];
   private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);
   filteredCategories$!: Observable<CategoryIdAndName[]>;
   editCategoryForm!: FormGroup;
+
+  categoryId: WritableSignal<number> = signal(0);
+  _categoryName : WritableSignal<string> = signal('');
 
   accordion = viewChild.required(MatAccordion);
 
@@ -153,7 +161,7 @@ export class EditCategoryComponent implements OnInit {
       categoryName: ['',
         {
           validators: [Validators.required, Validators.maxLength(50)],
-          asyncValidators: [categoryNameDuplicateValidator(this.menuCategoryService)],
+          asyncValidators: [categoryNameDuplicateValidator(this.menuCategoryService, this._categoryName())],
           updateOn: 'change'
         }],
       secondLanguageName: ['', {
@@ -199,38 +207,48 @@ export class EditCategoryComponent implements OnInit {
     this.getListOfCategories();
   }
 
+  //POPULATE FORM
+
   populateForm(category: MenuCategories) {
-    const parentCategory = this.listOfCategory.find(
-      c => c.categoryId === category.parentCategoryId
-    ) || null;
+  this.categoryId.set(category.categoryId || 0);
+  this._categoryName.set(category.categoryName);
 
-    // console.log('From category:', category.parentCategoryId, typeof category.parentCategoryId);
-    // console.log('From listOfCategory:', this.listOfCategory.map(c => ({ id: c.categoryId, type: typeof c.categoryId })));
-    //console.log(parentCategory);
-    this.selectedIcon = category.icon || '';
-    this.currentSchedule = category.schedule || [];
-    this.scheduleSummary = this.generateScheduleSummary(this.currentSchedule);
-    this.selectedBackgroundColor = category.backgroundColor || '#e62e2eff';
+  this.categoryName.setValidators([Validators.required, Validators.maxLength(50)]);
+  this.categoryName.setAsyncValidators([
+    categoryNameDuplicateValidator(this.menuCategoryService, category.categoryName)
+  ]);
+  this.categoryName.updateValueAndValidity({ emitEvent: false });
 
-    const allDays = this.currentSchedule.every(d => d.available);
-    this.isAllDaysChecked.set(allDays);
+  const parentCategory = this.listOfCategory.find(
+    c => c.categoryId === category.parentCategoryId
+  ) || null;
 
-    if(allDays){
-      this.isAllDayChecked.set(true);
-    } else {
-      this.isAllDayChecked.set(false);
-    }
-    
+  this.selectedIcon = category.icon || '';
+  this.currentSchedule = category.schedule || [];
+  this.scheduleSummary = this.generateScheduleSummary(this.currentSchedule);
+  this.selectedBackgroundColor = category.backgroundColor || '#e62e2eff';
+  this.selectedImage = (category.image && typeof category.image === 'string') ? category.image : null;
+  this.previewImage = (category.image && typeof category.image === 'string')
+    ? this.sanitizer.bypassSecurityTrustUrl(category.image)
+    : null;
 
-    this.editCategoryForm.patchValue({
-      categoryName: category.categoryName,
-      secondLanguageName: category.secondLanguageName,
-      description: category.description,
-      reference: category.reference,
-      parentCategoryId: parentCategory,
-      schedule: this.currentSchedule
-    });
-  }
+  const allDays = this.currentSchedule.every(d => d.available);
+  this.isAllDaysChecked.set(allDays);
+  this.isAllDayChecked.set(allDays);
+
+  this.editCategoryForm.patchValue({
+    categoryName: category.categoryName,
+    secondLanguageName: category.secondLanguageName,
+    description: category.description,
+    reference: category.reference,
+    parentCategoryId: parentCategory,
+    schedule: this.currentSchedule,
+    webShop: category.webShop,
+    aggregator: category.aggregator,
+    kiosk: category.kiosk,
+    counterTop: category.counterTop,
+  });
+}
 
   get categoryName() {
     return this.editCategoryForm.get('categoryName')!;
@@ -254,8 +272,8 @@ export class EditCategoryComponent implements OnInit {
     this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
       next: (data: CategoryIdAndName[]) => {
         this.listOfCategory = data;
-        this.categoriesSubject.next(data); // update subject
-        //console.log(data);
+        this.categoriesSubject.next(data);
+        this.editCategoryForm.get('parentCategoryId')?.updateValueAndValidity();
       },
       error: (error) => {
         console.error('Error fetching list categories', error);
@@ -408,7 +426,40 @@ export class EditCategoryComponent implements OnInit {
   }
 
   updateCategory() {
-    this.notification.info('TESTING MUNA! HEHEHE');
+
+    if (this.editCategoryForm.invalid) {
+      this.editCategoryForm.markAllAsTouched();
+      return;
+    }
+
+    const formValue = this.editCategoryForm.value;
+
+    if (formValue.parentCategoryId && typeof formValue.parentCategoryId === 'object') {
+      formValue.parentCategoryId = formValue.parentCategoryId.categoryId;
+    }
+
+    const formData = new FormData();
+    formData.append('category', new Blob([JSON.stringify(formValue)], { type: 'application/json' }));
+
+    if (this.selectedImage) {
+      formData.append('image', this.selectedImage);
+    }
+
+    //Uncomment for debugging
+    console.log('Form Data:', formData);
+    console.log('Form Value:', formValue);
+    console.log('Category Form', this.editCategoryForm.value);
+
+    // this.menuCategoryService.updateCategory(formData, this.categoryId()).subscribe({
+    //   next: (response) => {
+    //     // this.notification.showSuccess('Category updated successfully');
+    //     this.route.navigate(['/product-list/category']);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error updating category', error);
+    //     // this.notification.showError('Failed to update category. Please try again.');
+    //   }
+    // });
   }
 
 }

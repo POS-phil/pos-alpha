@@ -67,15 +67,7 @@ export const routes: Routes = [
             // },
             {
                 path: 'menu/item',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/item/item.component').then(m => m.ItemComponent),
-                title: 'Menu / Item',
-                children: [
-
-                ]
-            },
-            {
-                path: 'menu/item',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/item/item.component').then(m => m.ItemComponent),
+                loadComponent: () => import('./components/main-pages/pages/item/item.component').then(m => m.ItemComponent),
                 title: 'Product Lists / Item',
             },
             {

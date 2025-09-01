@@ -186,7 +186,7 @@ export class AddCategoryComponent implements OnInit {
       }],
       parentCategoryId: [null, [this.parentCategoryValidator.bind(this)]],
       description: ['', {
-        validators: [Validators.maxLength(100)],
+        validators: [Validators.maxLength(500)],
         updateOn: 'change'
       }],
       reference: ['', {

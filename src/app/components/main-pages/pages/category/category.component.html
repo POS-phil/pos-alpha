@@ -74,12 +74,27 @@
         </mat-menu>
     </div>
     <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  -->
-    <p-treetable #dt [value]="treeNodes" selectionMode="multiple" [(selection)]="selectedNodes"
-        (onNodeSelect)="onSelectionChange()" (onNodeUnselect)="onSelectionChange()" [columns]="selectedColumns"
-        [class]="selectedSize" class="customized-tree-table" scrollable="true" [tableStyle]="{'min-width': '800px'}"
-        [loading]="loading()" filterMode="lenient" [filterDelay]="0"
-        [globalFilterFields]="['categoryName', 'createdAtFormatted']" [paginator]="true" [rows]="25"
-        [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true" [rowHover]="true">
+    <p-treetable 
+        #dt 
+        [value]="treeNodes" 
+        selectionMode="multiple" 
+        [(selection)]="selectedNodes"
+        (onNodeSelect)="onSelectionChange()" 
+        (onNodeUnselect)="onSelectionChange()" 
+        [columns]="selectedColumns"
+        [class]="selectedSize" 
+        class="customized-tree-table" 
+        scrollable="true" 
+        [tableStyle]="{'min-width': '800px'}"
+        [loading]="loading()" 
+        filterMode="lenient" 
+        [filterDelay]="0"
+        [globalFilterFields]="['categoryName', 'createdAtFormatted']" 
+        [paginator]="true" 
+        [rows]="25"
+        [rowsPerPageOptions]="[25, 50, 100]" 
+        [showCurrentPageReport]="true" 
+        [rowHover]="true">
         <ng-template #colgroup>
             <colgroup>
                 <col class="checkbox-cell" />

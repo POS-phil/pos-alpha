@@ -16,11 +16,11 @@
                 <mat-label>Category Name</mat-label>
                 <input matInput type="text" formControlName="categoryName" placeholder="Ex. Combo 1">
                 @if(categoryName.hasError('required')) {
-                <mat-error class="error-message">Category Name is required</mat-error>
+                    <mat-error class="error-message">Category Name is required</mat-error>
                 } @else if (categoryName.hasError('maxlength')) {
-                <mat-error class="error-message">Maximum character is (50) only</mat-error>
+                    <mat-error class="error-message">Maximum character is (50) only</mat-error>
                 } @else if (categoryName.hasError('duplicateName')){
-                <mat-error class="error-message">Category name already exists.</mat-error>
+                    <mat-error class="error-message">Category name already exists.</mat-error>
                 }
             </mat-form-field>
             <mat-form-field class="full-width">
@@ -38,7 +38,7 @@
                     <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."
                         formControlName="description"></textarea>
                     @if (description?.hasError('maxlength')) {
-                    <mat-error class="error-message">Maximum character is (100) only</mat-error>
+                    <mat-error class="error-message">Maximum character is (500) only</mat-error>
                     }
                 </mat-form-field>
             </div>
