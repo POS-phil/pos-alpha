@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +23,8 @@ import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker
 import { MatNativeDateModule } from '@angular/material/core';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { MatCheckbox } from "@angular/material/checkbox";
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+//import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from "../../../../../../../../../node_modules/@angular/material/expansion/index";
 
 
 @Component({
@@ -45,7 +47,11 @@ import { MatCheckbox } from "@angular/material/checkbox";
     MatChipsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckbox
+    MatCheckbox,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
 ],
 providers: [  
   MatDatepickerModule,  
@@ -56,6 +62,8 @@ providers: [
 })
 //,MatDivider
 export class EditItemComponent implements OnInit {
+
+accordion = viewChild.required(MatAccordion);
 
   scheduleSummary: string[] = [];
   //itemName:string[] = [];

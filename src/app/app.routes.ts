@@ -131,6 +131,13 @@ export const routes: Routes = [
             },
 
             {
+                path: 'menu/item/properties',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/properties/properties.component').then(m => m.PropertiesComponent),
+                title: 'properties'
+            },
+
+
+            {
                 path: 'addons-builder/modifier-group/create_modifier',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
                 title: 'Create Modifier'

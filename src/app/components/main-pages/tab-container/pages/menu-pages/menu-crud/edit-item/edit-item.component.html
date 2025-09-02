@@ -6,7 +6,7 @@
         <button type="buttopn" mat-stroked-button class="btnRadius">
             Item Details
         </button>
-        <button type="buttopn" mat-flat-button class="btnRadius">
+        <button type="buttopn" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/properties']">
             Properties
         </button>
 
@@ -30,7 +30,7 @@
             <h3>Basic Info</h3>
             <mat-form-field class="full-width">
                 <mat-label>Item Name</mat-label>
-                <input matInput type="text"  placeholder="Item Name">             
+                <input matInput type="text"  placeholder="Item Name" required  formControlName="itemName" placeholder="Item Name" >             
             </mat-form-field>
             <mat-form-field class="full-width">
                 <mat-label>Second Language</mat-label>
@@ -330,14 +330,210 @@
                 </div>
         </div>
 
+         <div class="container-accordion">
+             <button matButton type="button" (click)="accordion().openAll()">Expand All</button>
+            <button matButton type="button" (click)="accordion().closeAll()">Collapse All</button>
+            <mat-accordion multi class="accordion-container">
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">insert_invitation</mat-icon>
+                            Creation Details </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="creation-details-table-container">
+                        <table>
+                            <colgroup>
+                                <col span="4" class="creation-details-table">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Created By</th>
+                                    <th>Created At</th>
+                                    <th>Last Modified By</th>
+                                    <th>Last Modified At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Agie Arellano</td>
+                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                    <td>Agie Arellano</td>
+                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-expansion-panel>
+                
+                
+                
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">menu_book</mat-icon>
+                            Assigned Store </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <mat-chip>
+                            Store 1
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 2
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 3
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                        <mat-chip>
+                            Store 4
+                            <button matChipRemove>
+                                <mat-icon>cancel</mat-icon>
+                            </button>
+                        </mat-chip>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+                
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon
+                               >store</mat-icon>
+                            Inactive Store(s) </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <table mat-table class="full-width" >
+                        <tr>
+                            <ng-container matColumnDef="Name">
+                                <th mat-header-cell  mat-sort-header> Store name </th>                            
+                            </ng-container>
+                            <ng-container >                
+                            <td mat-cell > &nbsp;</td>
+                        </ng-container>
+                          <ng-container >                
+                            <td mat-cell > 
+                                 &nbsp;
+                            </td>
+                        </ng-container>
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                    <mat-form-field>
+                                        <mat-label>Select Store</mat-label>
+                                        <mat-select required>
+                                            <mat-option value="Store 1">Store 1</mat-option>
+                                            <mat-option value="Store 2">Store 2</mat-option>
+                                            <mat-option value="Store 3">Store 3</mat-option>
+                                            <mat-option value="Store 4">Store 4</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                            </td>
+                        </ng-container>
 
+                        <ng-container >                
+                            <td mat-cell > 
+                                <mat-slide-toggle >Change to Active</mat-slide-toggle> 
+                            </td>
+                        </ng-container>
+
+                        <ng-container>                
+                            <td mat-cell >
+                            <button matFab aria-label="Delete">
+                                <mat-icon>delete</mat-icon>
+                            </button>    
+                            </td>
+                        </ng-container>
+                        </tr>
+                        </table>
+                          <div class="full-width divAddStore">
+                            <button type="button" matButton class="btnRadius">
+                            Click add Store
+                            </button>
+                        </div>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+
+
+
+         </div>
+
+
+<!--
         <div class="container-CreationDetail">
             <h3>Creation Details</h3>
+                    <div class="grid-CreationDetail">
+                         <mat-label>Created By</mat-label>
+                          <mat-label>Created At</mat-label>
+                          <mat-label>Last Modified By</mat-label>
+                          <mat-label>Last Modified At</mat-label>
+                    </div>
+                    <div class="grid-CreationDetail">
+                          <mat-label>TEXT</mat-label>
+                          <mat-label>TEXT</mat-label>
+                          <mat-label>TEXT</mat-label>
+                          <mat-label>TEXT</mat-label>
+                    </div>                     
+
         </div>
 
-        <div class="container-Store">
+        <div class="container-ActiveStore">
             <h3>Assigned Store</h3>
         </div>
+
+        <div class="container-InactiveStore">
+            <h3>Inactive Store</h3> 
+            <table mat-table class="full-width" >
+                <ng-container matColumnDef="Name">
+                <th mat-header-cell  mat-sort-header> Item name </th>
+                <td mat-cell > </td>
+            </ng-container>
+            <tr>
+            <ng-container matColumnDef="Name">               
+                <td mat-cell >
+                        <mat-form-field>
+                            <mat-label>Select Store</mat-label>
+                            <mat-select required>
+                                <mat-option value="Store 1">Store 1</mat-option>
+                                <mat-option value="Store 2">Store 2</mat-option>
+                                <mat-option value="Store 3">Store 3</mat-option>
+                                <mat-option value="Store 4">Store 4</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                </td>
+            </ng-container>
+
+            <ng-container >                
+                <td mat-cell > 
+                    <mat-slide-toggle >Change to Active</mat-slide-toggle> 
+                </td>
+            </ng-container>
+
+            <ng-container>                
+                <td mat-cell >
+                <button matFab aria-label="Delete">
+                    <mat-icon>delete</mat-icon>
+                </button>    
+                </td>
+            </ng-container>
+            </tr>
+            </table>
+            <div >
+                <button type="button" matButton class="btnRadius">
+                Click add Store
+                </button>
+            </div>
+
+        </div>
+-->
 
     </div>
 </form>
