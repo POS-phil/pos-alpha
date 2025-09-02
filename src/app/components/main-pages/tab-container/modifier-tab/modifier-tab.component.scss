@@ -1,0 +1,19 @@
+.tab-viewer-container {
+    position: relative;
+    min-height: 500px;
+}
+
+.tab-viewer {
+    font-weight: 400;
+}
+
+.active {
+    border-bottom: 5px solid blue;
+}
+
+@media (max-width: 599px) {
+    :host {
+        display: flex;
+        flex-direction: column;
+    }
+}

@@ -2,45 +2,94 @@
     <div class="header-flex">
         <H1>Create modifier option</H1>
         <span class="spacer"></span>
-        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/modifier-group']">
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/addons-builder/modifier-option']">
             Cancel
         </button>
         <button type="submit" mat-flat-button class="btnRadius">
             Save
         </button>
     </div>
-    <div class="container-flex">
-        <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
-            <ng-container *ngIf="uploadedImage; else defaultIcon">
-                <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
-            </ng-container>
-            <ng-template #defaultIcon>
-                <mat-icon class="icon-image">add_a_photo</mat-icon>
-            </ng-template>
-        </button>
-        <div class="grid-container">
-            <div class="grid-1cS3-1r">
-                <mat-form-field class="full-width">
-                    <mat-label>Name</mat-label>
-                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
-                    <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error>
+    <div class="container-grid">
+
+        <div class="container-textbox">
+            <h3>Basic Info</h3>
+            <div>
+
+            </div>
+            <mat-form-field class="full-width">
+                <mat-label>Modifier Name</mat-label>
+                <input matInput type="text" formControlName="modifier_name" placeholder="Ex. Combo 1">
+                <mat-error *ngIf="modifier_name.hasError('required')">Name is required</mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Second Language</mat-label>
+                <input matInput type="text" formControlName="modifier_name" placeholder="Ex. Combo 1">
+                <mat-error *ngIf="modifier_name.hasError('required')">Name is required</mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Modifer Group</mat-label>
+                <mat-select>
+                    <mat-option value="Option">Option 1</mat-option>
+                    <mat-option value="Option">Option 2</mat-option>
+                    <mat-option value="Option">Option 3</mat-option>
+                    <mat-option value="Option">Option 4</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="sku-row">
+                <mat-form-field class="sku-field full-width">
+                    <mat-label>SKU</mat-label>
+                    <input matInput type="text" formControlName="modifier_name" placeholder="Ex. Combo 1">
                 </mat-form-field>
 
-                <mat-form-field class="full-width">
-                    <mat-label>Modifier</mat-label>
-                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
-                    <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
-                </mat-form-field>
-                <div class="sku-row">
-                    <mat-form-field class="sku-field full-width">
-                        <mat-label>SKU</mat-label>
-                        <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
-                    </mat-form-field>
+                <button type="submit" mat-flat-button class="btnRadius btn-generate">
+                    Generate
+                </button>
+            </div>
 
-                    <button type="submit" mat-flat-button class="btnRadius btn-generate">
-                        Generate
+            <mat-form-field class="full-width">
+                <mat-label>Tax Group</mat-label>
+                <mat-select>
+                    <mat-option value="Option">Option 1</mat-option>
+                    <mat-option value="Option">Option 2</mat-option>
+                    <mat-option value="Option">Option 3</mat-option>
+                    <mat-option value="Option">Option 4</mat-option>
+                </mat-select>
+                <!-- <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1"> -->
+                <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+            </mat-form-field>
+            <div class="sku-row">
+                <mat-form-field class="sku-field full-width">
+                    <mat-label>Price</mat-label>
+                    <input matInput type="text" formControlName="modifier_name" placeholder="Ex. Combo 1">
+                </mat-form-field>
+                <mat-slide-toggle class="toggle-button">
+                    Fixed/Open
+                </mat-slide-toggle>
+            </div>
+            <mat-form-field class="full-width">
+                <mat-label>Tags</mat-label>
+                <mat-select>
+                    <mat-option value="Option">Option 1</mat-option>
+                    <mat-option value="Option">Option 2</mat-option>
+                    <mat-option value="Option">Option 3</mat-option>
+                    <mat-option value="Option">Option 4</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="container-utility">
+            <h3>Utilities</h3>
+            <div class="container-utlity-content">
+                <div class="grid-image">
+                    <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
+                        <ng-container *ngIf="uploadedImage; else defaultIcon">
+                            <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
+                        </ng-container>
+                        <ng-template #defaultIcon>
+                            <mat-icon class="icon-image">add_a_photo</mat-icon>
+                        </ng-template>
                     </button>
                 </div>
+<<<<<<< HEAD
 
                 <mat-form-field class="full-width">
                     <mat-label>Price</mat-label>
@@ -82,29 +131,137 @@
                     <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
                         <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
                 </mat-form-field>
-            </div>
-            
-           
-            <!-- <div class="grid-4cS2-1r">
-                <mat-form-field class="full-width">
-                    <mat-label>Second Language</mat-label>
-                    <input matInput>
-                </mat-form-field>
-            </div> -->
-            <div class="grid-slideContainer">
-                <mat-slide-toggle class="toggle-button">
-                    Web Shop
-                </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
-                    Aggregator
-                </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
-                    Kiosk
-                </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
-                    Counter Top
-                </mat-slide-toggle>
+=======
+                <div class="grid-toggle-buttons">
+                    <mat-slide-toggle class="toggle-button">
+                        Web Shop
+                    </mat-slide-toggle>
+                    <mat-slide-toggle class="toggle-button">
+                        Aggregator
+                    </mat-slide-toggle>
+                    <mat-slide-toggle class="toggle-button">
+                        Kiosk
+                    </mat-slide-toggle>
+                    <mat-slide-toggle class="toggle-button">
+                        Counter Top
+                    </mat-slide-toggle>
+                </div>
+>>>>>>> 24486710483606346bf8b20471842bd65960da1a
             </div>
         </div>
+        <div class="container-sub-modifier">
+            <h3>Sub-Modifier Options</h3>
+            <div class="flex-add-sub-mod-opt">
+                <button type="submit" mat-flat-button class="btnRadius">
+                    Add Sub-Modifier Option
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="container-recipe">
+
+        <div class="container-add-recipe">
+
+            <div class="container-recipe-controls">
+                <div class="grid-recipe-textbox">
+                    <mat-form-field class="full-width">
+                        <mat-label>Recipe Code (enter the Code)</mat-label>
+                        <input matInput placeholder="Enter recipe name" />
+                    </mat-form-field>
+                </div>
+                <div class="grid-recipe-btn">
+                    <button type="submit" mat-flat-button class="btnRadius">
+                        Add Recipe
+                    </button>
+                </div>
+
+
+
+            </div>
+            <!-- <div class="container-btn-recipe"> -->
+
+            <div class="recipe-table">
+                <table mat-table [dataSource]="MENU_CATEGORIES_DATA" matSort
+                    (matSortChange)="announceSortChange($event)">
+
+                    <!-- <ng-container matColumnDef="check">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
+                                    [indeterminate]="isSomeSelected()">
+                                </mat-checkbox>
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+                                    [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container> -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.reference}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="net_qty">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Net QTY </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.reference}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="yield">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Yield </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.category_name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="waste_qty">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Waste Qty </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.image}} </td>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="prep_wastage">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Prep. Wastage </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gross_qty">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Gross Qty </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="modifier">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Modifier </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="incl_in_cost">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> INCL IN COST </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="cost_per_unit">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Cost Per Unit </th>
+                        <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="created">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
+                            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+                        </ng-container> -->
+
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <div class="grid-save">
+                <button type="submit" mat-flat-button class="btnRadius">
+                    Save Recipe
+                </button>
+            </div>
+
+
+            <!-- </div> -->
+        </div>
+
+        <!-- <div class="container-add-recipe">
+            <div class="btn-recipe">
+            </div>
+        </div> -->
     </div>
 </form>

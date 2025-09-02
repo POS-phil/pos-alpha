@@ -109,7 +109,10 @@ export class AddCategoryComponent implements OnInit {
   selectedBackgroundColor = '#e62e2eff';
   previewImage: SafeUrl | null = null;
   selectedImage: File | null = null;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 24486710483606346bf8b20471842bd65960da1a
   listOfCategory: CategoryIdAndName[] = [];
   filteredCategories: CategoryIdAndName[] = [];
   private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);

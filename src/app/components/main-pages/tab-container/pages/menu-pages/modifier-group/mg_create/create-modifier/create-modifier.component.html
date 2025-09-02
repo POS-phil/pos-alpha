@@ -1,8 +1,8 @@
-<form [formGroup]="createCategoryForm" (ngSubmit)="confirmCreate()">
+<form [formGroup]="createModifierForm" (ngSubmit)="confirmCreate()">
     <div class="header-flex">
         <H1>Create Modifier</H1>
         <span class="spacer"></span>
-        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/modifier-group']">
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/addons-builder/modifier-group']">
             Cancel
         </button>
         <button type="submit" mat-flat-button class="btnRadius">
@@ -10,32 +10,39 @@
         </button>
     </div>
     <div class="container-flex">
-        <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
-            <ng-container *ngIf="uploadedImage; else defaultIcon">
-                <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
-            </ng-container>
-            <ng-template #defaultIcon>
-                <mat-icon class="icon-image">add_a_photo</mat-icon>
-            </ng-template>
-        </button>
-        <div class="grid-container">
+        <div class="container-textbox">
             <div class="grid-1cS3-1r">
+                <h3>Basic Info</h3>
                 <mat-form-field class="full-width">
                     <mat-label>Name</mat-label>
                     <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
                     <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error>
+                    <mat-error *ngIf="categoryName.hasError('maxlength')">Maximum 50 characters allowed</mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
                     <mat-label>Second Language</mat-label>
-                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <input matInput type="text" formControlName="second_language" placeholder="Ex. Combo 1">
                     <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
                     <mat-label>Reference</mat-label>
-                    <input matInput type="text" formControlName="category_name" placeholder="Ex. Combo 1">
+                    <input matInput type="text" formControlName="reference" placeholder="Ex. Combo 1">
                     <!-- <mat-error *ngIf="categoryName.hasError('required')">Name is required</mat-error> -->
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <mat-label>Size</mat-label>
+                    <mat-select>
+                        <mat-form-field appearance="outline" class="inputSearch">
+                            <mat-label>Search</mat-label>
+                            <input matInput placeholder="Start typing to search">
+                        </mat-form-field>
+                        <mat-option value="Option">Option 1</mat-option>
+                        <mat-option value="Option">Option 2</mat-option>
+                        <mat-option value="Option">Option 3</mat-option>
+                        <mat-option value="Option">Option 4</mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
             <!-- <div class="grid-4cS2-1r">
@@ -44,24 +51,38 @@
                     <input matInput>
                 </mat-form-field>
             </div> -->
-            <div class="grid-slideContainer">
-                <mat-slide-toggle class="toggle-button">
-                    Web Shop
-                </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
-                    Aggregator
-                </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
-                    Kiosk
-                </mat-slide-toggle>
-                <mat-slide-toggle class="toggle-button">
-                    Counter Top
-                </mat-slide-toggle>
+        </div>
+        <div class="container-utility">
+            <h3>Utilities</h3>
+            <div class="container-utlity-content">
+
+                <div class="grid-image">
+                    <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
+                        <ng-container *ngIf="uploadedImage; else defaultIcon">
+                            <img [src]="uploadedImage" alt="Uploaded" class="uploaded-image" />
+                        </ng-container>
+                        <ng-template #defaultIcon>
+                            <mat-icon class="icon-image">add_a_photo</mat-icon>
+                        </ng-template>
+                    </button>
+                </div>
+                <div class="grid-toggle-buttons">
+                    <mat-slide-toggle class="toggle-button">
+                        Web Shop
+                    </mat-slide-toggle>
+                    <mat-slide-toggle class="toggle-button">
+                        Aggregator
+                    </mat-slide-toggle>
+                    <mat-slide-toggle class="toggle-button">
+                        Kiosk
+                    </mat-slide-toggle>
+                    <mat-slide-toggle class="toggle-button">
+                        Counter Top
+                    </mat-slide-toggle>
+                </div>
             </div>
-           
-            
-            
-           
+
+
         </div>
     </div>
 </form>
