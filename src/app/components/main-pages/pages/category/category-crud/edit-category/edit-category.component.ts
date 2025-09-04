@@ -149,7 +149,7 @@ function convertDubaiToLocal(dateString: string): Date {
   templateUrl: './edit-category.component.html',
   styleUrl: './edit-category.component.scss',
   providers: [MenuCategoriesService, NotificationService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class EditCategoryComponent implements OnInit {
 
@@ -348,6 +348,12 @@ export class EditCategoryComponent implements OnInit {
       // Only cancel auto if autoActivated was true AND this is a manual toggle
       if (this.autoActivated.value) {
         this.autoActivated.setValue(false, { emitEvent: false })
+        // this.isTimedActivation.setValue(false, {emitEvent: false})
+        // if(!this.isActive.value) {
+        //   this.isTimedActivation.enable({emitEvent: false})
+        // } else {
+        //   this.isTimedActivation.disable({emitEvent: false})
+        // }
       }
     });
 
