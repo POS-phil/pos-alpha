@@ -22,12 +22,18 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MenuCategories, ScheduleEntry } from '../../../../../../common/menu-categories';
 import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { NotificationService } from '../../../../../../service/notifications/notification.service';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { CategoryIdAndName } from '../../../../../../common/menu-categories';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { FloatLabel } from 'primeng/floatlabel';
+import { Message } from 'primeng/message';
+import { MatRadioModule } from '@angular/material/radio';
 
 export function categoryNameDuplicateValidator(service: MenuCategoriesService, originalName?: string): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -62,6 +68,53 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
   };
 }
 
+//pastDateTimeValidator for editing only
+export function pastDateTimeValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+
+    const selected = control.value instanceof Date
+      ? control.value
+      : new Date(control.value);
+
+    const now = new Date();
+
+    return selected.getTime() <= now.getTime() ? { pastDateTime: true } : null;
+  };
+}
+
+export function beforeActivationValidator(activationControl: AbstractControl): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value || !activationControl.value) return null;
+
+    const activationDate = activationControl.value instanceof Date
+      ? activationControl.value
+      : new Date(activationControl.value);
+
+    const deactivationDate = control.value instanceof Date
+      ? control.value
+      : new Date(control.value);
+
+    // Trigger error if deactivation is before or exactly equal to activation
+    return deactivationDate.getTime() <= activationDate.getTime() ? { beforeActivation: true } : null;
+  };
+}
+
+function convertDubaiToLocal(dateString: string): Date {
+  if (!dateString) return new Date();
+
+  // Parse the string as Dubai time (UTC+4)
+  const dubaiOffset = 4 * 60; // Dubai is UTC+4, in minutes
+  const [datePart, timePart] = dateString.split('T');
+  const [year, month, day] = datePart.split('-').map(Number);
+  const [hour, minute, second] = timePart.split(':').map(Number);
+
+  // Create Date object in UTC
+  const utcDate = new Date(Date.UTC(year, month - 1, day, hour - dubaiOffset / 60, minute, second));
+
+  return utcDate; // this is now in browser local time
+}
+
 @Component({
   selector: 'app-edit-category',
   standalone: true,
@@ -85,13 +138,18 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
     AsyncPipe,
     Breadcrumb,
     MatExpansionModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDividerModule,
+    MatCheckbox,
+    DatePicker,
+    Message,
+    MatRadioModule
 
   ],
   templateUrl: './edit-category.component.html',
   styleUrl: './edit-category.component.scss',
   providers: [MenuCategoriesService, NotificationService],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditCategoryComponent implements OnInit {
 
@@ -105,7 +163,7 @@ export class EditCategoryComponent implements OnInit {
     private notification: NotificationService,
   ) { }
 
-  selectedIcon = '';
+  selectedIcon?: string;
   selectedBackgroundColor = '#e62e2eff';
   previewImage: string | SafeUrl | null = null;
   selectedImage: string | File | null = null;
@@ -115,14 +173,23 @@ export class EditCategoryComponent implements OnInit {
   filteredCategories$!: Observable<CategoryIdAndName[]>;
   editCategoryForm!: FormGroup;
 
+  private destroy$ = new Subject<void>();
+
   categoryId: WritableSignal<number> = signal(0);
-  _categoryName : WritableSignal<string> = signal('');
+  _categoryName: WritableSignal<string> = signal('');
+  today: Date = new Date();
 
   accordion = viewChild.required(MatAccordion);
 
   currentSchedule: ScheduleEntry[] = []
 
   items: MenuItem[] | undefined;
+
+  currentdateStartOnly: Date | null = null;
+  currentdateActivation: Date | null = null;
+  currentdateDeactivation: Date | null = null;
+
+
 
   background_colors = [
     '#e62e2eff', '#2d30fcff', '#f2f53eff', '#5af845ff', '#35eefcff',
@@ -138,26 +205,61 @@ export class EditCategoryComponent implements OnInit {
     'egg_alt', 'fastfood', 'set_meal', 'room_service', 'tapas', 'takeout_dining',
   ];
 
+  get isActive() {
+    return this.editCategoryForm.get('isActive') as FormControl;
+  }
+
+  get categoryName() {
+    return this.editCategoryForm.get('categoryName') as FormControl;
+  }
+
+  get secondLanguageName() {
+    return this.editCategoryForm.get('secondLanguageName') as FormControl;
+  }
+
+  get description() {
+    return this.editCategoryForm.get('description') as FormControl;
+  }
+
+  get reference() {
+    return this.editCategoryForm.get('reference') as FormControl;
+  }
+
+  get isTimedActivation() {
+    return this.editCategoryForm.get('isTimedActivation') as FormControl;
+  }
+
+  get autoActivated() {
+    return this.editCategoryForm.get('autoActivated') as FormControl;
+  }
+
+  get selectedScheduleMode() {
+    return this.editCategoryForm.get('selectedScheduleMode') as FormControl;
+  }
+
+  get dateStartOnly() {
+    return this.editCategoryForm.get('dateStartOnly') as FormControl;
+  }
+
+  get dateActivation() {
+    return this.editCategoryForm.get('dateActivation') as FormControl;
+  }
+
+  get dateDeactivation() {
+    return this.editCategoryForm.get('dateDeactivation') as FormControl;
+  }
+
   ngOnInit(): void {
+    this.today.setHours(0, 0, 0, 0);
 
     this.items = [
       { label: 'Categories', routerLink: '/product-list/category' },
       { label: 'Edit Categoy' }
     ]
 
-    this.router.params.subscribe(params => {
-      const categoryId = +params['categoryId'];
-      //console.log(categoryId)
-      this.menuCategoryService.getCategory(categoryId).subscribe({
-        next: (category: MenuCategories) => {
-          console.log(category);
-          this.populateForm(category);
-        }
-      })
-    });
 
     this.editCategoryForm = this.fb.group({
-      active: [''],
+      isActive: [''],
       categoryName: ['',
         {
           validators: [Validators.required, Validators.maxLength(50)],
@@ -170,7 +272,7 @@ export class EditCategoryComponent implements OnInit {
       }],
       parentCategoryId: [null, [this.parentCategoryValidator.bind(this)]],
       description: ['', {
-        validators: [Validators.maxLength(100)],
+        validators: [Validators.maxLength(500)],
         updateOn: 'change'
       }],
       reference: ['', {
@@ -179,7 +281,7 @@ export class EditCategoryComponent implements OnInit {
       }],
       image: [null],
       icon: [this.selectedIcon],
-      backgroundColor: [''],
+      backgroundColor: [this.selectedBackgroundColor],
       //withProducts: [false],
       schedule: this.fb.control<ScheduleEntry[]>([]),
       //item: [0],
@@ -187,7 +289,58 @@ export class EditCategoryComponent implements OnInit {
       aggregator: [false],
       kiosk: [false],
       counterTop: [false],
+      isTimedActivation: [false],
+      //AUTOMATION
+      autoActivated: [false],
+      selectedScheduleMode: [{ value: null, disabled: true }],
+      dateStartOnly: [{ value: null, disabled: true }],
+      dateActivation: [{ value: null, disabled: true }],
+      dateDeactivation: [{ value: null, disabled: true }],
       //created_at: [new Date()]
+    });
+
+    this.router.params.subscribe(params => {
+      const categoryId = +params['categoryId'];
+      this.menuCategoryService.getCategory(categoryId).subscribe({
+        next: (category: MenuCategories) => {
+
+          this.populateForm(category);
+          this.currentdateStartOnly = typeof category.dateStartOnly === 'string'
+            ? convertDubaiToLocal(category.dateStartOnly)
+            : category.dateStartOnly instanceof Date
+              ? category.dateStartOnly
+              : null;
+          this.currentdateActivation = typeof category.dateActivation === 'string'
+            ? convertDubaiToLocal(category.dateActivation)
+            : category.dateActivation instanceof Date
+              ? category.dateActivation
+              : null;
+          this.currentdateDeactivation = typeof category.dateDeactivation === 'string'
+            ? convertDubaiToLocal(category.dateDeactivation)
+            : category.dateDeactivation instanceof Date
+              ? category.dateDeactivation
+              : null;
+
+          console.log('Category data loaded:', category);
+          console.log('Category data loaded isActive:', category.isActive);
+          //combine Latest for edit only
+          combineLatest([
+            this.editCategoryForm.get('isTimedActivation')!.valueChanges.pipe(startWith(this.editCategoryForm.get('isTimedActivation')!.value)),
+            this.editCategoryForm.get('selectedScheduleMode')!.valueChanges.pipe(startWith(this.editCategoryForm.get('selectedScheduleMode')!.value)),
+            this.editCategoryForm.get('autoActivated')!.valueChanges.pipe(startWith(this.editCategoryForm.get('autoActivated')!.value)),
+            this.editCategoryForm.get('dateStartOnly')!.valueChanges.pipe(startWith(this.editCategoryForm.get('dateStartOnly')!.value)),
+            this.editCategoryForm.get('dateActivation')!.valueChanges.pipe(startWith(this.editCategoryForm.get('dateActivation')!.value)),
+            this.editCategoryForm.get('dateDeactivation')!.valueChanges.pipe(startWith(this.editCategoryForm.get('dateDeactivation')!.value)),
+            this.editCategoryForm.get('isActive')!.valueChanges.pipe(
+              startWith(this.editCategoryForm.get('isActive')!.value)
+            )
+          ]).subscribe(() => {
+            this.dateValidator();
+            this.updateTimedActivationControls();
+            this.cdr.markForCheck();
+          });
+        }
+      })
     });
 
     this.filteredCategories = this.listOfCategory.slice();
@@ -204,66 +357,186 @@ export class EditCategoryComponent implements OnInit {
       })
     );
 
+
+
     this.getListOfCategories();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   //POPULATE FORM
 
   populateForm(category: MenuCategories) {
-  this.categoryId.set(category.categoryId || 0);
-  this._categoryName.set(category.categoryName);
+    this.categoryId.set(category.categoryId || 0);
+    this._categoryName.set(category.categoryName);
 
-  this.categoryName.setValidators([Validators.required, Validators.maxLength(50)]);
-  this.categoryName.setAsyncValidators([
-    categoryNameDuplicateValidator(this.menuCategoryService, category.categoryName)
-  ]);
-  this.categoryName.updateValueAndValidity({ emitEvent: false });
+    this.categoryName.setValidators([Validators.required, Validators.maxLength(50)]);
+    this.categoryName.setAsyncValidators([
+      categoryNameDuplicateValidator(this.menuCategoryService, category.categoryName)
+    ]);
+    this.categoryName.updateValueAndValidity({ emitEvent: false });
 
-  const parentCategory = this.listOfCategory.find(
-    c => c.categoryId === category.parentCategoryId
-  ) || null;
+    const parentCategory = this.listOfCategory.find(
+      c => c.categoryId === category.parentCategoryId
+    ) || null;
 
-  this.selectedIcon = category.icon || '';
-  this.currentSchedule = category.schedule || [];
-  this.scheduleSummary = this.generateScheduleSummary(this.currentSchedule);
-  this.selectedBackgroundColor = category.backgroundColor || '#e62e2eff';
-  this.selectedImage = (category.image && typeof category.image === 'string') ? category.image : null;
-  this.previewImage = (category.image && typeof category.image === 'string')
-    ? this.sanitizer.bypassSecurityTrustUrl(category.image)
-    : null;
+    this.selectedIcon = category.icon;
+    this.currentSchedule = category.schedule || [];
+    this.scheduleSummary = this.generateScheduleSummary(this.currentSchedule);
+    this.selectedBackgroundColor = category.backgroundColor || '#e62e2eff';
+    this.selectedImage = (category.image && typeof category.image === 'string') ? category.image : null;
+    this.previewImage = (category.image && typeof category.image === 'string')
+      ? this.sanitizer.bypassSecurityTrustUrl(category.image)
+      : null;
 
-  const allDays = this.currentSchedule.every(d => d.available);
-  this.isAllDaysChecked.set(allDays);
-  this.isAllDayChecked.set(allDays);
+    const allDays = this.currentSchedule.every(d => d.available);
+    this.isAllDaysChecked.set(allDays);
+    this.isAllDayChecked.set(allDays);
 
-  this.editCategoryForm.patchValue({
-    categoryName: category.categoryName,
-    secondLanguageName: category.secondLanguageName,
-    description: category.description,
-    reference: category.reference,
-    parentCategoryId: parentCategory,
-    schedule: this.currentSchedule,
-    webShop: category.webShop,
-    aggregator: category.aggregator,
-    kiosk: category.kiosk,
-    counterTop: category.counterTop,
-  });
-}
+    //const activationRange = category.timedActivationRange?.map(d => new Date(d)) || null;
 
-  get categoryName() {
-    return this.editCategoryForm.get('categoryName')!;
+
+    this.editCategoryForm.patchValue({
+      isActive: category.isActive,
+      categoryName: category.categoryName,
+      secondLanguageName: category.secondLanguageName,
+      description: category.description,
+      reference: category.reference,
+      parentCategoryId: parentCategory,
+      schedule: this.currentSchedule,
+      webShop: category.webShop,
+      aggregator: category.aggregator,
+      kiosk: category.kiosk,
+      counterTop: category.counterTop,
+      icon: category.icon,
+      isTimedActivation: category.isTimedActivation,
+      autoActivated: category.autoActivated,
+      selectedScheduleMode: category.selectedScheduleMode?.toString(),
+      dateStartOnly: typeof category.dateStartOnly === 'string'
+        ? convertDubaiToLocal(category.dateStartOnly)
+        : category.dateStartOnly instanceof Date
+          ? category.dateStartOnly
+          : null,
+      dateActivation: typeof category.dateActivation === 'string'
+        ? convertDubaiToLocal(category.dateActivation)
+        : category.dateActivation instanceof Date
+          ? category.dateActivation
+          : null,
+      dateDeactivation: typeof category.dateDeactivation === 'string'
+        ? convertDubaiToLocal(category.dateDeactivation)
+        : category.dateDeactivation instanceof Date
+          ? category.dateDeactivation
+          : null,
+    });
   }
 
-  get secondLanguageName() {
-    return this.editCategoryForm.get('secondLanguageName')
+  dateValidator() {
+
+    if (this.isTimedActivation!.value == true) {
+      if (this.selectedScheduleMode.value === '1') {
+        this.dateStartOnly.setValidators([Validators.required, pastDateTimeValidator()]);
+        this.dateActivation.clearValidators();
+        this.dateDeactivation.clearValidators();
+
+      } else {
+        this.dateActivation.setValidators([Validators.required, pastDateTimeValidator()]);
+        this.dateDeactivation.setValidators([Validators.required, pastDateTimeValidator(), beforeActivationValidator(this.dateActivation)]);
+        this.dateStartOnly.clearValidators();
+      }
+    } else {
+      this.dateStartOnly.clearValidators();
+      this.dateActivation.clearValidators();
+      this.dateDeactivation.clearValidators();
+    }
+
+    this.dateStartOnly.updateValueAndValidity({ emitEvent: false });
+    this.dateActivation.updateValueAndValidity({ emitEvent: false });
+    this.dateDeactivation.updateValueAndValidity({ emitEvent: false });
   }
 
-  get description() {
-    return this.editCategoryForm.get('description');
+  private checkCurrentDateAndSelectedDate() {
+    if (
+      (this.currentdateStartOnly && this.dateStartOnly.value && this.currentdateStartOnly.getTime() === new Date(this.dateStartOnly.value).getTime()) ||
+      (this.currentdateActivation && this.dateActivation.value && this.currentdateActivation.getTime() === new Date(this.dateActivation.value).getTime()) ||
+      (this.currentdateDeactivation && this.dateDeactivation.value && this.currentdateDeactivation.getTime() === new Date(this.dateDeactivation.value).getTime())
+    ) {
+      //console.log(this.currentdateStartOnly, this.dateStartOnly.value);
+      this.isActive.setValue(true);
+      //console.log(this.isActive.value);
+    } else {
+      this.isActive.setValue(false);
+    }
   }
 
-  get reference() {
-    return this.editCategoryForm.get('reference');
+  private updateTimedActivationControls() {
+
+    if (this.autoActivated.value) {
+      if (this.isTimedActivation.value == true) {
+        this.isTimedActivation.enable({ emitEvent: false })
+        this.selectedScheduleMode.enable({ emitEvent: false });
+        if (this.selectedScheduleMode.value === '1') {
+          this.dateStartOnly.enable({ emitEvent: false });
+          this.dateActivation.disable({ emitEvent: false });
+          this.dateActivation.setValue(null, { emitEvent: false });
+          this.dateDeactivation.disable({ emitEvent: false });
+          this.dateDeactivation.setValue(null, { emitEvent: false });
+          this.checkCurrentDateAndSelectedDate();
+        } else {
+          this.dateStartOnly.disable({ emitEvent: false });
+          this.dateStartOnly.setValue(null, { emitEvent: false });
+          this.dateActivation.enable({ emitEvent: false });
+          this.dateDeactivation.enable({ emitEvent: false });
+          this.checkCurrentDateAndSelectedDate();
+        }
+      } else {
+        this.autoActivated.setValue(false, { emitEvent: false });
+        this.selectedScheduleMode.disable({ emitEvent: false });
+        this.dateStartOnly.disable({ emitEvent: false });
+        this.dateStartOnly.setValue(null, { emitEvent: false });
+        this.dateActivation.disable({ emitEvent: false });
+        this.dateActivation.setValue(null, { emitEvent: false });
+        this.dateDeactivation.disable({ emitEvent: false });
+        this.dateDeactivation.setValue(null, { emitEvent: false });
+      }
+      //if manually toggled
+      if(this.isActive.value === true || this.isActive.value === false) {
+        this.autoActivated.setValue(false, { emitEvent: false });
+      }
+
+    } else {
+      if (this.isActive.value) {
+        this.isTimedActivation.setValue(false, { emitEvent: false });
+        this.isTimedActivation.disable({ emitEvent: false });
+        this.autoActivated.setValue(false, { emitEvent: false });
+        this.selectedScheduleMode.disable({ emitEvent: false });
+        this.dateStartOnly.disable({ emitEvent: false });
+        this.dateStartOnly.setValue(null, { emitEvent: false });
+        this.dateActivation.disable({ emitEvent: false });
+        this.dateActivation.setValue(null, { emitEvent: false });
+        this.dateDeactivation.disable({ emitEvent: false });
+        this.dateDeactivation.setValue(null, { emitEvent: false });
+      } else {
+        //this.isTimedActivation.setValue(false, { emitEvent: false });
+        this.isTimedActivation.enable({ emitEvent: false });
+        this.autoActivated.setValue(false, { emitEvent: false });
+        this.selectedScheduleMode.disable({ emitEvent: false });
+        this.dateStartOnly.disable({ emitEvent: false });
+        this.dateStartOnly.setValue(null, { emitEvent: false });
+        this.dateActivation.disable({ emitEvent: false });
+        this.dateActivation.setValue(null, { emitEvent: false });
+        this.dateDeactivation.disable({ emitEvent: false });
+        this.dateDeactivation.setValue(null, { emitEvent: false });
+
+        if (this.isTimedActivation!.value == true) {
+          this.autoActivated.setValue(true, { emitEvent: false });
+
+        }
+
+      }
+    }
   }
 
   //PARENT CATEGORY
@@ -434,32 +707,61 @@ export class EditCategoryComponent implements OnInit {
 
     const formValue = this.editCategoryForm.value;
 
+    formValue.dateStartOnly = this.toDubaiISOString(formValue.dateStartOnly);
+    formValue.dateActivation = this.toDubaiISOString(formValue.dateActivation);
+    formValue.dateDeactivation = this.toDubaiISOString(formValue.dateDeactivation);
+
     if (formValue.parentCategoryId && typeof formValue.parentCategoryId === 'object') {
       formValue.parentCategoryId = formValue.parentCategoryId.categoryId;
+    }
+
+    // --- Convert timedActivationRange to backend-friendly format ---
+    if (formValue.timedActivationRange) {
+      formValue.timedActivationRange = formValue.timedActivationRange.map((d: Date) => {
+        const date = new Date(d);
+        return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T00:00:00`;
+      });
     }
 
     const formData = new FormData();
     formData.append('category', new Blob([JSON.stringify(formValue)], { type: 'application/json' }));
 
-    if (this.selectedImage) {
+    if (this.selectedImage instanceof File) {
+      // new file uploaded
       formData.append('image', this.selectedImage);
+    } else if (this.selectedImage === null) {
+      // user removed the image
+      formData.append('removeImage', 'true');
     }
 
     //Uncomment for debugging
-    console.log('Form Data:', formData);
-    console.log('Form Value:', formValue);
-    console.log('Category Form', this.editCategoryForm.value);
+    // console.log("image : " + this.selectedImage);
+    // console.log('Form Data:', formData);
+    // console.log('Form Value:', formValue);
+    // console.log('Category Form', this.editCategoryForm.value);
+    // console.log('Category ID:', this.categoryId());
 
-    // this.menuCategoryService.updateCategory(formData, this.categoryId()).subscribe({
-    //   next: (response) => {
-    //     // this.notification.showSuccess('Category updated successfully');
-    //     this.route.navigate(['/product-list/category']);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error updating category', error);
-    //     // this.notification.showError('Failed to update category. Please try again.');
-    //   }
-    // });
+    this.menuCategoryService.updateCategory(formData, this.categoryId()).subscribe({
+      next: (response) => {
+        this.notification.success(response);
+        this.route.navigate(['/product-list/category']);
+      },
+      error: (error) => {
+        console.error('Error updating category', error);
+        // this.notification.showError('Failed to update category. Please try again.');
+      }
+    });
   }
 
+  isInvalid(controlName: string) {
+    const control = this.editCategoryForm.get(controlName);
+    return control?.invalid && (control.touched || this.editCategoryForm);
+  }
+
+  private toDubaiISOString(date: Date | null): string | null {
+    if (!date) return null;
+
+    // Convert to Dubai time string
+    return date.toLocaleString('sv-SE', { timeZone: 'Asia/Dubai' }).replace(' ', 'T');
+  }
 }
