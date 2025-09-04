@@ -25,6 +25,13 @@ export interface MenuCategories {
   lastOrder?: Date; // not important
   createdAt: Date; //important
   lastModified?: Date; //important
+  isTimedActivation?: boolean; //not important
+  selectedScheduleMode?: number;
+  dateStartOnly?: Date; //not important
+  dateActivation?: Date; //not important
+  dateDeactivation?: Date; //not important
+  //timedActivationRange?: Date[] | null; //not important
+  autoActivated?: boolean; //not important
 }
 
 export interface ScheduleEntry {
@@ -42,7 +49,6 @@ export interface CategoryIdAndName {
   image: string;
   icon: string;
 }
-
 
 export type ToggleableFields =
   | "isActive"

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { formatDate as angularFormatDate } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,12 +27,14 @@ import { ToastModule } from 'primeng/toast';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { NotificationService } from '../../../../service/notifications/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export function convertCategoriesToTreeNodes(
   categories: MenuCategories[]
 ): TreeNode<MenuCategories>[] {
   return categories.map(category => {
-    
+
     const formattedCategory = {
       ...category,
       createdAtFormatted: category.createdAt ? new Date(category.createdAt).toLocaleString('en-US', {
@@ -120,7 +123,8 @@ interface Column {
     CheckboxModule,
     InputTextModule,
     MultiSelectModule,
-    Breadcrumb
+    Breadcrumb,
+    MatTooltipModule
 
   ],
   providers: [
@@ -135,8 +139,9 @@ export class CategoryComponent implements OnInit {
   constructor(
     private menuCategoriesService: MenuCategoriesService,
     private dialog: MatDialog,
-    private notification : NotificationService,
+    private notification: NotificationService,
     private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   categories: MenuCategories[] = [];
@@ -155,7 +160,7 @@ export class CategoryComponent implements OnInit {
   loading = signal(true);
 
   ngOnInit(): void {
-    this.items = [ { label: 'Categories' }]
+    this.items = [{ label: 'Categories' }]
     this.getCategories();
 
     this.cols = [
@@ -180,12 +185,12 @@ export class CategoryComponent implements OnInit {
   getCategories() {
     this.menuCategoriesService.getMenuCategories().subscribe({
       next: (data: MenuCategories[]) => {
-        
+
         this.categories = data;
         this.applyStatusFilter();
         this.loading.set(false);
       },
-      error: (error: any) => {
+      error: (error: HttpErrorResponse) => {
         console.error('Error fetching menu categories', error);
         this.loading.set(false);
       }
@@ -292,7 +297,7 @@ export class CategoryComponent implements OnInit {
             this.selectedNodes = [];
           }, error: (err) => {
             console.error('Delete failed:', err);
-            this.notification.info('error Delete failed' + err );
+            this.notification.info('error Delete failed' + err);
           }
         })
       }
@@ -323,6 +328,9 @@ export class CategoryComponent implements OnInit {
   onToggle(category: MenuCategories, field: string, newValue: boolean) {
     const key = field as ToggleableFields;
 
+    if (field === 'isActive') {
+
+    }
 
     const originalCategory = this.findCategoryById(this.categories, category.categoryId!);
     if (originalCategory) {
@@ -377,6 +385,12 @@ export class CategoryComponent implements OnInit {
     event.stopPropagation();
     const categoryId = category.categoryId
     this.router.navigate(['product-list/category/', categoryId, 'edit-category']);
+  }
+
+  formatDate(date: any): string {
+    if (!date) return '-';
+    // Adjust format as you like: 'medium', 'short', 'yyyy/MM/dd', etc.
+    return angularFormatDate(date, 'mediumDate', 'en-US');
   }
 
 }

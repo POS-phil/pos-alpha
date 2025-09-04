@@ -57,6 +57,29 @@ form {
   padding: 15px;
 }
 
+.container-automation {
+  display: flex;
+  flex-direction: row;
+  grid-column: 1 / span 9;
+  grid-row: 2;
+  text-align: center;
+  align-items: center;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+  gap: 20px;
+}
+
+.activation-date-time-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: start;
+}
+
+.label-activation-date-time{
+  font-size: 12px;
+}
+
 .container-utlity-content {
   display: grid;
   grid-template-columns: repeat(2, 150px);
@@ -158,8 +181,8 @@ form {
 }
 
 .uploaded-image {
-  width: 250px;
-  height: 250px;
+  width: 239px;
+  height: 239px;
   object-fit: scale-down;
 }
 

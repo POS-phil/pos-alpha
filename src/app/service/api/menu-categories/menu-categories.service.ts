@@ -42,6 +42,16 @@ export class MenuCategoriesService {
     );
   }
 
+  getMenuCategoryById(categoryId: number): Observable<MenuCategories> {
+    return this.http.get<MenuCategories>(`${this.menuCategoriesApiUrl}/${categoryId}`);
+  }
+
+  updateCategory(formData: FormData, categoryId: number): Observable<any> {
+    return this.http.put<any>(`${this.menuCategoriesApiUrl}/update/${categoryId}`, formData, {
+      responseType: 'text' as 'json'
+    });
+  }
+
   checkCategoryExists(categoryName: string): Observable<{ exists: boolean }> {
   return this.http.get<{ exists: boolean }>(`${this.menuCategoriesApiUrl}/exists`, {
     params: { categoryName }

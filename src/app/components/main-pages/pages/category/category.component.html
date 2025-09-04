@@ -145,6 +145,15 @@
             <tr [ttSelectableRow]="rowNode">
                 <td class="checkbox-cell">
                     <mat-icon class="icon-check">check_circle</mat-icon>
+                    @if(rowData.autoActivated) {
+                    <mat-icon
+                    class="spinning"
+                    [matTooltip]="'This Category in Auto Activation Schedule'"
+                    >
+                    <!-- [matTooltip]="rowData ? getTooltip(rowData) : 'Loading...'" -->
+                    settings
+                    </mat-icon>
+                    }
                 </td>
                 @for (col of selectedColumns; track col.field; let i = $index) {
                 <td class="{{col.styleClass}}">
@@ -152,7 +161,9 @@
                     @if(i === 0){
                     <p-treetable-toggler [rowNode]="rowNode" (click)="$event.stopPropagation()" />
                     }
-                    <span class="category-name" [ngClass]="{ 'parent-category': (rowNode.node?.children?.length ?? 0) > 0 || rowNode.node?.leaf === false }">{{ rowData.categoryName }}</span>
+                    <span class="category-name"
+                        [ngClass]="{ 'parent-category': (rowNode.node?.children?.length ?? 0) > 0 || rowNode.node?.leaf === false }">{{
+                        rowData.categoryName }}</span>
                     } @else if (col.field === 'image') {
                     @if (rowData.image) {
                     <img [src]="rowData.image" class="category-image" />
