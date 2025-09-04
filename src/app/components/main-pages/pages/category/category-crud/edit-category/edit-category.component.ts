@@ -149,7 +149,7 @@ function convertDubaiToLocal(dateString: string): Date {
   templateUrl: './edit-category.component.html',
   styleUrl: './edit-category.component.scss',
   providers: [MenuCategoriesService, NotificationService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class EditCategoryComponent implements OnInit {
 
@@ -331,9 +331,10 @@ export class EditCategoryComponent implements OnInit {
             this.editCategoryForm.get('dateStartOnly')!.valueChanges.pipe(startWith(this.editCategoryForm.get('dateStartOnly')!.value)),
             this.editCategoryForm.get('dateActivation')!.valueChanges.pipe(startWith(this.editCategoryForm.get('dateActivation')!.value)),
             this.editCategoryForm.get('dateDeactivation')!.valueChanges.pipe(startWith(this.editCategoryForm.get('dateDeactivation')!.value)),
-            this.editCategoryForm.get('isActive')!.valueChanges.pipe(
-              startWith(this.editCategoryForm.get('isActive')!.value)
-            )
+            // this.editCategoryForm.get('isActive')!.valueChanges.pipe(
+            //   startWith(this.editCategoryForm.get('isActive')!.value)
+            // )
+            this.editCategoryForm.get('isActive')!.valueChanges.pipe(startWith(this.editCategoryForm.get('isActive')!.value)),
           ]).subscribe(() => {
             this.dateValidator();
             this.updateTimedActivationControls();
@@ -341,6 +342,19 @@ export class EditCategoryComponent implements OnInit {
           });
         }
       })
+    });
+
+    this.isActive.valueChanges.subscribe((val) => {
+      // Only cancel auto if autoActivated was true AND this is a manual toggle
+      if (this.autoActivated.value) {
+        this.autoActivated.setValue(false, { emitEvent: false })
+        // this.isTimedActivation.setValue(false, {emitEvent: false})
+        // if(!this.isActive.value) {
+        //   this.isTimedActivation.enable({emitEvent: false})
+        // } else {
+        //   this.isTimedActivation.disable({emitEvent: false})
+        // }
+      }
     });
 
     this.filteredCategories = this.listOfCategory.slice();
@@ -474,42 +488,69 @@ export class EditCategoryComponent implements OnInit {
   private updateTimedActivationControls() {
 
     if (this.autoActivated.value) {
-      if (this.isTimedActivation.value == true) {
-        this.isTimedActivation.enable({ emitEvent: false })
-        this.selectedScheduleMode.enable({ emitEvent: false });
-        if (this.selectedScheduleMode.value === '1') {
-          this.dateStartOnly.enable({ emitEvent: false });
+      if (this.isActive.value) {
+        if (this.isTimedActivation!.value == true) {
+          //this.isActive.disable({ emitEvent: false }),
+          this.autoActivated.setValue(true, { emitEvent: false })
+          this.selectedScheduleMode.enable({ emitEvent: false });
+          if (this.selectedScheduleMode!.value === '1') {
+            this.dateStartOnly.enable({ emitEvent: false });
+            this.dateActivation.disable({ emitEvent: false });
+            this.dateActivation.setValue(null, { emitEvent: false });
+            this.dateDeactivation.disable({ emitEvent: false });
+            this.dateDeactivation.setValue(null, { emitEvent: false });
+            this.checkCurrentDateAndSelectedDate();
+          } else {
+            this.isActive.setValue(false, { emitEvent: false });
+            this.dateStartOnly.disable({ emitEvent: false });
+            this.dateStartOnly.setValue(null, { emitEvent: false });
+            this.dateActivation.enable({ emitEvent: false });
+            this.dateDeactivation.enable({ emitEvent: false });
+            this.checkCurrentDateAndSelectedDate();
+          }
+        } else {
+          //this.isActive.enable({ emitEvent: false });
+          this.isActive.setValue(false, { emitEvent: false });
+          this.autoActivated.setValue(false, { emitEvent: false })
+          this.selectedScheduleMode.disable({ emitEvent: false });
+          this.dateStartOnly.disable({ emitEvent: false });
+          this.dateStartOnly.setValue(null, { emitEvent: false });
           this.dateActivation.disable({ emitEvent: false });
           this.dateActivation.setValue(null, { emitEvent: false });
           this.dateDeactivation.disable({ emitEvent: false });
           this.dateDeactivation.setValue(null, { emitEvent: false });
-          this.checkCurrentDateAndSelectedDate();
+        }
+      } else {
+        if (this.isTimedActivation!.value == true) {
+          this.autoActivated.setValue(true, { emitEvent: false })
+          this.selectedScheduleMode.enable({ emitEvent: false });
+          if (this.selectedScheduleMode!.value === '1') {
+            this.dateStartOnly.enable({ emitEvent: false });
+            this.dateActivation.disable({ emitEvent: false });
+            this.dateActivation.setValue(null, { emitEvent: false });
+            this.dateDeactivation.disable({ emitEvent: false });
+            this.dateDeactivation.setValue(null, { emitEvent: false });
+          } else {
+            this.isActive.setValue(false, { emitEvent: false });
+            this.dateStartOnly.disable({ emitEvent: false });
+            this.dateStartOnly.setValue(null, { emitEvent: false });
+            this.dateActivation.enable({ emitEvent: false });
+            this.dateDeactivation.enable({ emitEvent: false });
+          }
         } else {
+          this.autoActivated.setValue(false, { emitEvent: false })
+          this.selectedScheduleMode.disable({ emitEvent: false });
           this.dateStartOnly.disable({ emitEvent: false });
           this.dateStartOnly.setValue(null, { emitEvent: false });
-          this.dateActivation.enable({ emitEvent: false });
-          this.dateDeactivation.enable({ emitEvent: false });
-          this.checkCurrentDateAndSelectedDate();
+          this.dateActivation.disable({ emitEvent: false });
+          this.dateActivation.setValue(null, { emitEvent: false });
+          this.dateDeactivation.disable({ emitEvent: false });
+          this.dateDeactivation.setValue(null, { emitEvent: false });
         }
-      } else {
-        this.autoActivated.setValue(false, { emitEvent: false });
-        this.selectedScheduleMode.disable({ emitEvent: false });
-        this.dateStartOnly.disable({ emitEvent: false });
-        this.dateStartOnly.setValue(null, { emitEvent: false });
-        this.dateActivation.disable({ emitEvent: false });
-        this.dateActivation.setValue(null, { emitEvent: false });
-        this.dateDeactivation.disable({ emitEvent: false });
-        this.dateDeactivation.setValue(null, { emitEvent: false });
       }
-      //if manually toggled
-      if(this.isActive.value === true || this.isActive.value === false) {
-        this.autoActivated.setValue(false, { emitEvent: false });
-      }
-
     } else {
       if (this.isActive.value) {
-        this.isTimedActivation.setValue(false, { emitEvent: false });
-        this.isTimedActivation.disable({ emitEvent: false });
+        this.isTimedActivation.disable({ emitEvent: false })
         this.autoActivated.setValue(false, { emitEvent: false });
         this.selectedScheduleMode.disable({ emitEvent: false });
         this.dateStartOnly.disable({ emitEvent: false });
@@ -519,24 +560,27 @@ export class EditCategoryComponent implements OnInit {
         this.dateDeactivation.disable({ emitEvent: false });
         this.dateDeactivation.setValue(null, { emitEvent: false });
       } else {
-        //this.isTimedActivation.setValue(false, { emitEvent: false });
-        this.isTimedActivation.enable({ emitEvent: false });
-        this.autoActivated.setValue(false, { emitEvent: false });
-        this.selectedScheduleMode.disable({ emitEvent: false });
-        this.dateStartOnly.disable({ emitEvent: false });
-        this.dateStartOnly.setValue(null, { emitEvent: false });
-        this.dateActivation.disable({ emitEvent: false });
-        this.dateActivation.setValue(null, { emitEvent: false });
-        this.dateDeactivation.disable({ emitEvent: false });
-        this.dateDeactivation.setValue(null, { emitEvent: false });
-
+        this.isTimedActivation.enable({ emitEvent: false })
         if (this.isTimedActivation!.value == true) {
           this.autoActivated.setValue(true, { emitEvent: false });
-
+          this.selectedScheduleMode.enable({ emitEvent: false });
+          if (this.selectedScheduleMode!.value === '1') {
+            this.dateStartOnly.enable({ emitEvent: false });
+            this.dateActivation.disable({ emitEvent: false });
+            this.dateActivation.setValue(null, { emitEvent: false });
+            this.dateDeactivation.disable({ emitEvent: false });
+            this.dateDeactivation.setValue(null, { emitEvent: false });
+          } else {
+            this.isActive.setValue(false, { emitEvent: false });
+            this.dateStartOnly.disable({ emitEvent: false });
+            this.dateStartOnly.setValue(null, { emitEvent: false });
+            this.dateActivation.enable({ emitEvent: false });
+            this.dateDeactivation.enable({ emitEvent: false });
+          }
         }
-
       }
     }
+
   }
 
   //PARENT CATEGORY

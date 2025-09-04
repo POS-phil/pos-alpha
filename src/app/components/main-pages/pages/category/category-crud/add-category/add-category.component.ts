@@ -124,7 +124,7 @@ export function beforeActivationValidator(activationControl: AbstractControl): V
   providers: [MenuCategoriesService, NotificationService],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddCategoryComponent implements OnInit {
 
