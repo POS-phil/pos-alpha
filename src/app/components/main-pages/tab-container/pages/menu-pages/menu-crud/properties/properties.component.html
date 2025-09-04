@@ -33,7 +33,7 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title> <mat-icon
                                 style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">insert_invitation</mat-icon>
-                            Creation Details </mat-panel-title>
+                            Modifier </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="creation-details-table-container">
                         <table>
@@ -96,9 +96,8 @@
                 
                 <mat-expansion-panel expanded>
                     <mat-expansion-panel-header>
-                        <mat-panel-title> <mat-icon
-                               >store</mat-icon>
-                            Inactive Store(s) </mat-panel-title>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                            Set of Stock </mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-chip-set>
                         <table mat-table class="full-width" >
@@ -119,7 +118,7 @@
                         <ng-container matColumnDef="Name">               
                             <td mat-cell >
                                     <mat-form-field>
-                                        <mat-label>Select Store</mat-label>
+                                        <mat-label>Change to in Stock</mat-label>
                                         <mat-select required>
                                             <mat-option value="Store 1">Store 1</mat-option>
                                             <mat-option value="Store 2">Store 2</mat-option>
@@ -154,6 +153,180 @@
                 </mat-expansion-panel>
 
 
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                           Promotion</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <table mat-table class="full-width" >
+                        <tr>
+                            <ng-container matColumnDef="Name">
+                                <th > Name </th>                            
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Reference</td>
+                            </ng-container>
+          
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Meal Promotion
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Meal Promotion For Week end
+                            </td>
+                        </ng-container>
+                        </tr>
+                        
+                        </table>
+                          <div class="full-width divAddStore">
+                            <button type="button" matButton class="btnRadius">
+                            Click add Store
+                            </button>
+                        </div>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+
+
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                           Price-List</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <table mat-table class="full-width" >
+                        <tr>
+                            <ng-container matColumnDef="Name">
+                                <td > Name </td>                            
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Store</td>
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Price</td>
+                            </ng-container>                            
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Meal Promotion
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Meal Promotion For Week end
+                            </td>
+                        </ng-container>
+                        </tr>
+                        
+                        </table>
+                          <div class="full-width divAddStore">
+                            <button type="button" matButton class="btnRadius">
+                            Click add Store
+                            </button>
+                        </div>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                           Nutrition Values</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <table mat-table class="full-width" >
+                        <tr>
+                            <ng-container matColumnDef="Name">
+                                <td > Name </td>                            
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Value</td>
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > UOM</td>
+                            </ng-container>                            
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                grams
+                            </td>
+                        </ng-container>
+                        </tr>
+
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Meal Promotion
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Meal Promotion For Week end
+                            </td>
+                        </ng-container>
+
+                                           <ng-container >                
+                            <td mat-cell > 
+                                mg
+                            </td>
+                        </ng-container>
+                        </tr>
+
+                        
+                        </table>
+                          <div class="full-width divAddStore">
+                            <button type="button" matButton class="btnRadius">
+                            Click add Store
+                            </button>
+                        </div>
+                    </mat-chip-set>
+                </mat-expansion-panel>
             </mat-accordion>
 
 
