@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
-    HttpErrorResponse,
+  HttpErrorResponse,
   HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -9,14 +9,25 @@ import { LoadingService } from './LoadingService';
 import { Router } from '@angular/router';
 
 export const loadingSpinnerInterceptorFunctional: HttpInterceptorFn = (req, next) => {
-  const exemptedRoutes = ['/monitor'];
+  const exemptedRoutes = [
+    '/product-list/category/add-category',
+    '/product-list/category',
+    '/product-list/category/'];
   const router = inject(Router);
   const currentRoute = router.url;
 
+  const isExempted = exemptedRoutes.some(route => {
+    if (route.endsWith('/')) {
+      return currentRoute.startsWith(route) && currentRoute.endsWith('/edit-category');
+    }
+    return currentRoute === route;
+  });
+
   const loadingService = inject(LoadingService); // Instantiate the loading service
 
+
   // Check if the current route is in the exempted list
-  if (!exemptedRoutes.includes(currentRoute)) {
+  if (!isExempted) {
     loadingService.showLoadingSpinner();
   }
 

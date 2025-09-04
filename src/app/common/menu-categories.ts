@@ -32,6 +32,7 @@ export interface MenuCategories {
   dateDeactivation?: Date; //not important
   //timedActivationRange?: Date[] | null; //not important
   autoActivated?: boolean; //not important
+  level? : number
 }
 
 export interface ScheduleEntry {
@@ -44,10 +45,12 @@ export interface ScheduleEntry {
 }
 
 export interface CategoryIdAndName {
-  categoryId: number;
+  categoryId?: number;
   categoryName: string;
   image: string;
   icon: string;
+  level? : number
+  parentCategoryId? : number
 }
 
 export type ToggleableFields =

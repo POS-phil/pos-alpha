@@ -71,7 +71,7 @@ export const routes: Routes = [
             },
                 ]
             },
- 
+            //############CATEGORY PAGES######################
             {
                 path: 'product-list/category',
                 loadComponent : () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
@@ -88,6 +88,12 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/pages/category/category-crud/edit-category/edit-category.component').then(m => m.EditCategoryComponent),
                 title: 'Product List/ Category / Edit Category'
             },
+            {
+                path: 'product-list/category/sort-category',
+                loadComponent: () => import('./components/main-pages/pages/category/category-sort/category-sort.component').then(m => m.CategorySortComponent),
+                title: 'Product List/ Category / Sort Component'
+            },
+            //#######END OF CATEGORY PAGES##################
             {
                 path: 'menu/item/add-item',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
