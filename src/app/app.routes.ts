@@ -136,6 +136,21 @@ export const routes: Routes = [
                 title: 'properties'
             },
 
+            {
+                path: 'menu/item/allergens',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/allergens/allergens.component').then(m => m.AllergensComponent),
+                title: 'allergens'
+            },
+
+
+            {
+                path: 'menu/item/recipe',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/recipe/recipe.component').then(m => m.RecipeComponent),
+                title: 'recipe'
+            },
+
+
+
 
             {
                 path: 'addons-builder/modifier-group/create_modifier',

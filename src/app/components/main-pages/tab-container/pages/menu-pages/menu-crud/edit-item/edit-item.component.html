@@ -3,24 +3,24 @@
         <H1>Edit Item</H1>
         <span class="spacer"></span>
 
-        <button type="buttopn" mat-stroked-button class="btnRadius">
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
             Item Details
         </button>
-        <button type="buttopn" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/properties']">
+        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/properties']">
             Properties
         </button>
 
-        <button type="buttopn" mat-flat-button class="btnRadius">
+        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/allergens']">
             Allergens
         </button>
-        <button type="buttopn" mat-flat-button class="btnRadius">
+        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/recipe']">
             Recipes
         </button>        
 
-        <button type="buttopn" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
             Cancel
         </button>
-        <button type="buttopn" mat-flat-button class="btnRadius">
+        <button type="button" mat-flat-button class="btnRadius">
             Save
         </button>
     </div>
