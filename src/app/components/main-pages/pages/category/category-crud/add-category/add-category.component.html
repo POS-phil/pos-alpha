@@ -27,7 +27,7 @@
                 <mat-label>Second Language</mat-label>
                 <input matInput type="text" formControlName="secondLanguageName"
                     placeholder="Ex. Combo 1 in second language">
-                @if (secondLanguageName?.hasError('maxlength')) {
+                @if (secondLanguageName.hasError('maxlength')) {
                 <mat-error class="error-message">Maximum character is (50) only</mat-error>
                 }
             </mat-form-field>
@@ -37,8 +37,8 @@
                     <mat-label>Description</mat-label>
                     <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."
                         formControlName="description"></textarea>
-                    @if (description?.hasError('maxlength')) {
-                    <mat-error class="error-message">Maximum character is (100) only</mat-error>
+                    @if (description.hasError('maxlength')) {
+                    <mat-error class="error-message">Maximum character is (500) only</mat-error>
                     }
                 </mat-form-field>
             </div>
@@ -46,7 +46,7 @@
                 <mat-form-field class="full-width">
                     <mat-label>Reference</mat-label>
                     <input matInput formControlName="reference">
-                    @if (reference?.hasError('maxlength')) {
+                    @if (reference.hasError('maxlength')) {
                     <mat-error class="error-message">Maximum character is (50) only</mat-error>
                     }
                 </mat-form-field>
@@ -154,6 +154,55 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="container-automation">
+            <h3>Automation : </h3>
+            <mat-checkbox class="timed-activation-checkbox" formControlName="isTimedActivation"
+                matTooltip="Automatically activate or deactivate the category within a specified date range">Scheduled
+                Activation</mat-checkbox>
+            <mat-radio-group aria-label="Select an option" formControlName="selectedScheduleMode" class="radio-group">
+                <mat-radio-button value="1">Activation Only</mat-radio-button>
+                <mat-radio-button value="2">Activation & Decativation</mat-radio-button>
+            </mat-radio-group>
+            @if(selectedScheduleMode.value === '1') {
+            <div class="activation-date-time-container">
+                <label class="label-activation-date-time">Activation Date/Time</label>
+                <p-datepicker class="datepicker-png" [invalid]="isInvalid('dateStartOnly')" selectionMode="single"
+                    [minDate]="today" [readonlyInput]="true" formControlName="dateStartOnly" [showIcon]="true"
+                    inputId="icondisplay" [showTime]="true" [hourFormat]="'12'" placeholder="Activation Date" />
+                @if(dateStartOnly.hasError('required')) {
+                <p-message severity="error" size="small" variant="simple">Date for activation is required.</p-message>
+                } @else if(dateStartOnly.hasError('pastDateTime')) {
+                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the future.</p-message>
+                }
+            </div>
+            } @else {
+            <div class="activation-date-time-container">
+            <label class="label-activation-date-time">Activation Date/Time</label>
+            <p-datepicker class="datepicker-png" [invalid]="isInvalid('dateActivation')" selectionMode="single" [minDate]="today" [readonlyInput]="true"
+                    formControlName="dateActivation" [showIcon]="true" inputId="icondisplay" [showTime]="true"
+                    [hourFormat]="'12'" placeholder="Activation Date" />
+
+            @if(dateActivation.hasError('required')) {
+            <p-message severity="error" size="small" variant="simple">Date for activation is required.</p-message>
+            } @else if(dateActivation.hasError('pastDateTime')) {
+                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the future.</p-message>
+                }
+            </div>
+            <div class="activation-date-time-container">
+            <label class="label-activation-date-time">Deactivation Date/Time</label>
+            <p-datepicker [invalid]="isInvalid('dateDeactivation')" class="datepicker-png" selectionMode="single" [minDate]="today" [readonlyInput]="true"
+                formControlName="dateDeactivation" [showIcon]="true" inputId="icondisplay" [showTime]="true"
+                [hourFormat]="'12'" placeholder="Deactivation Date" />
+            @if(dateDeactivation.hasError('required')) {
+            <p-message severity="error" size="small" variant="simple">Date for deactiavtion is required.</p-message>
+            } @else if(dateDeactivation.hasError('pastDateTime')) {
+                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the future.</p-message>
+            } @else if(dateDeactivation.hasError('beforeActivation')) {
+                <p-message severity="error" size="small" variant="simple">Deactivation date/time must be after activation date/time.</p-message>
+            }
+            </div>
+            }
         </div>
     </div>
 </form>

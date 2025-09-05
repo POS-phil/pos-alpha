@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   MatDialog
@@ -22,11 +22,17 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ScheduleEntry } from '../../../../../../common/menu-categories';
 import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { NotificationService } from '../../../../../../service/notifications/notification.service';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { CategoryIdAndName } from '../../../../../../common/menu-categories';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DatePicker } from 'primeng/datepicker';
+import { FloatLabel } from 'primeng/floatlabel';
+import { MessageModule } from 'primeng/message';
+
 
 export function categoryNameDuplicateValidator(service: MenuCategoriesService): AsyncValidatorFn {
   return (control: AbstractControl): Observable<ValidationErrors | null> => {
@@ -56,6 +62,37 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
   };
 }
 
+export function pastDateTimeValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null;
+
+    const selectedDate = new Date(control.value);
+    const now = new Date();
+    return selectedDate < now ? { pastDateTime: true } : null;
+  };
+}
+
+export function beforeActivationValidator(activationControl: AbstractControl): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value || !activationControl.value) return null;
+
+    const activationDate = activationControl.value instanceof Date
+      ? activationControl.value
+      : new Date(activationControl.value);
+
+    const deactivationDate = control.value instanceof Date
+      ? control.value
+      : new Date(control.value);
+
+    // Check if deactivation is before or equal to activation
+    if (deactivationDate.getTime() <= activationDate.getTime()) {
+      return { beforeActivation: true };
+    }
+
+    return null;
+  };
+}
+
 @Component({
   selector: 'app-add-category',
   standalone: true,
@@ -77,11 +114,17 @@ export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
     MatChipsModule,
     MatSnackBarModule,
     AsyncPipe,
-    Breadcrumb
+    Breadcrumb,
+    MatRadioModule,
+    MatCheckboxModule,
+    DatePicker,
+    MessageModule
+
   ],
   providers: [MenuCategoriesService, NotificationService],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.scss',
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class AddCategoryComponent implements OnInit {
 
@@ -90,6 +133,8 @@ export class AddCategoryComponent implements OnInit {
   isAllDayChecked = signal(true);
   allDayStartTime = signal<string>('00:00');
   allDayEndTime = signal<string>('23:59');
+  today: Date = new Date();
+  private destroy$ = new Subject<void>();
 
   background_colors = [
     '#e62e2eff', '#2d30fcff', '#f2f53eff', '#5af845ff', '#35eefcff',
@@ -114,6 +159,9 @@ export class AddCategoryComponent implements OnInit {
   private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);
   filteredCategories$!: Observable<CategoryIdAndName[]>;
 
+  // dubaiTime = new Date();
+  // localString = this.dubaiTime.toLocaleString('sv-SE', { timeZone: 'Asia/Dubai' });
+
   selectIcon(icon: string) {
     this.selectedIcon = icon;
     this.createCategoryForm.patchValue({ icon });
@@ -121,7 +169,7 @@ export class AddCategoryComponent implements OnInit {
 
   selectBackgroundColor(backgroundColor: string) {
     this.selectedBackgroundColor = backgroundColor;
-    this.createCategoryForm.patchValue({ backgroundColor })
+    this.createCategoryForm.patchValue({})
   }
 
   createCategoryForm!: FormGroup;
@@ -134,23 +182,51 @@ export class AddCategoryComponent implements OnInit {
     private fb: FormBuilder,
     private route: Router,
     private sanitizer: DomSanitizer,
-    private notification: NotificationService,
+    private notification: NotificationService
   ) { }
 
+  get isActive() {
+    return this.createCategoryForm.get('isActive') as FormControl;
+  }
+
   get categoryName() {
-    return this.createCategoryForm.get('categoryName')!;
+    return this.createCategoryForm.get('categoryName') as FormControl;
   }
 
   get secondLanguageName() {
-    return this.createCategoryForm.get('secondLanguageName')
+    return this.createCategoryForm.get('secondLanguageName') as FormControl;
   }
 
   get description() {
-    return this.createCategoryForm.get('description');
+    return this.createCategoryForm.get('description') as FormControl;
   }
 
   get reference() {
-    return this.createCategoryForm.get('reference');
+    return this.createCategoryForm.get('reference') as FormControl;
+  }
+
+  get isTimedActivation() {
+    return this.createCategoryForm.get('isTimedActivation') as FormControl;
+  }
+
+  get autoActivated() {
+    return this.createCategoryForm.get('autoActivated') as FormControl;
+  }
+
+  get selectedScheduleMode() {
+    return this.createCategoryForm.get('selectedScheduleMode') as FormControl;
+  }
+
+  get dateStartOnly() {
+    return this.createCategoryForm.get('dateStartOnly') as FormControl;
+  }
+
+  get dateActivation() {
+    return this.createCategoryForm.get('dateActivation') as FormControl;
+  }
+
+  get dateDeactivation() {
+    return this.createCategoryForm.get('dateDeactivation') as FormControl;
   }
 
   items: MenuItem[] | undefined;
@@ -161,6 +237,8 @@ export class AddCategoryComponent implements OnInit {
       { label: 'Categories', routerLink: '/product-list/category' },
       { label: 'Add Categoy' }
     ]
+
+    this.today.setHours(0, 0, 0, 0);
 
     const defaultSchedule: ScheduleEntry[] = [
       { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
@@ -173,7 +251,7 @@ export class AddCategoryComponent implements OnInit {
     ];
 
     this.createCategoryForm = this.fb.group({
-      active: [true],
+      isActive: [true],
       categoryName: ['',
         {
           validators: [Validators.required, Validators.maxLength(50)],
@@ -186,7 +264,7 @@ export class AddCategoryComponent implements OnInit {
       }],
       parentCategoryId: [null, [this.parentCategoryValidator.bind(this)]],
       description: ['', {
-        validators: [Validators.maxLength(100)],
+        validators: [Validators.maxLength(500)],
         updateOn: 'change'
       }],
       reference: ['', {
@@ -195,7 +273,7 @@ export class AddCategoryComponent implements OnInit {
       }],
       image: [null],
       icon: [this.selectedIcon],
-      backgroundColor: [''],
+      backgroundColor: [this.selectedBackgroundColor],
       withProducts: [false],
       schedule: [defaultSchedule],
       item: [0],
@@ -203,6 +281,12 @@ export class AddCategoryComponent implements OnInit {
       aggregator: [false],
       kiosk: [false],
       counterTop: [false],
+      isTimedActivation: [false],
+      autoActivated: [false],
+      selectedScheduleMode: [{ value: '1', disabled: true }],
+      dateStartOnly: [{ value: null, disabled: true }],
+      dateActivation: [{ value: null, disabled: true }],
+      dateDeactivation: [{ value: null, disabled: true }],
       created_at: [new Date()]
     });
 
@@ -222,7 +306,85 @@ export class AddCategoryComponent implements OnInit {
     );
 
     this.getListOfCategories();
+    this.createCategoryForm.get('selectedScheduleMode')?.valueChanges.subscribe(() => {
+      this.cdr.detectChanges();
+    });
 
+    combineLatest([
+      this.createCategoryForm.get('isTimedActivation')!.valueChanges.pipe(startWith(this.createCategoryForm.get('isTimedActivation')!.value)),
+      this.createCategoryForm.get('selectedScheduleMode')!.valueChanges.pipe(startWith(this.createCategoryForm.get('selectedScheduleMode')!.value)),
+      this.createCategoryForm.get('autoActivated')!.valueChanges.pipe(startWith(this.createCategoryForm.get('autoActivated')!.value)),
+      this.createCategoryForm.get('dateStartOnly')!.valueChanges.pipe(startWith(this.createCategoryForm.get('dateStartOnly')!.value)),
+      this.createCategoryForm.get('dateActivation')!.valueChanges.pipe(startWith(this.createCategoryForm.get('dateActivation')!.value)),
+      this.createCategoryForm.get('dateDeactivation')!.valueChanges.pipe(startWith(this.createCategoryForm.get('dateDeactivation')!.value))
+    ]).subscribe(() => {
+      this.dateValidator();
+      this.automatedActivationEnableDisableLogic();
+      this.cdr.markForCheck();
+    });
+
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  dateValidator() {
+    const now = new Date();
+
+    if (this.isTimedActivation!.value == true) {
+      if (this.selectedScheduleMode.value === '1') {
+        this.dateStartOnly.setValidators([Validators.required, pastDateTimeValidator()]);
+        this.dateActivation.clearValidators();
+        this.dateDeactivation.clearValidators();
+
+      } else {
+        this.dateActivation.setValidators([Validators.required, pastDateTimeValidator()]);
+        this.dateDeactivation.setValidators([Validators.required, pastDateTimeValidator(), beforeActivationValidator(this.dateActivation)]);
+        this.dateStartOnly.clearValidators();
+
+      }
+    } else {
+      this.dateStartOnly.clearValidators();
+      this.dateActivation.clearValidators();
+      this.dateDeactivation.clearValidators();
+    }
+
+    this.dateStartOnly.updateValueAndValidity({ emitEvent: false });
+    this.dateActivation.updateValueAndValidity({ emitEvent: false });
+    this.dateDeactivation.updateValueAndValidity({ emitEvent: false });
+  }
+
+  automatedActivationEnableDisableLogic() {
+    if (this.isTimedActivation!.value == true) {
+      this.isActive.setValue(false, { emitEvent: false });
+      this.autoActivated.setValue(true, { emitEvent: false });
+      this.selectedScheduleMode.enable({ emitEvent: false });
+      if (this.selectedScheduleMode!.value === '1') {
+        this.dateStartOnly.enable({ emitEvent: false });
+        this.dateActivation.disable({ emitEvent: false });
+        this.dateActivation.setValue(null, { emitEvent: false });
+        this.dateDeactivation.disable({ emitEvent: false });
+        this.dateDeactivation.setValue(null, { emitEvent: false });
+      } else {
+        this.isActive.setValue(false, { emitEvent: false });
+        this.dateStartOnly.disable({ emitEvent: false });
+        this.dateStartOnly.setValue(null, { emitEvent: false });
+        this.dateActivation.enable({ emitEvent: false });
+        this.dateDeactivation.enable({ emitEvent: false });
+      }
+    } else {
+      this.isActive.setValue(true, { emitEvent: false });
+      this.autoActivated.setValue(false, { emitEvent: false });
+      this.selectedScheduleMode.disable({ emitEvent: false });
+      this.dateStartOnly.disable({ emitEvent: false });
+      this.dateStartOnly.setValue(null, { emitEvent: false });
+      this.dateActivation.disable({ emitEvent: false });
+      this.dateActivation.setValue(null, { emitEvent: false });
+      this.dateDeactivation.disable({ emitEvent: false });
+      this.dateDeactivation.setValue(null, { emitEvent: false });
+    }
   }
 
   parentCategoryValidator(control: AbstractControl): ValidationErrors | null {
@@ -238,12 +400,12 @@ export class AddCategoryComponent implements OnInit {
   }
 
   onAutocompleteBlur() {
-  const control = this.createCategoryForm.get('parentCategoryId');
-  if (control?.value && typeof control.value === 'string') {
-    control.setValue(null); 
-    control.setErrors({ invalidSelection: true });
+    const control = this.createCategoryForm.get('parentCategoryId');
+    if (control?.value && typeof control.value === 'string') {
+      control.setValue(null);
+      control.setErrors({ invalidSelection: true });
+    }
   }
-}
 
   getListOfCategories() {
     this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
@@ -376,6 +538,10 @@ export class AddCategoryComponent implements OnInit {
 
     const formValue = this.createCategoryForm.value;
 
+    formValue.dateStartOnly = this.toDubaiISOString(formValue.dateStartOnly);
+    formValue.dateActivation = this.toDubaiISOString(formValue.dateActivation);
+    formValue.dateDeactivation = this.toDubaiISOString(formValue.dateDeactivation);
+
     if (formValue.parentCategoryId && typeof formValue.parentCategoryId === 'object') {
       formValue.parentCategoryId = formValue.parentCategoryId.categoryId;
     }
@@ -388,9 +554,10 @@ export class AddCategoryComponent implements OnInit {
     }
 
     //Uncomment for debugging
-    //console.log('Form Data:', formData);
-    //console.log('Form Value:', formValue);
-    //console.log('Category Form', this.createCategoryForm.value);
+    // console.log('Form Data:', formData);
+    // console.log('Form Value:', formValue);
+    // console.log('Category Form', this.createCategoryForm.value);
+    // console.log('bg color : ', this.selectedBackgroundColor)
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {
@@ -410,6 +577,18 @@ export class AddCategoryComponent implements OnInit {
         }
       }
     });
+  }
+
+  isInvalid(controlName: string) {
+    const control = this.createCategoryForm.get(controlName);
+    return control?.invalid && (control.touched || this.createCategoryForm);
+  }
+
+  private toDubaiISOString(date: Date | null): string | null {
+    if (!date) return null;
+
+    // Convert to Dubai time string
+    return date.toLocaleString('sv-SE', { timeZone: 'Asia/Dubai' }).replace(' ', 'T');
   }
 
 }

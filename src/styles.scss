@@ -135,6 +135,73 @@ app-success-snackbar {
   --p-breadcrumb-background: var(--mat-sys-surface);
 }
 
+.datepicker-png{
+    --p-datepicker-panel-border-color: var(--mat-sys-primary);
+    --p-datepicker-panel-border-radius: 3px;
+    --p-floatlabel-focus-color: var(--mat-sys-primary);
+    --p-floatlabel-active-color: var(--mat-sys-primary);
+    --p-inputtext-focus-border-color: var(--mat-sys-primary);
+    --p-datepicker-date-selected-background: var(--mat-sys-primary);
+}
+
+
+:root {
+  @include mat.tooltip-overrides((
+    container-color: #38220f,
+    supporting-text-color: #ece0d1,
+  ));
+}
+
+//    --p-floatlabel-focus-color
+//    --p-floatlabel-active-color
+//    --p-inputtext-focus-border-color
+
+.customized-tree-table {
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  --p-treetable-node-toggle-button-size: 25px;
+  --p-inputtext-focus-ring-color: #38220f;
+  --p-checkbox-checked-border-color: #dbc1ac;
+  --p-checkbox-checked-hover-border-color: #634832;
+  --p-checkbox-checked-focus-border-color: #967259;
+  --p-checkbox-checked-background: #634832;
+  --p-checkbox-checked-hover-background: #967259;
+  --p-inputtext-focus-border-color: #38220f;
+  --p-treetable-loading-icon-size: 2rem;
+  --p-treetable-sort-icon-color: var(--p-text-muted-color);
+  --p-treetable-sort-icon-hover-color: var(--p-text-hover-muted-color);
+  --p-treetable-sort-icon-size: 0.875rem;
+  --p-treetable-resize-indicator-width: 1px;
+  --p-treetable-resize-indicator-color: var(--p-primary-color);
+  --p-treetable-column-resizer-width: 0.5rem;
+  --p-treetable-footer-background: var(--mat-sys-surface);
+  --p-treetable-footer-color: var(--p-content-color);
+  --p-treetable-footer-cell-background: var(--mat-sys-surface);
+  --p-treetable-footer-cell-padding: 0.75rem 1rem;
+  --p-treetable-body-cell-padding: 0.75rem 1rem;
+  --p-treetable-body-cell-gap: 0.5rem;
+  --p-treetable-row-background: var(--mat-sys-surfaced);
+  --p-treetable-row-hover-background: #dbc1ac;
+  --p-treetable-row-selected-background: #967259;
+  --p-treetable-row-selected-color: #ffff;
+  --p-treetable-row-color: var(--p-content-color);
+  --p-treetable-row-hover-color: var(--p-content-hover-color);
+  --p-treetable-column-title-font-weight: 600;
+  --p-treetable-header-cell-background: var(--mat-sys-surface);
+  --p-treetable-header-cell-gap: 0;
+  --p-treetable-header-cell-padding: 0.75rem 1rem;
+  --p-treetable-header-background: var(--mat-sys-surface);
+  --p-treetable-header-border-width: 0 0 1px 0;
+  --p-treetable-header-padding: 0.75rem 1rem;;
+  --p-select-hover-border-color: #dbc1ac;
+  --p-select-focus-border-color: #dbc1ac;
+  --p-select-option-focus-background: #dbc1ac;
+  --p-select-option-selected-background: #dbc1ac;
+  --p-select-option-selected-color: #000;
+  --p-paginator-padding: 0.5rem 1rem;
+  --p-paginator-gap: 0.25rem;
+}
+
 html {
     --mat-sys-background: #faf9fd;
     --mat-sys-error: #ba1a1a;
@@ -303,3 +370,4 @@ html {
     --mat-sys-hover-state-layer-opacity: 0.08;
     --mat-sys-pressed-state-layer-opacity: 0.12
 }
+
