@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule, MatMenuPanel } from '@angular/material/menu';
@@ -13,9 +13,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { ScheduleEntry } from '../../../../../../../common/menu-categories';
-import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
-import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upload-image.component';
+import { ScheduleEntry } from '../../../../../../common/menu-categories';
+import { MenuCategoryAvailabilityComponent } from '../../../../../dialogs/menu-category-availability/menu-category-availability.component';
+import { UploadImageComponent } from '../../../../../dialogs/upload-image/upload-image.component';
 import { MatDialog } from '@angular/material/dialog';
 import { SafeUrl } from '@angular/platform-browser';
 import { MatDivider } from "@angular/material/divider";
@@ -23,6 +23,8 @@ import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker
 import { MatNativeDateModule } from '@angular/material/core';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { MatCheckbox } from "@angular/material/checkbox";
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+//import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from "../../../../../../../../../node_modules/@angular/material/expansion/index";
 
 
 @Component({
@@ -32,7 +34,6 @@ import { MatCheckbox } from "@angular/material/checkbox";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
     MatButtonModule,
     MatStepperModule,
     MatIconModule,
@@ -44,20 +45,25 @@ import { MatCheckbox } from "@angular/material/checkbox";
     MatMenuModule,
     MatTooltipModule,
     MatChipsModule,
-    MatDatepicker,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckbox
+    MatCheckbox,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    MatExpansionPanelTitle
 ],
 providers: [  
   MatDatepickerModule,  
 ],
 
-  templateUrl: './create-item.component.html',
-  styleUrl: './create-item.component.scss'
+  templateUrl: './edit-item.component.html',
+  styleUrl: './edit-item.component.scss'
 })
 //,MatDivider
-export class CreateItemComponent implements OnInit {
+export class EditItemComponent implements OnInit {
+
+accordion = viewChild.required(MatAccordion);
 
   scheduleSummary: string[] = [];
   //itemName:string[] = [];
@@ -76,8 +82,8 @@ export class CreateItemComponent implements OnInit {
     'egg_alt', 'fastfood', 'set_meal', 'room_service', 'tapas', 'takeout_dining',
   ];
 
-  selectedIcon = 'fastfood';
-  matDatepicker = '';
+selectedIcon = 'fastfood';
+matDatepicker = '';
 picker: Date | undefined;
 iconMenu: MatMenuPanel<any> | null | undefined;
 background_colors: any;
@@ -88,6 +94,7 @@ displayCategoryName: ((value: any) => string) | null | undefined;
 itemName: any;
 startDate: unknown;
 isEditable: false | undefined;
+dateRangeValue: any;
 
 //itemName: any;
 
@@ -95,7 +102,7 @@ isEditable: false | undefined;
     this.selectedIcon = icon;
   }
 
-  createItemForm!: FormGroup;
+  editItemForm!: FormGroup;
 
   readonly dialog = inject(MatDialog);
 
@@ -107,7 +114,7 @@ isEditable: false | undefined;
   ) { }
 
   get categoryName() {
-    return this.createItemForm.get('category_name')!;
+    return this.editItemForm.get('category_name')!;
   }
 
   ngOnInit(): void {
@@ -123,7 +130,7 @@ isEditable: false | undefined;
     ];
 
 
-    this.createItemForm = this.fb.group({
+    this.editItemForm = this.fb.group({
       itemName: ['', Validators.required],
       secondLanguageName: [''],
       description : [''],
@@ -188,7 +195,7 @@ isEditable: false | undefined;
       width: '500px',
       height: '550px',
       data: {
-        schedule: this.createItemForm.get('schedule')?.value || [],
+        schedule: this.editItemForm.get('schedule')?.value || [],
         isAllDaysChecked: this.isAllDaysChecked(),
         isAllDayChecked: this.isAllDayChecked(),
         allDayStartTime: this.allDayStartTime(),
@@ -198,7 +205,7 @@ isEditable: false | undefined;
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.createItemForm.get('schedule')?.setValue(result.schedule);
+        this.editItemForm.get('schedule')?.setValue(result.schedule);
         this.isAllDaysChecked.set(result.isAllDaysChecked);
         this.isAllDayChecked.set(result.isAllDayChecked);
         this.scheduleSummary = this.generateScheduleSummary(result.schedule);
