@@ -16,7 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { MatRadioModule, MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import {MatTableDataSource} from '@angular/material/table';
-import { CsMatTableComponent } from "../../../../../../layout/table/cs-mat-table/cs-mat-table.component";
+import { CsMatTableComponent } from "../../../../../layout/table/cs-mat-table/cs-mat-table.component";
 import {MatTableModule} from '@angular/material/table';
 
 

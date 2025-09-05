@@ -95,33 +95,39 @@ export const routes: Routes = [
             },
             //#######END OF CATEGORY PAGES##################
             {
+                path: 'menu/item',
+                loadComponent: () => import('./components/main-pages/pages/item/item.component').then(m => m.ItemComponent),
+                title: 'Create Item'
+            },
+
+            {
                 path: 'menu/item/add-item',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
+                loadComponent: () => import('./components/main-pages/pages/item/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
                 title: 'Create Item'
             },
 
             {
                 path: 'menu/item/edit-item',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/edit-item/edit-item.component').then(m => m.EditItemComponent),
+                loadComponent: () => import('./components/main-pages/pages/item/menu-crud/edit-item/edit-item.component').then(m => m.EditItemComponent),
                 title: 'Edit Item'
             },
 
             {
                 path: 'menu/item/properties',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/properties/properties.component').then(m => m.PropertiesComponent),
+                loadComponent: () => import('./components/main-pages/pages/item/menu-crud/properties/properties.component').then(m => m.PropertiesComponent),
                 title: 'properties'
             },
 
             {
                 path: 'menu/item/allergens',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/allergens/allergens.component').then(m => m.AllergensComponent),
+                loadComponent: () => import('./components/main-pages/pages/item/menu-crud/allergens/allergens.component').then(m => m.AllergensComponent),
                 title: 'allergens'
             },
 
 
             {
                 path: 'menu/item/recipe',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/recipe/recipe.component').then(m => m.RecipeComponent),
+                loadComponent: () => import('./components/main-pages/pages/item/menu-crud/recipe/recipe.component').then(m => m.RecipeComponent),
                 title: 'recipe'
             },
 

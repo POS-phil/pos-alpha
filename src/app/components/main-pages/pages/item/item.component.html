@@ -38,7 +38,7 @@
         <span>No Items Found, Please add a Item</span>
     </div>
     } @else {
-    <va-mat-table>
+   
         <ng-container action-bar-items>
                 @if(selectedCount() === 0) {
                 <mat-button-toggle-group class="btnToggle">
@@ -65,8 +65,7 @@
                 </mat-form-field>
                 <mat-paginator [pageSizeOptions]="[50, 100]" showFirstLastButtons>
                 </mat-paginator>
-                <button class="btn-sorter" va-mat-table-column-sorter [(columns)]="sortableColumns"
-                    [columnNames]="displayedColumns" [saveName]="'displayedColumns'">
+                <button class="btn-sorter" va-mat-table-column-sorter >
                     <mat-icon>view_column</mat-icon>
                     <mat-icon>keyboard_arrow_down</mat-icon>
                 </button>
@@ -194,13 +193,13 @@
 
             <ng-container matColumnDef="isActive">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Is Active </th>
-                <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.isActive} </td>
+                <td mat-cell *matCellDef="let menu_cat"> </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
         </div>
-    </va-mat-table>
+
     }
 </div>

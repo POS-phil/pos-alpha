@@ -14,14 +14,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MenuCategories } from '../../../../../../common/menu-categories';
+import { MenuCategories } from '../../../../common/menu-categories';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { CsMatTableComponent } from '../../../../../layout/table/cs-mat-table/cs-mat-table.component';
-import { ColumnSorterComponent } from '../../../../../layout/table/actions/column-sorter/column-sorter.component';
+import { CsMatTableComponent } from '../../../layout/table/cs-mat-table/cs-mat-table.component';
+import { ColumnSorterComponent } from '../../../layout/table/actions/column-sorter/column-sorter.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ConfirmDialogComponent } from '../../../../../dialogs/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-item',
