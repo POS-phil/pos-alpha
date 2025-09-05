@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, CdkDragHandle} from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -7,7 +7,8 @@ import {CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/d
   standalone: true,
   imports: [
     CdkDropList,
-    CdkDrag
+    CdkDrag,
+    CdkDragHandle
   ],
   templateUrl: './category-sort.component.html',
   styleUrl: './category-sort.component.scss'

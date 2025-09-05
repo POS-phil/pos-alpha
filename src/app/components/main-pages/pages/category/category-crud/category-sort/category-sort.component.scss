@@ -4,7 +4,7 @@
   max-width: 100%;
   gap: 15px;
   padding: 15px;
-  border: solid 1px #ccc;
+  //border: solid 1px #ccc;
   min-height: 60px;
   border-radius: 4px;
   overflow: hidden;
@@ -12,19 +12,37 @@
 }
 
 .example-box {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   padding: 20px 10px;
   border: solid 1px #ccc;
   border-radius: 4px;
   color: rgba(0, 0, 0, 0.87);
   display: inline-block;
   box-sizing: border-box;
-  cursor: move;
   background: white;
   text-align: center;
   font-size: 14px;
-  min-width: 115px;
+  min-width: 250px;
+  min-height: 80px;
   font-family: sans-serif;
 }
+
+.example-handle {
+  position: relative;
+  top: -30px;
+  left: 210px;
+  cursor: move;
+  width: 24px;
+  height: 24px;
+}
+
+.example-handle svg {
+  color: #ccc;
+}
+
 
 .cdk-drag-preview {
   box-sizing: border-box;
