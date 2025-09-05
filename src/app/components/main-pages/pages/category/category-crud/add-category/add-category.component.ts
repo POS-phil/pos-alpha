@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AsyncPipe, CommonModule } from '@angular/common';
+import { ChangeDetectorRef, Component, inject, OnInit, SecurityContext, signal, Signal } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   MatDialog
 } from '@angular/material/dialog';
@@ -12,23 +12,48 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { Router, RouterModule } from '@angular/router';
-import { UploadImageComponent } from '../../../../../../dialogs/upload-image/upload-image.component';
+import { UploadImageComponent } from '../../../../../dialogs/upload-image/upload-image.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
+import { MenuCategoryAvailabilityComponent } from '../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ScheduleEntry } from '../../../../../../../common/menu-categories';
-import { MenuCategoriesService } from '../../../../../../../service/api/menu-categories/menu-categories.service';
-import { HttpClient } from '@angular/common/http';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ScheduleEntry } from '../../../../../../common/menu-categories';
+import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, switchMap } from 'rxjs';
+import { NotificationService } from '../../../../../../service/notifications/notification.service';
+import { Breadcrumb } from 'primeng/breadcrumb';
+import { MenuItem } from 'primeng/api';
+import { CategoryIdAndName } from '../../../../../../common/menu-categories';
 
-interface CategoryIdAndName {
-  categoryId: number;
-  categoryName: string;
-  image: File | string;
-  icon: string;
+export function categoryNameDuplicateValidator(service: MenuCategoriesService): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    if (!control.value) return of(null);
+
+    return of(control.value).pipe(
+      debounceTime(300),
+      switchMap(name => service.checkCategoryExists(name)),
+      map(res => (res.exists ? { duplicateName: true } : null)),
+      catchError(() => of(null))
+    );
+  };
+}
+
+export function autocompleteSelectionValidator(options: any[]): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const inputValue = control.value;
+
+    if (!inputValue) return null;
+
+    const isValid = options.some(option =>
+      (typeof inputValue === 'object' && inputValue?.categoryId === option.categoryId) ||
+      (typeof inputValue === 'string' && inputValue === option.categoryName)
+    );
+
+    return isValid ? null : { invalidSelection: true };
+  };
 }
 
 @Component({
@@ -50,15 +75,15 @@ interface CategoryIdAndName {
     MatMenuModule,
     MatTooltipModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    AsyncPipe,
+    Breadcrumb
   ],
-  providers: [MenuCategoriesService],
+  providers: [MenuCategoriesService, NotificationService],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.scss',
 })
 export class AddCategoryComponent implements OnInit {
-
-  private _createCategorySuccess = inject(MatSnackBar);
 
   scheduleSummary: string[] = [];
   isAllDaysChecked = signal(true);
@@ -84,6 +109,10 @@ export class AddCategoryComponent implements OnInit {
   selectedBackgroundColor = '#e62e2eff';
   previewImage: SafeUrl | null = null;
   selectedImage: File | null = null;
+  listOfCategory: CategoryIdAndName[] = [];
+  filteredCategories: CategoryIdAndName[] = [];
+  private categoriesSubject = new BehaviorSubject<CategoryIdAndName[]>([]);
+  filteredCategories$!: Observable<CategoryIdAndName[]>;
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;
@@ -92,13 +121,8 @@ export class AddCategoryComponent implements OnInit {
 
   selectBackgroundColor(backgroundColor: string) {
     this.selectedBackgroundColor = backgroundColor;
-    this.createCategoryForm.patchValue({})
+    this.createCategoryForm.patchValue({ backgroundColor })
   }
-
-  displayCategoryName = (categoryId: number): string => {
-    const category = this.listOfCategory.find(cat => cat.categoryId === categoryId);
-    return category ? category.categoryName : '';
-  };
 
   createCategoryForm!: FormGroup;
 
@@ -110,13 +134,33 @@ export class AddCategoryComponent implements OnInit {
     private fb: FormBuilder,
     private route: Router,
     private sanitizer: DomSanitizer,
+    private notification: NotificationService,
   ) { }
 
   get categoryName() {
     return this.createCategoryForm.get('categoryName')!;
   }
 
+  get secondLanguageName() {
+    return this.createCategoryForm.get('secondLanguageName')
+  }
+
+  get description() {
+    return this.createCategoryForm.get('description');
+  }
+
+  get reference() {
+    return this.createCategoryForm.get('reference');
+  }
+
+  items: MenuItem[] | undefined;
+
   ngOnInit(): void {
+
+    this.items = [
+      { label: 'Categories', routerLink: '/product-list/category' },
+      { label: 'Add Categoy' }
+    ]
 
     const defaultSchedule: ScheduleEntry[] = [
       { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
@@ -130,16 +174,29 @@ export class AddCategoryComponent implements OnInit {
 
     this.createCategoryForm = this.fb.group({
       active: [true],
-      categoryName: ['', Validators.required],
-      secondLanguageName: [''],
-      parentCategoryId: [null],
-      description: [''],
-      reference: [''],
+      categoryName: ['',
+        {
+          validators: [Validators.required, Validators.maxLength(50)],
+          asyncValidators: [categoryNameDuplicateValidator(this.menuCategoryService)],
+          updateOn: 'change'
+        }],
+      secondLanguageName: ['', {
+        validators: [Validators.maxLength(50)],
+        updateOn: 'change'
+      }],
+      parentCategoryId: [null, [this.parentCategoryValidator.bind(this)]],
+      description: ['', {
+        validators: [Validators.maxLength(100)],
+        updateOn: 'change'
+      }],
+      reference: ['', {
+        validators: [Validators.maxLength(50)],
+        updateOn: 'change'
+      }],
       image: [null],
       icon: [this.selectedIcon],
-      background: [this.selectedBackgroundColor],
+      backgroundColor: [''],
       withProducts: [false],
-      withSubCategories: [false],
       schedule: [defaultSchedule],
       item: [0],
       webShop: [false],
@@ -150,21 +207,66 @@ export class AddCategoryComponent implements OnInit {
     });
 
     this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
+    this.filteredCategories = this.listOfCategory.slice();
+
+    this.filteredCategories$ = combineLatest([
+      this.categoriesSubject.asObservable(),
+      this.createCategoryForm.get('parentCategoryId')!.valueChanges.pipe(
+        startWith('')
+      )
+    ]).pipe(
+      map(([categories, value]) => {
+        const name = typeof value === 'string' ? value : value?.categoryName;
+        return name ? this._filterCategories(name, categories) : categories;
+      })
+    );
+
     this.getListOfCategories();
+
   }
 
-  listOfCategory: CategoryIdAndName[] = [];
+  parentCategoryValidator(control: AbstractControl): ValidationErrors | null {
+    const inputValue = control.value;
+    if (!inputValue) return null;
+
+    const isValid = this.listOfCategory.some(option =>
+      (typeof inputValue === 'object' && inputValue?.categoryId === option.categoryId) ||
+      (typeof inputValue === 'string' && inputValue.toLowerCase() === option.categoryName.toLowerCase())
+    );
+
+    return isValid ? null : { invalidSelection: true };
+  }
+
+  onAutocompleteBlur() {
+  const control = this.createCategoryForm.get('parentCategoryId');
+  if (control?.value && typeof control.value === 'string') {
+    control.setValue(null); 
+    control.setErrors({ invalidSelection: true });
+  }
+}
 
   getListOfCategories() {
     this.menuCategoryService.getMenuCategoryIdAndName().subscribe({
       next: (data: CategoryIdAndName[]) => {
         this.listOfCategory = data;
-        console.log(data);
+        this.categoriesSubject.next(data);
+        //console.log(data);
       },
       error: (error) => {
         console.error('Error fetching list categories', error);
       }
-    })
+    });
+  }
+
+  private _filterCategories(name: string, categories: CategoryIdAndName[]): CategoryIdAndName[] {
+    const filterValue = name.toLowerCase();
+    return categories.filter(option =>
+      option.categoryName.toLowerCase().includes(filterValue)
+    );
+  }
+
+  displayCategoryName(category: CategoryIdAndName): string {
+    return category ? category.categoryName : '';
   }
 
   openUploadDialog(): void {
@@ -274,6 +376,10 @@ export class AddCategoryComponent implements OnInit {
 
     const formValue = this.createCategoryForm.value;
 
+    if (formValue.parentCategoryId && typeof formValue.parentCategoryId === 'object') {
+      formValue.parentCategoryId = formValue.parentCategoryId.categoryId;
+    }
+
     const formData = new FormData();
     formData.append('category', new Blob([JSON.stringify(formValue)], { type: 'application/json' }));
 
@@ -282,23 +388,16 @@ export class AddCategoryComponent implements OnInit {
     }
 
     //Uncomment for debugging
-    // console.log('Form Data:', formData);
-    // console.log('Form Value:', formValue);
-    // console.log('Category Form', this.createCategoryForm.value);
+    //console.log('Form Data:', formData);
+    //console.log('Form Value:', formValue);
+    //console.log('Category Form', this.createCategoryForm.value);
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {
-        console.log('Category created:', response);
+        //console.log('Category created:', response);
         this.cleanUpObjectUrl();
 
-        const snackBarRef = this._createCategorySuccess.open(
-          `Category "${this.createCategoryForm.value.categoryName}" created successfully`,
-          'Close',
-          { duration: 5000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-           }
-        );
+        this.notification.success(this.createCategoryForm.value.categoryName + " created successfully")
 
         setTimeout(() => {
           this.route.navigate(['/product-list/category']);

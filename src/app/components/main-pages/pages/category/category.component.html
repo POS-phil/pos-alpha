@@ -1,0 +1,187 @@
+<div class="main-container">
+    <div class="menu-container">
+        <p-breadcrumb class="breadcrumb" [model]="items" />
+        <span class="spacer"></span>
+        <button mat-stroked-button [matMenuTriggerFor]="import" class="btnCategory">
+            <mat-icon>cloud_queue</mat-icon>
+            Import/Export
+        </button>
+        <mat-menu #import="matMenu">
+            <button mat-menu-item>
+                <mat-icon>file_download</mat-icon>
+                Import Categories
+            </button>
+            <button mat-menu-item>
+                <mat-icon>file_upload</mat-icon>
+                Export Categories
+            </button>
+        </mat-menu>
+        <button mat-stroked-button class="btnCategory">
+            <mat-icon>sort</mat-icon>
+            Sort Categories
+        </button>
+        <button mat-flat-button class="btnCategory" style="margin-right: 10px;" [routerLink]="['add-category']">
+            <mat-icon>add</mat-icon>
+            Create Category
+        </button>
+    </div>
+    <!-- @if(!hasCategories){
+    <div class="no-data">
+        <mat-icon>info</mat-icon>
+        <span>No Categories Found, Please add a category</span>
+    </div>
+    } @else { -->
+    <div class="action-bar">
+        @if(selectedCount() === 0) {
+        <mat-button-toggle-group class="btnToggle" [(value)]="statusFilter" (change)="onStatusFilterChange($event)"
+            exclusive>
+            <mat-button-toggle value="all">All</mat-button-toggle>
+            <mat-button-toggle value="active">Active</mat-button-toggle>
+            <mat-button-toggle value="inactive">Inactive</mat-button-toggle>
+            <mat-button-toggle value="archive">Archive</mat-button-toggle>
+        </mat-button-toggle-group>
+        } @else {
+        <span class="selected-count">{{ selectedCount() }} Selected</span>
+        <button matButton="filled" class="btn-action" [matMenuTriggerFor]="actions">
+            Actions
+            <mat-icon iconPositionEnd>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #actions="matMenu">
+            <button mat-menu-item>Archive</button>
+            <button mat-menu-item (click)="onDeleteSelected(selectedNodes)">Delete</button>
+        </mat-menu>
+        }
+        <span class="spacer"></span>
+        <mat-form-field appearance="outline" class="inputSearch">
+            <mat-label>Search Keyword</mat-label>
+            <mat-icon matPrefix>search</mat-icon>
+            <input matInput (input)="dt.filterGlobal($event.target.value, 'contains')">
+        </mat-form-field>
+        <!-- <p-multiselect [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected" [style]="{ width: '20em' }" placeholder="Choose Columns" display="chip" /> -->
+        <!-- Column toggle button -->
+        <button mat-icon-button [matMenuTriggerFor]="columnsMenu" aria-label="Select Columns">
+            <mat-icon>view_column</mat-icon>
+        </button>
+        <mat-menu #columnsMenu="matMenu">
+            @for (col of cols; track col) {
+            <button mat-menu-item>
+                <mat-checkbox (click)="$event.stopPropagation()" [checked]="selectedColumns.includes(col)"
+                    (change)="toggleColumn(col, $any($event).checked)">
+                    {{ col.header }}
+                </mat-checkbox>
+            </button>
+            }
+        </mat-menu>
+    </div>
+    <!-- currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"  -->
+    <p-treetable #dt [value]="treeNodes" selectionMode="multiple" [(selection)]="selectedNodes"
+        (onNodeSelect)="onSelectionChange()" (onNodeUnselect)="onSelectionChange()" [columns]="selectedColumns"
+        [class]="selectedSize" class="customized-tree-table" scrollable="true" [tableStyle]="{'min-width': '800px'}"
+        [loading]="loading()" filterMode="lenient" [filterDelay]="0"
+        [globalFilterFields]="['categoryName', 'createdAtFormatted']" [paginator]="true" [rows]="25"
+        [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true" [rowHover]="true">
+        <ng-template #colgroup>
+            <colgroup>
+                <col class="checkbox-cell" />
+                @for (cols of selectedColumns; track cols.field) {
+                <col class="{{cols.styleClass}}" />
+                }
+                <col style="width: 60px;" />
+            </colgroup>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th class="checkbox-cell">
+                    <div class="table-utility-container">
+                        <p-checkbox [binary]="true" [ngModel]="allChecked" [indeterminate]="someChecked"
+                            (onChange)="toggleAll($event.checked)">
+                        </p-checkbox>
+                        <button mat-icon-button class="btn-expand" (click)="toggleApplications()">
+                            <mat-icon class="icon-expand">
+                                {{ expandState === 'expanded' ? 'expand_more'
+                                : expandState === 'collapsed' ? 'chevron_right'
+                                : 'remove' }}
+                            </mat-icon>
+                        </button>
+                    </div>
+                </th>
+                @for (col of selectedColumns; track col) {
+                @if (col.header === 'Name') {
+                <th class="{{col.styleClass}}">
+                    {{ col.header }}
+                </th>
+                } @else {
+                <th class="{{col.styleClass}}">
+                    {{ col.header }}
+                </th>
+                }
+                }
+                <th>
+                </th>
+            </tr>
+
+            <tr>
+                <th>
+
+                </th>
+                @for (col of selectedColumns; track col.header) {
+                <th>
+                    @if (col.filter) {
+                    @if(col.header === 'Created'){
+                    <input pInputText [placeholder]="'Filter by Date'" type="text"
+                        (input)="dt.filter($any($event.target).value, 'createdAtFormatted', 'contains')" />
+                    } @else {
+                    <input pInputText [placeholder]="'Filter by ' + col.header" type="text"
+                        (input)="dt.filter($any($event.target).value, col.field, 'contains')" />
+                    }
+                    }
+                </th>
+                }
+                <th></th>
+            </tr>
+
+        </ng-template>
+        <ng-template #body let-rowNode let-rowData="rowData">
+            <tr [ttSelectableRow]="rowNode">
+                <td class="checkbox-cell">
+                    <mat-icon class="icon-check">check_circle</mat-icon>
+                </td>
+                @for (col of selectedColumns; track col.field; let i = $index) {
+                <td class="{{col.styleClass}}">
+                    @if (col.field === 'categoryName') {
+                    @if(i === 0){
+                    <p-treetable-toggler [rowNode]="rowNode" (click)="$event.stopPropagation()" />
+                    }
+                    <span class="category-name" [ngClass]="{ 'parent-category': (rowNode.node?.children?.length ?? 0) > 0 || rowNode.node?.leaf === false }">{{ rowData.categoryName }}</span>
+                    } @else if (col.field === 'image') {
+                    @if (rowData.image) {
+                    <img [src]="rowData.image" class="category-image" />
+                    } @else if (rowData.icon) {
+                    <mat-icon class="icon-image">{{rowData.icon}}</mat-icon>
+                    }
+                    } @else if (col.field === 'item') {
+                    {{ getItemLabel(rowData) }}
+                    } @else if (['webShop','aggregator','kiosk','counterTop','isActive'].includes(col.field)) {
+                    <mat-slide-toggle class="slide-toggle" [ngModel]="rowData[col.field]"
+                        (ngModelChange)="onToggle(rowData, col.field, $event)"
+                        (click)="$event.stopPropagation()"></mat-slide-toggle>
+                    } @else if (col.field === 'createdAt') {
+                    {{ rowData.createdAtFormatted }}
+                    }
+                </td>
+                }
+                <td>
+                    <button type="button" matIconButton class="icon-edit-container" (click)="onEdit(rowData, $event)">
+                        <mat-icon class="icon-edit">note_alt</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #paginatorleft>
+            <button matIconButton (click)="getCategories()" [disabled]="loading()">
+                <mat-icon>refresh</mat-icon>
+            </button>
+        </ng-template>
+    </p-treetable>
+    <!-- } -->
+</div>

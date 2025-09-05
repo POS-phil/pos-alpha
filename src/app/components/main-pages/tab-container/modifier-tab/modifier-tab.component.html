@@ -1,7 +1,12 @@
 <div class="tab-viewer-container">
     <div class="tab-viewer">
+        <h1>Add On's Builder</h1>
         <nav mat-tab-nav-bar [tabPanel]="tabPanel" class="docs-component-viewer-tabbed-content" style="outline: none;"
             mat-stretch-tabs="false">
+
+            <a routerLink="sizes" routerLinkActive="active" mat-tab-link>
+                Size's
+            </a>
 
             <a routerLink="modifier-group" routerLinkActive="active" mat-tab-link>
                 Modifier Group
@@ -9,7 +14,7 @@
             <a routerLink="modifier-option" routerLinkActive="active" mat-tab-link>
                 Modifier Option
             </a>
-            
+
         </nav>
         <mat-tab-nav-panel #tabPanel class="docs-component-viewer-content">
             <router-outlet></router-outlet>

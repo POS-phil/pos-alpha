@@ -1,4 +1,5 @@
 <form [formGroup]="createCategoryForm" (ngSubmit)="confirmCreate()">
+
     <div class="header-flex">
         <H1>Create modifier option</H1>
         <span class="spacer"></span>
@@ -10,7 +11,6 @@
         </button>
     </div>
     <div class="container-grid">
-
         <div class="container-textbox">
             <h3>Basic Info</h3>
             <div>
@@ -112,24 +112,95 @@
                     Add Sub-Modifier Option
                 </button>
             </div>
+            <table mat-table [dataSource]="Sub_Modifier_DATA" matSort
+                    (matSortChange)="announceSortChange($event)">
+
+                    <!-- <ng-container matColumnDef="check">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
+                                    [indeterminate]="isSomeSelected()">
+                                </mat-checkbox>
+                            </th>
+                            <td mat-cell *matCellDef="let row">
+                                <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+                                    [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container> -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let subModifier"> {{subModifier.subModName}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="net_qty">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Net QTY </th>
+                        <td mat-cell *matCellDef="let subModifier"> {{subModifier.subNetQty}} </td>
+                    </ng-container>
+
+             
+                    <!-- <ng-container matColumnDef="created">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
+                            <td mat-cell *matCellDef="let menu_cat"> {{menu_cat.schedule}} </td>
+                        </ng-container> -->
+
+
+                    <tr mat-header-row *matHeaderRowDef="SubModifierdisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: SubModifierdisplayedColumns;"></tr>
+                </table>
         </div>
-    </div>
-    <div class="container-recipe">
-
-        <div class="container-add-recipe">
-
+        <div class="container-recipe">
             <div class="container-recipe-controls">
-                <div class="grid-recipe-textbox">
+                <button type="submit" mat-flat-button class="btnRadius">
+                    Recipe
+                </button>
+                <button mat-stroked-button [matMenuTriggerFor]="item_type" class="btnRadius">
+                    <!-- <mat-icon>cloud_queue</mat-icon> -->
+                    Item Type
+                </button>
+                <mat-menu #item_type="matMenu">
+                    <button mat-menu-item>
+                        <!-- <mat-icon>file_download</mat-icon> -->
+                        Item type 1
+                    </button>
+                    <button mat-menu-item>
+                        <!-- <mat-icon>file_upload</mat-icon> -->
+                        Item type 2
+                    </button>
+                </mat-menu>
+                <button mat-stroked-button [matMenuTriggerFor]="btnName" class="btnRadius">
+                    <!-- <mat-icon>cloud_queue</mat-icon> -->
+                    Name
+                </button>
+                <mat-menu #btnName="matMenu">
+                    <button mat-menu-item>
+                        <!-- <mat-icon>file_download</mat-icon> -->
+                        Name 1
+                    </button>
+                    <button mat-menu-item>
+                        <!-- <mat-icon>file_upload</mat-icon> -->
+                        Name 2
+                    </button>
+                </mat-menu>
+                <button type="submit" mat-flat-button class="btnRadius">
+                    Load Recipe
+                </button>
+                <span class="spacer"></span>
+                <button type="submit" mat-flat-button class="btnRadius">
+                    Clear All
+                </button>
+                <!-- <div class="grid-recipe-textbox">
+
                     <mat-form-field class="full-width">
+
                         <mat-label>Recipe Code (enter the Code)</mat-label>
                         <input matInput placeholder="Enter recipe name" />
                     </mat-form-field>
-                </div>
-                <div class="grid-recipe-btn">
-                    <button type="submit" mat-flat-button class="btnRadius">
-                        Add Recipe
-                    </button>
-                </div>
+                </div> -->
+                <!-- <div class="grid-recipe-btn">
+                        <button type="submit" mat-flat-button class="btnRadius">
+                            Add Recipe
+                        </button>
+                    </div> -->
 
 
 
@@ -206,8 +277,10 @@
                 </table>
             </div>
             <div class="grid-save">
-                <button type="submit" mat-flat-button class="btnRadius">
-                    Save Recipe
+                <span class="spacer"></span>
+                <button type="submit" mat-flat-button class="btnRadiusRecipe">
+                    <mat-icon>add_circle_outline</mat-icon>
+                    Add Recipe or Sub-Recipe
                 </button>
             </div>
 

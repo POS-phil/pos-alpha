@@ -2,38 +2,52 @@ import { SafeUrl } from "@angular/platform-browser";
 
 // This file defines the structure of menu categories used in the application.
 export interface MenuCategories {
-    categoryId?: number;
-    isActive: boolean;
-    isDeleted?: boolean;
-    categoryName: string;
-    secondLanguageName?: string; // Optional for second language support
-    description? : string; 
-    reference: string;
-    parentCategoryId?: number; // Optional for subcategories
-    image?: File | string | null; 
-    icon?: string;
-    background : string;
-    withProducts: boolean;
-    withSubCategories: boolean
-    subCategories?: MenuCategories[];
-    schedule: ScheduleEntry[];
-    item: number;
-    webShop: boolean;
-    aggregator: boolean;
-    kiosk: boolean;
-    counterTop: boolean;
-    lastOrder?: Date;
-    createdAt: Date;
+  categoryId?: number; //maybe important?
+  isActive: boolean; //important
+  isArchived?: boolean; //important
+  categoryName: string; //important
+  secondLanguageName?: string; //not important
+  description?: string; //not important
+  reference: string; //not important
+  parentCategoryId?: number; //important
+  image?: File | string | null; //important
+  icon?: string; //important
+  backgroundColor: string; // not important
+  withProducts: boolean; //not important
+  withSubCategories: boolean //not important
+  subCategories?: MenuCategories[]; //important
+  schedule: ScheduleEntry[]; // not important
+  item: number; //important
+  webShop: boolean; //important
+  aggregator: boolean; //important
+  kiosk: boolean; //important
+  counterTop: boolean; //important
+  lastOrder?: Date; // not important
+  createdAt: Date; //important
+  lastModified?: Date; //important
 }
 
-// Update new interface for schedule entries
-// This interface defines the structure of a schedule entry for menu categories
 export interface ScheduleEntry {
-  day: string;                // 'monday', 'tuesday', ...
+  day: string;                
   available: boolean;
   allDay: boolean;
-  startTime?: string;         // '08:00'
-  endTime?: string;           // '17:00'
-  days?: ScheduleEntry[]; // Removed to fix circular reference
+  startTime?: string;         
+  endTime?: string;           
+  days?: ScheduleEntry[];
 }
+
+export interface CategoryIdAndName {
+  categoryId: number;
+  categoryName: string;
+  image: string;
+  icon: string;
+}
+
+
+export type ToggleableFields =
+  | "isActive"
+  | "webShop"
+  | "aggregator"
+  | "kiosk"
+  | "counterTop";
 

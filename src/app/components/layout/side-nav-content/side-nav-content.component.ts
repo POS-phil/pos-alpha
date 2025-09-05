@@ -141,22 +141,23 @@ export class SideNavContentComponent {
           label: 'Category',
           route: 'product-list/category'
         },
+
         {
           icon: '',
           label: 'Item',
           route: 'menu/item'
         },
+
         {
           icon: '',
           label: 'Add-ons Builder',
           route: 'addons-builder'
         },
-        // {
-        //   icon: '',
-        //   label: 'Modifier Option',
-        //   route: 'menu/modifier-option'
-        // }
-        
+        {
+          icon: '',
+          label: 'Modifier Option',
+          route: 'menu/modifier-option'
+        }
       ]
     },
     

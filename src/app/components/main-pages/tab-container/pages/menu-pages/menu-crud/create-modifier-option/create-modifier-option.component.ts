@@ -20,6 +20,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MenuCategories, ScheduleEntry } from '../../../../../../../common/menu-categories';
+import { SubModifierOptions } from '../../../../../../../common/addons-builders';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCheckbox } from "@angular/material/checkbox";
@@ -27,7 +28,6 @@ import { MatSort, MatSortModule,Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableModule } from '@angular/material/table';
-
 @Component({
   selector: 'app-create-modifier-option',
   standalone: true,
@@ -91,6 +91,12 @@ export class CreateModifierOptionComponent {
   // Data source for the table
   categoryList: MenuCategories[] = [];
   MENU_CATEGORIES_DATA: any;
+
+  SubModifierColumns: string[] = ['bulk'];
+  SubModifierdisplayedColumns: string[] = ['name', 'net_qty'];
+  // Data source for the table
+  SubModifierList: SubModifierOptions[] = [];
+  Sub_Modifier_DATA: any;
 
   // Injecting LiveAnnouncer for accessibility announcements
   @ViewChild(MatSort) sort!: MatSort;
