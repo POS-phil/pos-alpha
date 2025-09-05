@@ -143,6 +143,5 @@ export const routes: Routes = [
                 title: 'Test Page'
             }
         ]
-    },
-
-];
+;
+//############END OF CATEGORY PAGES##################
