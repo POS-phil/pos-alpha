@@ -38,19 +38,19 @@ form {
   text-align: center;
   padding: 15px;
   margin-bottom: 10px;
-  height: 505px;
+ 
 }
 
 .container-availability {
   display: flex;
   flex-direction: column;
   grid-column: 4 / span 3;
-  grid-row: 1  / span 3;
+  grid-row: 1 ;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;;
   grid-template-rows: repeat(10, 60px);
-  height: 505px;
+
 }
 
 .container-utility {
@@ -61,8 +61,9 @@ form {
   grid-row: 1;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
-  height: 505px;
+  margin-bottom: 10px;
 }
+
 
 .container-utlity-content {
   display: grid;
@@ -123,11 +124,13 @@ form {
   display: flex;
   flex-direction: column;
   grid-column: 1 / span 3;
-  grid-row: 2  / span 3;
+  grid-row: 2  / span 6;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
   margin-bottom: 20px;
-  height: 400px;
+
+
+
 }
 
 .grid-containerPriceCosting {
@@ -165,7 +168,7 @@ form {
 
 .grid-containerOpenPrice {
   display: grid;
-  grid-template-columns: repeat(2, 225px);
+  grid-template-columns: repeat(2, 250px);
   grid-template-rows: repeat(1, 40px);
   gap: 10px;
   margin-bottom: 10px;
@@ -184,7 +187,63 @@ form {
 
 
 
+
+
 // END - Price&Costing
+
+
+
+
+.container-CreationDetail {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  grid-column: 1 / span 9;
+  grid-row: 9;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+
+.grid-CreationDetail {
+  display: grid;
+  grid-template-columns: repeat(4, 225px);
+  grid-template-rows: repeat(2, 20px);
+  gap: 10px;  
+  margin-top: 10px;
+
+}
+
+
+
+
+
+
+
+.container-ActiveStore {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  grid-column: 1 / span 9;
+  grid-row: 10;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+
+.container-InactiveStore {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  grid-column: 1 / span 9;
+  grid-row: 11;
+  box-shadow: var(--mat-sys-level3);
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
 
 
 // Utilities
@@ -211,8 +270,7 @@ form {
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
   margin-bottom: 20px;
-  height: 400px;
-  
+ 
 }
 
 
@@ -385,4 +443,69 @@ form {
 [dir='rtl'] .categoryImg {
   margin-right: 0;
   margin-left: 8px;
+}
+
+.btnRadius {
+  border-radius: 5px;
+  width: 150px;
+  
+}
+
+
+.sku-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between input and button */
+}
+
+.priceSched-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between input and button */
+  margin-bottom: 8px;
+}
+
+
+.sku-field {
+  flex: 1; /* make input take remaining space */
+}
+
+
+.priceSched-field {
+  flex: 1; /* make input take remaining space */
+}
+
+.btn-generate {
+  margin-bottom: 10px;
+}
+
+
+
+// accordion
+
+.accordion-container {
+  @include mat.expansion-overrides((
+    container-shape: 0px,
+    container-elevation-shadow: var(--mat-sys-level3),
+  ));
+}
+
+
+.container-accordion{
+  grid-column: 1 / span 9;
+  grid-row: 9
+}
+
+.creation-details-table-container {
+  display: flex;
+  justify-content: center;
+}
+
+.creation-details-table{
+  width: 230px;
+}
+
+.divAddStore
+{
+   float: right;
 }

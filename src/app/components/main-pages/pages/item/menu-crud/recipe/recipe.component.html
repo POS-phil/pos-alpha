@@ -1,0 +1,131 @@
+<form (ngSubmit)="confirmCreate()">
+<div class="main-container">
+
+    <div>
+                <H2>Allergens</H2>
+            
+            <span class="spacer"></span>
+
+            <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item']">
+                Item Details
+            </button>
+            <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/properties']">
+                Properties
+            </button>
+
+            <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/allergens']">
+                Allergens
+            </button>
+            <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/recipe']">
+                Recipes
+            </button>  
+    </div>
+
+    <div class="container-flex2">
+            <button matButton="outlined" class="btnRadius">
+                Recipe
+            </button>
+            <button matButton="outlined" class="btnRadius">
+                Item Type
+            </button>
+
+            <button matButton="outlined" class="btnRadius">
+                Name
+            </button>
+                        <button matButton="outlined" class="btnRadius">
+                Load Recipe
+            </button>
+            <button matButton="outlined" class="btnRadius">
+                Clear all
+            </button>
+    </div>
+    <div>
+        <!--formControlName="itemName" -->
+        <table>
+            <tr>
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput type="text"  placeholder=" Name"   >             
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Net QTY</mat-label>
+                        <input matInput type="text"  placeholder=" Net QTY"   >             
+                    </mat-form-field>
+                </td>   
+                        <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Yeild % </mat-label>
+                        <input matInput type="text"  placeholder=" Yeild %"   >             
+                    </mat-form-field>
+                </td>
+                        <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Waste QTY</mat-label>
+                        <input matInput type="text"  placeholder=" Waste QTY"   >             
+                    </mat-form-field>
+                </td>
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Prep. Wastage</mat-label>
+                        <input matInput type="text"  placeholder=" Prep. Wastage"   >             
+                    </mat-form-field>
+                </td> 
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Gross Qty</mat-label>
+                        <input matInput type="text"  placeholder="Gross Qty"   >             
+                    </mat-form-field>
+                </td>  
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Modifier</mat-label>
+                        <input matInput type="text"  placeholder="Modifier"   >             
+                    </mat-form-field>
+                </td>  
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Incl. In Cost</mat-label>
+                        <input matInput type="text"  placeholder="Incl. In Cost"   >             
+                    </mat-form-field>
+                </td>              
+
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Cost Per Unit</mat-label>
+                        <input matInput type="text"  placeholder="Cost Per Unit"   >             
+                    </mat-form-field>
+                </td> 
+                <td>
+                    <mat-form-field class="full-width">
+                        <mat-label>Total Cost</mat-label>
+                        <input matInput type="text"  placeholder="Total Cost">             
+                    </mat-form-field>
+                </td>   
+            </tr>
+            <tr>
+                <td>            
+                    <mat-form-field class="full-width">
+                        <mat-label>Start Typing to find an item</mat-label>
+                        <input matInput type="text"  placeholder="" >             
+                    </mat-form-field>
+                </td>
+                    <td colspam="9"></td>
+            </tr>
+            <tr>
+                <td colspan="10">   <button matButton="outlined" class="btnRadius">
+                Click to Add Recipe or Sub-Recipe
+            </button></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+
+</div>
+
+</form>
