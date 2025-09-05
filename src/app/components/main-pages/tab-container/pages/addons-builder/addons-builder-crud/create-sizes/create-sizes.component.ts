@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, model, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  MatDialog
-} from '@angular/material/dialog';
+import {MatDialog} from '@angular/material/dialog';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,18 +19,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MenuCategories, ScheduleEntry } from '../../../../../../../common/menu-categories';
-import { SubModifierOptions } from '../../../../../../../common/addons-builders';
+import { Sort,MatSortModule } from '@angular/material/sort';
+import { createSize } from '../../../../../../../common/addons-builders';
 import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
-import { MatCheckbox } from "@angular/material/checkbox";
-import { MatSort, MatSortModule,Sort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatTableModule } from '@angular/material/table';
+
 @Component({
-  selector: 'app-create-modifier-option',
+  selector: 'app-create-sizes',
   standalone: true,
-  imports: [
+imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -47,17 +43,17 @@ import { MatTableModule } from '@angular/material/table';
     MatMenuModule,
     MatTooltipModule,
     MatChipsModule,
-    // MatCheckbox,
+    MatCheckboxModule,
     MatTableModule,
-    MatSortModule,
+    MatSortModule
   ],
-  templateUrl: './create-modifier-option.component.html',
-  styleUrls: ['./create-modifier-option.component.scss']
+  templateUrl: './create-sizes.component.html',
+  styleUrls: ['./create-sizes.component.scss']
 })
-export class CreateModifierOptionComponent {
+export class CreateSizesComponent {
 
-  scheduleSummary: string[] = [];
-
+scheduleSummary: string[] = [];
+  
   icons = [
     'breakfast_dining', 'free_breakfast', 'bakery_dining', 'brunch_dining', 'coffee',
     'coffee_maker', 'dining', 'dinner_dining', 'emoji_food_beverage', 'flatware',
@@ -66,12 +62,26 @@ export class CreateModifierOptionComponent {
   ];
 
   selectedIcon = 'fastfood';
+  private _liveAnnouncer: any;
+  selectedBackgroundColor = '#e62e2eff';
+  background_colors = [
+    '#e62e2eff', '#2d30fcff', '#f2f53eff', '#5af845ff', '#35eefcff',
+    '#f751eeff', '#a817ebff', '#ececd5ff', '#9fe0dbff', '#afe0b1ff',
+    '#f0c1b2ff', '#f0b2c1ff', '#b2f0c1ff', '#b2c1f0ff', '#c1b2f0ff',
+    '#f0b2b2ff', '#b2f0f0ff', '#b2b2f0ff',
+  ];
+previewImage: unknown;
+
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;
   }
+    selectBackgroundColor(backgroundColor: string) {
+    this.selectedBackgroundColor = backgroundColor;
+    this.createModifierForm.patchValue({ backgroundColor })
+  }
 
-  createCategoryForm!: FormGroup;
+  createModifierForm!: FormGroup;
 
   readonly dialog = inject(MatDialog);
 
@@ -82,43 +92,54 @@ export class CreateModifierOptionComponent {
     private fb: FormBuilder,
   ) { }
 
-  get modifier_name() {
-    return this.createCategoryForm.get('modifier_name')!;
+  get categoryName() {
+    return this.createModifierForm.get('category_name')!;
   }
-  // Define the columns to be displayed in the table
-  bulkColumns: string[] = ['bulk'];
-  displayedColumns: string[] = ['name', 'net_qty', 'yield', 'waste_qty', 'prep_wastage', 'gross_qty', 'modifier', 'incl_in_cost', 'cost_per_unit'];
+  
+  CreateSizeColumns: string[] = ['bulk'];
+  CreateSizedisplayedColumns: string[] = ['name', 'sku', 'price', 'duplicate', 'isActive'];
   // Data source for the table
-  categoryList: MenuCategories[] = [];
-  MENU_CATEGORIES_DATA: any;
-
-  SubModifierColumns: string[] = ['bulk'];
-  SubModifierdisplayedColumns: string[] = ['name', 'net_qty'];
-  // Data source for the table
-  SubModifierList: SubModifierOptions[] = [];
-  Sub_Modifier_DATA: any;
-
-  // Injecting LiveAnnouncer for accessibility announcements
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  private _liveAnnouncer = inject(LiveAnnouncer);
+  CreateSizeList: createSize[] = [];
+  CreateSize_DATA: any;
   ngOnInit(): void {
 
-    this.createCategoryForm = this.fb.group({
-      modifier_name: ['', Validators.required],
-      reference: ['', Validators.required],
-      // schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
+    const defaultSchedule: ScheduleEntry = {
+      day: 'All Days',
+      available: true,
+      allDay: true,
+      startTime: '00:00',
+      endTime: '23:59',
+      days: [
+        { day: 'sunday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+        { day: 'monday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+        { day: 'tuesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+        { day: 'wednesday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+        { day: 'thursday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+        { day: 'friday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+        { day: 'saturday', available: true, allDay: true, startTime: '00:00', endTime: '23:59' },
+      ]
+    };
+
+
+    this.createModifierForm = this.fb.group({
+      category_name: ['', [Validators.required, Validators.maxLength(50)]],
+      second_language: [''],
+      reference: [''],
+      schedule: this.fb.control<ScheduleEntry>(defaultSchedule),
       web_shop: [false],
       aggregator: [false],
       kiosk: [false],
       created_at: [new Date()],
     });
 
-    // this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
+    this.scheduleSummary = this.generateScheduleSummary(defaultSchedule);
   }
-  getCategories() {
-    this.MENU_CATEGORIES_DATA = new MatTableDataSource(this.categoryList);
+
+  confirmCreate(): void {
+
+  }
+    getCategories() {
+    this.CreateSize_DATA = new MatTableDataSource(this.CreateSizeList);
   }
 
   announceSortChange(sortState: Sort) {
@@ -128,34 +149,6 @@ export class CreateModifierOptionComponent {
       this._liveAnnouncer.announce('Sorting cleared');
     }
   }
-
-  selection = new SelectionModel<any>(true, []);
-
-  get selectedCount(): number {
-    return this.selection.selected.length;
-  }
-
-  isAllSelected() {
-    const data = this.MENU_CATEGORIES_DATA.data ?? [];
-    return this.selection.selected.length > data.length;
-  }
-  isSomeSelected() {
-    const data = this.MENU_CATEGORIES_DATA.data ?? [];
-    const numSelected = this.selection.selected.length;
-    return numSelected > 0 && numSelected < data.length;
-  }
-
-  toggleAllRows() {
-    const data = this.MENU_CATEGORIES_DATA.data ?? [];
-    this.isAllSelected()
-      ? this.selection.clear()
-      : data.forEach((row: any) => this.selection.select(row));
-  }
-
-  confirmCreate(): void {
-
-  }
-
   openUploadDialog(): void {
     const dialogRef = this.dialog.open(UploadImageComponent, {
       width: '800px',
@@ -184,12 +177,12 @@ export class CreateModifierOptionComponent {
       width: '500px',
       height: '750px',
       maxWidth: '90vw',
-      data: this.createCategoryForm.get('schedule')?.value || []
+      data: this.createModifierForm.get('schedule')?.value || []
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.createCategoryForm.get('schedule')?.setValue(result);
+        this.createModifierForm.get('schedule')?.setValue(result);
         this.scheduleSummary = this.generateScheduleSummary(result);
       }
     });

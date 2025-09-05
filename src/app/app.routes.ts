@@ -48,35 +48,14 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/pages/transaction-orders/transaction-orders.component').then(m => m.TransactionOrdersComponent),
                 title: 'Transaction Orders',
             },
-            {
-                path: 'addons-builder',
-                loadComponent: () =>
-                    import('./components/main-pages/tab-container/modifier-tab/modifier-tab.component').then(m => m.ModifierTabComponent),
-                children: [
-                    {
-                        path: '',
-                        redirectTo: 'modifier-group',
-                        pathMatch: 'full'
-                    },
-                               {
-                path: 'modifier-group',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/modifier-group.component').then(m => m.ModifierGroupComponent),
-                title: 'Product Lists / Modifier Group',
-            },
+            
+            //############CATEGORY PAGES######################
 
             {
-                path: 'modifier-option',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
-                title: 'Product Lists / Modifier Option',
-            },
-                ]
-            },
-            //############CATEGORY PAGES######################
-            {
                 path: 'product-list/category',
-                loadComponent : () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
+                loadComponent: () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
                 title: 'Product List / Categories'
-                
+
             },
             {
                 path: 'product-list/category/add-category',
@@ -94,6 +73,7 @@ export const routes: Routes = [
                 title: 'Product List/ Category / Sort Component'
             },
             //#######END OF CATEGORY PAGES##################
+            //########### ITEM PAGES #######################
             {
                 path: 'menu/item',
                 loadComponent: () => import('./components/main-pages/pages/item/item.component').then(m => m.ItemComponent),
@@ -130,10 +110,36 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/pages/item/menu-crud/recipe/recipe.component').then(m => m.RecipeComponent),
                 title: 'recipe'
             },
+             //###################################### END OF ITEM PAGES ######################################
+             //##################################### ADD ONS PAGES ############################################
+            {
+                path: 'addons-builder',
+                loadComponent: () =>
+                    import('./components/main-pages/tab-container/modifier-tab/modifier-tab.component').then(m => m.ModifierTabComponent),
+                children: [
+                    {
+                        path: '',
+                        redirectTo: 'sizes',
+                        pathMatch: 'full'
+                    },
+                    {
+                        path: 'sizes',
+                        loadComponent: () => import('./components/main-pages/tab-container/pages/addons-builder/sizes/sizes.component').then(m => m.SizesComponent),
+                        title: 'Product Lists / Addons Builder / Sizes',
+                    },
+                    {
+                        path: 'modifier-group',
+                        loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/modifier-group.component').then(m => m.ModifierGroupComponent),
+                        title: 'Product Lists / Modifier Group',
+                    },
 
-
-
-
+                    {
+                        path: 'modifier-option',
+                        loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
+                        title: 'Product Lists / Modifier Option',
+                    },
+                ]
+            },
             {
                 path: 'addons-builder/modifier-group/create_modifier',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
@@ -145,6 +151,11 @@ export const routes: Routes = [
                 title: 'Create Modifier Option'
             },
             {
+                path: 'addons-builder/modifier-option/create_sizes',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/addons-builder/addons-builder-crud/create-sizes/create-sizes.component').then(m => m.CreateSizesComponent),
+                title: 'Create Sizes'
+            },
+            {
                 path: 'addons-builder/modifier-group/edit_modifier_group',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/edit-modifier-group/edit-modifier-group.component').then(m => m.EditModifierGroupComponent),
                 title: 'Edit Modifier Group'
@@ -154,6 +165,7 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/edit-modifier-option/edit-modifier-option.component').then(m => m.EditModifierOptionComponent),
                 title: 'Edit Modifier Option'
             },
+             //#####################################END OF ADD ONS PAGES ############################################
             {
                 path: 'test',
                 loadComponent: () => import('./components/layout/spinner-loader/spinner-loader.component').then(m => m.SpinnerLoaderComponent),
