@@ -295,12 +295,6 @@ export class EditCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.today.setHours(0, 0, 0, 0);
 
-    this.items = [
-      { label: 'Categories', routerLink: '/product-list/category' },
-      { label: 'Edit Categoy' }
-    ]
-
-
     this.editCategoryForm = this.fb.group({
       isActive: [''],
       categoryName: ['',
@@ -346,6 +340,11 @@ export class EditCategoryComponent implements OnInit {
       const categoryId = +params['categoryId'];
       this.menuCategoryService.getCategory(categoryId).subscribe({
         next: (category: MenuCategories) => {
+          this.items = [
+            { label: 'Categories', routerLink: '/product-list/category' },
+            { label: 'Edit Categoy' },
+            { label: category.categoryName }
+          ]
           this.populateForm(category);
           this.currentdateStartOnly = typeof category.dateStartOnly === 'string'
             ? convertDubaiToLocal(category.dateStartOnly)
@@ -389,7 +388,8 @@ export class EditCategoryComponent implements OnInit {
     this.isActive.valueChanges.subscribe((val) => {
       // Only cancel auto if autoActivated was true AND this is a manual toggle
       if (this.autoActivated.value) {
-        this.autoActivated.setValue(false, { emitEvent: false })
+        this.autoActivated.setValue(false, { emitEvent: false }),
+        this.isTimedActivation.setValue(false, { emitEvent: false})
       }
     });
 
@@ -528,37 +528,11 @@ export class EditCategoryComponent implements OnInit {
 
     if (this.autoActivated.value) {
       if (this.isActive.value) {
-        if (this.isTimedActivation!.value == true) {
-          //this.isActive.disable({ emitEvent: false }),
-          this.autoActivated.setValue(true, { emitEvent: false })
-          this.selectedScheduleMode.enable({ emitEvent: false });
-          if (this.selectedScheduleMode!.value === '1') {
-            this.dateStartOnly.enable({ emitEvent: false });
-            this.dateActivation.disable({ emitEvent: false });
-            this.dateActivation.setValue(null, { emitEvent: false });
-            this.dateDeactivation.disable({ emitEvent: false });
-            this.dateDeactivation.setValue(null, { emitEvent: false });
-            this.checkCurrentDateAndSelectedDate();
-          } else {
-            this.isActive.setValue(false, { emitEvent: false });
-            this.dateStartOnly.disable({ emitEvent: false });
-            this.dateStartOnly.setValue(null, { emitEvent: false });
-            this.dateActivation.enable({ emitEvent: false });
-            this.dateDeactivation.enable({ emitEvent: false });
-            this.checkCurrentDateAndSelectedDate();
-          }
-        } else {
-          //this.isActive.enable({ emitEvent: false });
-          this.isActive.setValue(false, { emitEvent: false });
-          this.autoActivated.setValue(false, { emitEvent: false })
-          this.selectedScheduleMode.disable({ emitEvent: false });
-          this.dateStartOnly.disable({ emitEvent: false });
-          this.dateStartOnly.setValue(null, { emitEvent: false });
-          this.dateActivation.disable({ emitEvent: false });
-          this.dateActivation.setValue(null, { emitEvent: false });
-          this.dateDeactivation.disable({ emitEvent: false });
-          this.dateDeactivation.setValue(null, { emitEvent: false });
-        }
+        this.isTimedActivation.disable({emitEvent:false});
+        this.selectedScheduleMode.disable({ emitEvent: false });
+        this.dateStartOnly.disable({ emitEvent: false });
+        this.dateActivation.disable({ emitEvent: false });
+        this.dateDeactivation.disable({ emitEvent: false });
       } else {
         if (this.isTimedActivation!.value == true) {
           this.autoActivated.setValue(true, { emitEvent: false })

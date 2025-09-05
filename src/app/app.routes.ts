@@ -90,7 +90,7 @@ export const routes: Routes = [
             },
             {
                 path: 'product-list/category/sort-category',
-                loadComponent: () => import('./components/main-pages/pages/category/category-sort/category-sort.component').then(m => m.CategorySortComponent),
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort/category-sort.component').then(m => m.CategorySortComponent),
                 title: 'Product List/ Category / Sort Component'
             },
             //#######END OF CATEGORY PAGES##################
