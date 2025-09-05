@@ -130,60 +130,8 @@ export class DashboardComponent implements OnInit {
   }
 
   toggleCompare(event: any): void {
-    this.isCompare = event.checked; // Update the state based on toggle
+    this.isCompare = event.checked; 
   }
-
-  //start of date
-
-  // dateControl = new FormControl(new Date());
-  // isDatePickerOpen = false;
-
-  // openDatePicker() {
-  //   this.isDatePickerOpen = true;
-  // }
-
-  // closeDatePicker() {
-  //   this.isDatePickerOpen = false;
-  // }
-
-  // setToday() {
-  //   this.dateControl.setValue(moment().toDate());
-  //   this.closeDatePicker();
-  // }
-
-  // setYesterday() {
-  //   this.dateControl.setValue(moment().subtract(1, 'days').toDate());
-  //   this.closeDatePicker();
-  // }
-
-  // setThisWeek() {
-  //   const startOfWeek = moment().startOf('week').toDate();
-  //   this.dateControl.setValue(startOfWeek);
-  //   this.closeDatePicker();
-  // }
-
-  // setLastWeek() {
-  //   const startOfLastWeek = moment().subtract(1, 'weeks').startOf('week').toDate();
-  //   this.dateControl.setValue(startOfLastWeek);
-  //   this.closeDatePicker();
-  // }
-
-  // setThisMonth() {
-  //   const startOfMonth = moment().startOf('month').toDate();
-  //   this.dateControl.setValue(startOfMonth);
-  //   this.closeDatePicker();
-  // }
-
-  // setLastMonth() {
-  //   const startOfLastMonth = moment().subtract(1, 'months').startOf('month').toDate();
-  //   this.dateControl.setValue(startOfLastMonth);
-  //   this.closeDatePicker();
-  // }
-
-  // onDateSelected(date: Date) {
-  //   this.dateControl.setValue(date);
-  //   this.closeDatePicker();
-  // }
 
 
 }

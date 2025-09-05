@@ -28,11 +28,23 @@ form {
 }
 }
 
+.container-automation-container {
+  display: flex;
+  gap: 50px;
+  grid-column: 1 / span 9;
+  grid-row: 1;
+  box-shadow: var(--mat-sys-level3);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 15px 5px 15px;
+}
+
 .container-basic-info {
   display: flex;
   flex-direction: column;
   grid-column: 1 / span 4;
-  grid-row: 1;
+  grid-row: 2;
   box-shadow: var(--mat-sys-level3);
   text-align: center;
   padding: 15px;
@@ -42,7 +54,7 @@ form {
   display: flex;
   flex-direction: column;
   grid-column: 5 / span 2;
-  grid-row: 1;
+  grid-row: 2;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
 }
@@ -52,7 +64,7 @@ form {
   flex-direction: column;
   text-align: center;
   grid-column: 7 / span 3;
-  grid-row: 1;
+  grid-row: 2;
   box-shadow: var(--mat-sys-level3);
   padding: 15px;
 }
@@ -61,13 +73,13 @@ form {
   display: grid;
   grid-template-columns: repeat(2, 150px);
   grid-column: 7 / span 3;
-  grid-row: 1;
+  grid-row: 2;
   text-align: center;
 }
 
 .container-accordion{
   grid-column: 1 / span 9;
-  grid-row: 2;
+  grid-row: 3;
 }
 
 .grid-image{
@@ -98,6 +110,7 @@ form {
   align-items: center;
   gap: 1rem;
 }
+
 
 .background-selector {
   width: 100px;
@@ -163,8 +176,8 @@ form {
 }
 
 .uploaded-image {
-  width: 250px;
-  height: 250px;
+  width: 239px;
+  height: 239px;
   object-fit: scale-down;
 }
 
@@ -189,6 +202,25 @@ form {
       label-text-weight: 500,
     ));
   margin-bottom: 10px;
+}
+
+.toggle-button-active {
+  @include mat.slide-toggle-overrides((track-width: 45px,
+      track-height: 17px,
+      selected-handle-color: rgb(100, 194, 100),
+      selected-hover-handle-color: rgb(34, 190, 34),
+      selected-focus-handle-color: rgb(34, 190, 34),
+      selected-focus-track-color: #634832,
+      unselected-track-color: #634832,
+      unselected-hover-track-color: #634832,
+      unselected-hover-state-layer-color: #634832,
+      unselected-focus-track-color: #634832,
+      unselected-pressed-track-color: #634832,
+      selected-icon-color: white,
+      unselected-handle-color: rgb(194, 100, 100),
+      unselected-hover-handle-color: rgb(180, 39, 39),
+      unselected-focus-handle-color: rgb(180, 39, 39),
+    ));
 }
 
 .categoryImg {
@@ -242,3 +274,26 @@ td {
 ::ng-deep .mat-expansion-panel-header.mat-expanded {
     height: var(--mat-expansion-header-expanded-state-height, 50px);
 }
+
+:host ::ng-deep .p-datepicker-day-selected-range {
+    background: #dbc1ac;
+    color: #38220f;
+}
+
+:host ::ng-deep .p-datepicker-today > .p-datepicker-day {
+    background: #dbc1ac;
+    color: #38220f;
+}
+
+.activation-date-time-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: start;
+}
+
+.label-activation-date-time{
+  font-size: 12px;
+}
+
+
