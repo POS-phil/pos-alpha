@@ -13,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MenuCategories } from '../../../../../../common/menu-categories';
+import { MenuCategories } from '../../../../../../common/categories';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 // import { h } from "../../../../../../../../node_modules/@angular/material/module.d-gWBlTHnh";
 import { MatSelectModule } from "@angular/material/select";

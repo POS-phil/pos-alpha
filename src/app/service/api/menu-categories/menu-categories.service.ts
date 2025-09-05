@@ -8,8 +8,8 @@ export class MenuCategoriesService {
 
   constructor(private http: HttpClient) { }
 
-  private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
-  //private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
+  //private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
+  private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
 
   getMenuCategories(): Observable<MenuCategories[]> {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
