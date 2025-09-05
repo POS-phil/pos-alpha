@@ -140,7 +140,6 @@ export const routes: Routes = [
                     },
                 ]
             },
-<<<<<<< HEAD
 
             {
                 path: 'modifier-option',
@@ -174,16 +173,10 @@ export const routes: Routes = [
             //#######END OF CATEGORY PAGES##################
             {
                 path: 'menu/item/add-item',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
+                loadComponent: () => import('./components/main-pages/pages/item/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
                 title: 'Create Item'
             },
-=======
->>>>>>> 0dad6ccf1d842f5a14804f6e9cce983768217351
-            {
-                path: 'addons-builder/modifier-group/create_modifier',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
-                title: 'Create Modifier'
-            },
+         
             {
                 path: 'addons-builder/modifier-option/create_modifier_option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-modifier-option/create-modifier-option.component').then(m => m.CreateModifierOptionComponent),

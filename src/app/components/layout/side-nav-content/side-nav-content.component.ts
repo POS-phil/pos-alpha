@@ -9,7 +9,7 @@ export type MenuItem = {
   icon: string;
   label: string;
   route?: string;
-  subItems? : MenuItem[];
+  subItems?: MenuItem[];
 }
 
 @Component({
@@ -20,7 +20,7 @@ export type MenuItem = {
     MatListModule,
     MatIconModule,
     MenuItemComponent
-],
+  ],
   template: `
 
   <div class="dash-viewer-nav">
@@ -40,7 +40,7 @@ export type MenuItem = {
   styleUrl: '../main-layout/sidenav-style.scss'
 })
 export class SideNavContentComponent {
-  
+
   isCollapsed = false;
 
   menuItems = signal<MenuItem[]>([
@@ -62,7 +62,7 @@ export class SideNavContentComponent {
     {
       icon: 'receipt_long',
       label: 'Reports',
-      subItems : [
+      subItems: [
         {
           icon: '',
           label: 'Sales Reports',
@@ -88,7 +88,7 @@ export class SideNavContentComponent {
     {
       icon: 'inventory_2',
       label: 'Inventory',
-      subItems : [
+      subItems: [
         {
           icon: '',
           label: 'Inventory Items',
@@ -129,7 +129,7 @@ export class SideNavContentComponent {
           label: 'Manage',
           route: 'analysis-reports'
         },
-        
+
       ]
     },
     {
@@ -155,12 +155,32 @@ export class SideNavContentComponent {
         },
         {
           icon: '',
-          label: 'Modifier Option',
-          route: 'menu/modifier-option'
-        }
+          label: 'Global Custom',
+          route: 'menu/modifier-optio'
+        },
+        {
+          icon: '',
+          label: 'Price-List',
+          route: 'menu/modifier-optio'
+        },
+        {
+          icon: '',
+          label: 'Chef Special',
+          route: 'menu/modifier-optio'
+        },
+        {
+          icon: '',
+          label: 'Combo',
+          route: 'menu/modifier-optio'
+        },
+        // {
+        //   icon: '',
+        //   label: 'Modifier Option',
+        //   route: 'menu/modifier-option'
+        // }
       ]
     },
-    
+
   ]);
 
 }
