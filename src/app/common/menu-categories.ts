@@ -55,6 +55,7 @@ export interface CategoryIdAndName {
 
 export interface CategoryLevel0 {
   categoryId: number;
+  categoryName : string;
   sortNumber: number;
 }
 

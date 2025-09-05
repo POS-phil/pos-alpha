@@ -216,8 +216,6 @@ dateRangeValue: any;
   }
 
 
-
-
   generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
     const days = schedule.filter(d => d.day.toLowerCase() !== 'all days'); // optional filter
 

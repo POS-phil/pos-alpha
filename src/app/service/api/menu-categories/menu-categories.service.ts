@@ -66,4 +66,9 @@ export class MenuCategoriesService {
   getAllCategoryLevel0Sort(): Observable<CategoryLevel0[]> {
     return this.http.get<CategoryLevel0[]>(`${this.menuCategoriesApiUrl}/get-all-sorting-level0`);
   }
+
+  updateAllCategoryLevel0Sort(categories: CategoryLevel0[]) : Observable<void>{
+    const payload = categories.map(c => ({ categoryId: c.categoryId, sortNumber: c.sortNumber }));
+    return this.http.put<void>(`${this.menuCategoriesApiUrl}/update-category-sort-level0`, payload);
+  }
 }

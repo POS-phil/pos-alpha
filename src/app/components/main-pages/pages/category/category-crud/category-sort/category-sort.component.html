@@ -1,7 +1,7 @@
 <div cdkDropList cdkDropListOrientation="mixed" class="example-list" (cdkDropListDropped)="drop($event)">
-  @for (item of items; track item) {
+  @for (sort of categoryToSort; track sort.categoryId) {
   <div class="example-box" cdkDrag>
-    {{item}}
+    {{sort.sortNumber}} {{sort.categoryName}}
     <div class="example-handle" cdkDragHandle>
       <svg width="20px" viewBox="0 0 24 24">
         <path

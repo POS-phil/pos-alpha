@@ -328,9 +328,9 @@ export class CategoryComponent implements OnInit {
   onToggle(category: MenuCategories, field: string, newValue: boolean) {
     const key = field as ToggleableFields;
 
-    if (field === 'isActive') {
+    // if (field === 'isActive') {
 
-    }
+    // }
 
     const originalCategory = this.findCategoryById(this.categories, category.categoryId!);
     if (originalCategory) {
