@@ -78,17 +78,14 @@ export const routes: Routes = [
             },
 
             {
-<<<<<<< HEAD
-=======
                 path: 'modifier-option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
                 title: 'Product Lists / Modifier Option',
             },
-                ]
+                ]  
             },
             //############CATEGORY PAGES######################
             {
->>>>>>> c2ec4e130c8bc5346d005f63649324ce452e8aea
                 path: 'product-list/category',
                 loadComponent: () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
                 title: 'Product List / Categories'
