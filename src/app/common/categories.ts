@@ -53,10 +53,12 @@ export interface CategoryIdAndName {
   parentCategoryId? : number
 }
 
-export interface CategoryLevel0 {
+export interface CategorySort {
   categoryId: number;
   categoryName : string;
   sortNumber: number;
+  image? : string;
+  icon : string;
 }
 
 export type ToggleableFields =

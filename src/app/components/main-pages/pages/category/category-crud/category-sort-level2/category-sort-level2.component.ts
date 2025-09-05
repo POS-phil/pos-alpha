@@ -3,12 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-category-sort-level2',
   imports: [],
-  template: `
-    <p>
-      category-sort-level2 works!
-    </p>
-  `,
-  styles: ``
+  templateUrl: './category-sort-level2.component.html',
+  styleUrl: './category-sort-level2.component.css'
 })
 export class CategorySortLevel2Component {
 

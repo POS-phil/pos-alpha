@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CategoryLevel0, MenuCategories } from '../../../common/menu-categories';
+import { CategorySort, MenuCategories } from '../../../common/categories';
 
 @Injectable()
 export class MenuCategoriesService {
 
   constructor(private http: HttpClient) { }
 
-  //private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
-  private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
+  private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
+  //private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
 
   getMenuCategories(): Observable<MenuCategories[]> {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
@@ -63,11 +63,11 @@ export class MenuCategoriesService {
     );
   }
 
-  getAllCategoryLevel0Sort(): Observable<CategoryLevel0[]> {
-    return this.http.get<CategoryLevel0[]>(`${this.menuCategoriesApiUrl}/get-all-sorting-level0`);
+  getAllCategoryLevel0Sort(): Observable<CategorySort[]> {
+    return this.http.get<CategorySort[]>(`${this.menuCategoriesApiUrl}/get-all-sorting-level0`);
   }
 
-  updateAllCategoryLevel0Sort(categories: CategoryLevel0[]) : Observable<void>{
+  updateAllCategoryLevel0Sort(categories: CategorySort[]) : Observable<void>{
     const payload = categories.map(c => ({ categoryId: c.categoryId, sortNumber: c.sortNumber }));
     return this.http.put<void>(`${this.menuCategoriesApiUrl}/update-category-sort-level0`, payload);
   }

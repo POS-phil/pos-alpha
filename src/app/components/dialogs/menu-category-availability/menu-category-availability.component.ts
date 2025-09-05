@@ -1,7 +1,7 @@
 import { Component, computed, inject, inject as angularInject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ScheduleEntry } from '../../../common/menu-categories';
+import { ScheduleEntry } from '../../../common/categories';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
