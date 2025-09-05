@@ -142,8 +142,8 @@ app-success-snackbar {
     --p-floatlabel-active-color: var(--mat-sys-primary);
     --p-inputtext-focus-border-color: var(--mat-sys-primary);
     --p-datepicker-date-selected-background: var(--mat-sys-primary);
-    
 }
+
 
 :root {
   @include mat.tooltip-overrides((

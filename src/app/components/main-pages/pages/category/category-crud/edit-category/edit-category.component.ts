@@ -115,6 +115,49 @@ function convertDubaiToLocal(dateString: string): Date {
   return utcDate; // this is now in browser local time
 }
 
+export function parentCategoryAsyncValidator(component: EditCategoryComponent): AsyncValidatorFn {
+  return (control: AbstractControl): Observable<ValidationErrors | null> => {
+    //console.log('Validator triggered, value =', control.value);
+
+    if (!control.value) {
+      //console.log('No value, skipping');
+      return of(null);
+    }
+
+    let parentId: number | null = null;
+
+    if (typeof control.value === 'object') {
+      parentId = control.value.categoryId ?? null;
+    }
+
+    if (!parentId && typeof control.value === 'string') {
+      const found = component.listOfCategory.find(
+        c => c.categoryName.toLowerCase() === control.value.toLowerCase()
+      );
+      parentId = found?.categoryId ?? null;
+    }
+
+    if (!parentId) {
+      //console.log('Invalid input, skipping');
+      return of({ invalidSelection: true });
+    }
+
+    //console.log('Calling backend for parentId', parentId, 'categoryId', component.categoryId());
+
+    return component.menuCategoryService.validateParent(component.categoryId(), parentId)
+      .pipe(
+        map(res => {
+          //console.log('Backend result', res);
+          return res.valid ? null : { invalidParent: true };
+        }),
+        catchError(err => {
+          console.error('Validator error', err);
+          return of(null);
+        })
+      );
+  };
+}
+
 @Component({
   selector: 'app-edit-category',
   standalone: true,
@@ -155,7 +198,7 @@ export class EditCategoryComponent implements OnInit {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private menuCategoryService: MenuCategoriesService,
+    public menuCategoryService: MenuCategoriesService,
     private fb: FormBuilder,
     private route: Router,
     private sanitizer: DomSanitizer,
@@ -252,12 +295,6 @@ export class EditCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.today.setHours(0, 0, 0, 0);
 
-    this.items = [
-      { label: 'Categories', routerLink: '/product-list/category' },
-      { label: 'Edit Categoy' }
-    ]
-
-
     this.editCategoryForm = this.fb.group({
       isActive: [''],
       categoryName: ['',
@@ -303,7 +340,11 @@ export class EditCategoryComponent implements OnInit {
       const categoryId = +params['categoryId'];
       this.menuCategoryService.getCategory(categoryId).subscribe({
         next: (category: MenuCategories) => {
-
+          this.items = [
+            { label: 'Categories', routerLink: '/product-list/category' },
+            { label: 'Edit Categoy' },
+            { label: category.categoryName }
+          ]
           this.populateForm(category);
           this.currentdateStartOnly = typeof category.dateStartOnly === 'string'
             ? convertDubaiToLocal(category.dateStartOnly)
@@ -321,8 +362,8 @@ export class EditCategoryComponent implements OnInit {
               ? category.dateDeactivation
               : null;
 
-          console.log('Category data loaded:', category);
-          console.log('Category data loaded isActive:', category.isActive);
+          //console.log('Category data loaded:', category);
+          //console.log('Category data loaded isActive:', category.isActive);
           //combine Latest for edit only
           combineLatest([
             this.editCategoryForm.get('isTimedActivation')!.valueChanges.pipe(startWith(this.editCategoryForm.get('isTimedActivation')!.value)),
@@ -347,13 +388,8 @@ export class EditCategoryComponent implements OnInit {
     this.isActive.valueChanges.subscribe((val) => {
       // Only cancel auto if autoActivated was true AND this is a manual toggle
       if (this.autoActivated.value) {
-        this.autoActivated.setValue(false, { emitEvent: false })
-        // this.isTimedActivation.setValue(false, {emitEvent: false})
-        // if(!this.isActive.value) {
-        //   this.isTimedActivation.enable({emitEvent: false})
-        // } else {
-        //   this.isTimedActivation.disable({emitEvent: false})
-        // }
+        this.autoActivated.setValue(false, { emitEvent: false }),
+        this.isTimedActivation.setValue(false, { emitEvent: false})
       }
     });
 
@@ -371,7 +407,10 @@ export class EditCategoryComponent implements OnInit {
       })
     );
 
-
+    this.editCategoryForm.get('parentCategoryId')?.setAsyncValidators(
+      parentCategoryAsyncValidator(this)
+    );
+    this.editCategoryForm.get('parentCategoryId')?.updateValueAndValidity({ emitEvent: true });
 
     this.getListOfCategories();
   }
@@ -489,37 +528,11 @@ export class EditCategoryComponent implements OnInit {
 
     if (this.autoActivated.value) {
       if (this.isActive.value) {
-        if (this.isTimedActivation!.value == true) {
-          //this.isActive.disable({ emitEvent: false }),
-          this.autoActivated.setValue(true, { emitEvent: false })
-          this.selectedScheduleMode.enable({ emitEvent: false });
-          if (this.selectedScheduleMode!.value === '1') {
-            this.dateStartOnly.enable({ emitEvent: false });
-            this.dateActivation.disable({ emitEvent: false });
-            this.dateActivation.setValue(null, { emitEvent: false });
-            this.dateDeactivation.disable({ emitEvent: false });
-            this.dateDeactivation.setValue(null, { emitEvent: false });
-            this.checkCurrentDateAndSelectedDate();
-          } else {
-            this.isActive.setValue(false, { emitEvent: false });
-            this.dateStartOnly.disable({ emitEvent: false });
-            this.dateStartOnly.setValue(null, { emitEvent: false });
-            this.dateActivation.enable({ emitEvent: false });
-            this.dateDeactivation.enable({ emitEvent: false });
-            this.checkCurrentDateAndSelectedDate();
-          }
-        } else {
-          //this.isActive.enable({ emitEvent: false });
-          this.isActive.setValue(false, { emitEvent: false });
-          this.autoActivated.setValue(false, { emitEvent: false })
-          this.selectedScheduleMode.disable({ emitEvent: false });
-          this.dateStartOnly.disable({ emitEvent: false });
-          this.dateStartOnly.setValue(null, { emitEvent: false });
-          this.dateActivation.disable({ emitEvent: false });
-          this.dateActivation.setValue(null, { emitEvent: false });
-          this.dateDeactivation.disable({ emitEvent: false });
-          this.dateDeactivation.setValue(null, { emitEvent: false });
-        }
+        this.isTimedActivation.disable({emitEvent:false});
+        this.selectedScheduleMode.disable({ emitEvent: false });
+        this.dateStartOnly.disable({ emitEvent: false });
+        this.dateActivation.disable({ emitEvent: false });
+        this.dateDeactivation.disable({ emitEvent: false });
       } else {
         if (this.isTimedActivation!.value == true) {
           this.autoActivated.setValue(true, { emitEvent: false })
@@ -616,6 +629,43 @@ export class EditCategoryComponent implements OnInit {
 
     return isValid ? null : { invalidSelection: true };
   }
+
+  getDescendants(id: number): number[] {
+    const result: number[] = [];
+    const stack = [id];
+
+    while (stack.length > 0) {
+      const current = stack.pop()!;
+      const children = this.listOfCategory.filter(c => c.parentCategoryId === current);
+      for (const child of children) {
+        if (!result.includes(child.categoryId ?? 0)) {
+          result.push(child.categoryId ?? 0);
+          stack.push(child.categoryId ?? 0);
+        }
+      }
+    }
+    return result;
+  }
+
+  private getSubtreeHeight(categoryId: number): number {
+    let maxDepth = 0;
+    const stack = [{ id: categoryId, depth: 0 }];
+
+    while (stack.length > 0) {
+      const { id, depth } = stack.pop()!;
+      maxDepth = Math.max(maxDepth, depth);
+
+      const children = this.listOfCategory.filter(c => c.parentCategoryId === id);
+      for (const child of children) {
+        if (typeof child.categoryId === 'number') {
+          stack.push({ id: child.categoryId, depth: depth + 1 });
+        }
+      }
+    }
+
+    return maxDepth;
+  }
+
 
   selectIcon(icon: string) {
     this.selectedIcon = icon;
@@ -790,9 +840,17 @@ export class EditCategoryComponent implements OnInit {
         this.notification.success(response);
         this.route.navigate(['/product-list/category']);
       },
-      error: (error) => {
-        console.error('Error updating category', error);
-        // this.notification.showError('Failed to update category. Please try again.');
+      error: (err) => {
+        let msg = 'Something went wrong';
+        if (err.error) {
+          try {
+            const parsed = typeof err.error === 'string' ? JSON.parse(err.error) : err.error;
+            msg = parsed.message || msg;
+          } catch {
+            msg = err.error; // fallback if JSON.parse fails
+          }
+        }
+        this.notification.info(msg);
       }
     });
   }

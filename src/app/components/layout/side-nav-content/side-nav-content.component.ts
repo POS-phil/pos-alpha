@@ -26,7 +26,7 @@ export type MenuItem = {
   <div class="dash-viewer-nav">
     <div class="dash-viewer-nav-content" [class.collapsed]="isCollapsed">
       <mat-nav-list>
-        <a href="/dashboard">
+        <a href="/dashboard" class="img-container">
         <img class="logo-container" src="4f.png" />
         </a>
         @for (item of menuItems(); track item.label) {

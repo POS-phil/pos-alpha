@@ -15,8 +15,10 @@
                 <span>Active</span>
             </mat-slide-toggle>
             <span class="spacer"></span>
-             <mat-checkbox class="timed-activation-checkbox" formControlName="isTimedActivation" matTooltip="Automatically activate or deactivate the category within a specified date range">Scheduled Activation</mat-checkbox>
-             <mat-radio-group aria-label="Select an option" formControlName="selectedScheduleMode" class="radio-group">
+            <mat-checkbox class="timed-activation-checkbox" formControlName="isTimedActivation"
+                matTooltip="Automatically activate or deactivate the category within a specified date range">Scheduled
+                Activation</mat-checkbox>
+            <mat-radio-group aria-label="Select an option" formControlName="selectedScheduleMode" class="radio-group">
                 <mat-radio-button value="1">Activation Only</mat-radio-button>
                 <mat-radio-button value="2">Activation & Decativation</mat-radio-button>
             </mat-radio-group>
@@ -29,34 +31,38 @@
                 @if(dateStartOnly.hasError('required')) {
                 <p-message severity="error" size="small" variant="simple">Date for activation is required.</p-message>
                 } @else if(dateStartOnly.hasError('pastDateTime')) {
-                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the future.</p-message>
+                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the
+                    future.</p-message>
                 }
             </div>
             } @else {
             <div class="activation-date-time-container">
-            <label class="label-activation-date-time">Activation Date/Time</label>
-            <p-datepicker class="datepicker-png" [invalid]="isInvalid('dateActivation')" selectionMode="single" [minDate]="today" [readonlyInput]="true"
-                    formControlName="dateActivation" [showIcon]="true" inputId="icondisplay" [showTime]="true"
-                    [hourFormat]="'12'" placeholder="Activation Date" />
+                <label class="label-activation-date-time">Activation Date/Time</label>
+                <p-datepicker class="datepicker-png" [invalid]="isInvalid('dateActivation')" selectionMode="single"
+                    [minDate]="today" [readonlyInput]="true" formControlName="dateActivation" [showIcon]="true"
+                    inputId="icondisplay" [showTime]="true" [hourFormat]="'12'" placeholder="Activation Date" />
 
-            @if(dateActivation.hasError('required')) {
-            <p-message severity="error" size="small" variant="simple">Date for activation is required.</p-message>
-            } @else if(dateActivation.hasError('pastDateTime')) {
-                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the future.</p-message>
+                @if(dateActivation.hasError('required')) {
+                <p-message severity="error" size="small" variant="simple">Date for activation is required.</p-message>
+                } @else if(dateActivation.hasError('pastDateTime')) {
+                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the
+                    future.</p-message>
                 }
             </div>
             <div class="activation-date-time-container">
-            <label class="label-activation-date-time">Deactivation Date/Time</label>
-            <p-datepicker [invalid]="isInvalid('dateDeactivation')" class="datepicker-png" selectionMode="single" [minDate]="today" [readonlyInput]="true"
-                formControlName="dateDeactivation" [showIcon]="true" inputId="icondisplay" [showTime]="true"
-                [hourFormat]="'12'" placeholder="Deactivation Date" />
-            @if(dateDeactivation.hasError('required')) {
-            <p-message severity="error" size="small" variant="simple">Date for deactiavtion is required.</p-message>
-            } @else if(dateDeactivation.hasError('pastDateTime')) {
-                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the future.</p-message>
-            } @else if(dateDeactivation.hasError('beforeActivation')) {
-                <p-message severity="error" size="small" variant="simple">Deactivation date/time must be after activation date/time.</p-message>
-            }
+                <label class="label-activation-date-time">Deactivation Date/Time</label>
+                <p-datepicker [invalid]="isInvalid('dateDeactivation')" class="datepicker-png" selectionMode="single"
+                    [minDate]="today" [readonlyInput]="true" formControlName="dateDeactivation" [showIcon]="true"
+                    inputId="icondisplay" [showTime]="true" [hourFormat]="'12'" placeholder="Deactivation Date" />
+                @if(dateDeactivation.hasError('required')) {
+                <p-message severity="error" size="small" variant="simple">Date for deactiavtion is required.</p-message>
+                } @else if(dateDeactivation.hasError('pastDateTime')) {
+                <p-message severity="error" size="small" variant="simple">Activation date/time must be in the
+                    future.</p-message>
+                } @else if(dateDeactivation.hasError('beforeActivation')) {
+                <p-message severity="error" size="small" variant="simple">Deactivation date/time must be after
+                    activation date/time.</p-message>
+                }
             </div>
             }
         </div>
@@ -108,10 +114,15 @@
                 <mat-error class="error-message">
                     Please select a valid category from the list
                 </mat-error>
+                } @else if(editCategoryForm.get('parentCategoryId')?.hasError('invalidParent')) {
+                <mat-error class="error-message">
+                    Cannot move here — your category {{ _categoryName() }} exceed maximum depth of 3.
+                </mat-error>
                 }
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCategoryName">
                     @for(option of filteredCategories$ | async; track option){
-                    <mat-option [value]="option">
+                    <mat-option [value]="option"
+                        [disabled]="option.categoryId === categoryId() || getDescendants(categoryId()).includes(option.categoryId ?? 0)">
                         @if(option.image) {
                         <img alt="" class="categoryImg" [src]="option.image" height="25">
                         } @else {

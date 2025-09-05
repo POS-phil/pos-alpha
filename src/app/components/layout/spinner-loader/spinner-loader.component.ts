@@ -56,7 +56,7 @@ import { RouterModule } from '@angular/router';
     background: url('/img/coffee.png');
     background-repeat: repeat-x;
     background-position: 0 130px;
-    animation: filling 4s infinite;
+    animation: filling 2s infinite;
 }
 
 @keyframes filling {
@@ -83,7 +83,7 @@ import { RouterModule } from '@angular/router';
     position: absolute;
     border-radius: 10px 2px;
     width: 8px;
-    animation: steaming 2s infinite;
+    animation: steaming 1s infinite;
 }
 
 @keyframes steaming {
