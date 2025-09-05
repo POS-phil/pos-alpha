@@ -53,6 +53,11 @@ export interface CategoryIdAndName {
   parentCategoryId? : number
 }
 
+export interface CategoryLevel0 {
+  categoryId: number;
+  sortNumber: number;
+}
+
 export type ToggleableFields =
   | "isActive"
   | "webShop"

@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MenuCategories } from '../../../common/menu-categories';
+import { CategoryLevel0, MenuCategories } from '../../../common/menu-categories';
 
 @Injectable()
 export class MenuCategoriesService {
 
   constructor(private http: HttpClient) { }
 
-  //private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
-  private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
+  private menuCategoriesApiUrl = 'http://147.93.111.68:8080/api/menu-category';
+  //private menuCategoriesApiUrl = 'http://localhost:8080/api/menu-category';
 
   getMenuCategories(): Observable<MenuCategories[]> {
     return this.http.get<MenuCategories[]>(`${this.menuCategoriesApiUrl}`);
@@ -59,7 +59,11 @@ export class MenuCategoriesService {
   }
 
   validateParent(categoryId: number, parentId: number): Observable<{ valid: boolean }> {
-  return this.http.get<{ valid: boolean }>(`${this.menuCategoriesApiUrl}/${categoryId}/validate-parent/${parentId}`
-  );
-}
+    return this.http.get<{ valid: boolean }>(`${this.menuCategoriesApiUrl}/${categoryId}/validate-parent/${parentId}`
+    );
+  }
+
+  getAllCategoryLevel0Sort(): Observable<CategoryLevel0[]> {
+    return this.http.get<CategoryLevel0[]>(`${this.menuCategoriesApiUrl}/get-all-sorting-level0`);
+  }
 }
