@@ -42,15 +42,12 @@ export const routes: Routes = [
                         title: 'Dashboard / Inventory & LPO'
                     }
                 ]
-            },
-            {
+            }, {
                 path: 'transaction-orders',
                 loadComponent: () => import('./components/main-pages/pages/transaction-orders/transaction-orders.component').then(m => m.TransactionOrdersComponent),
                 title: 'Transaction Orders',
             },
-            
             //############CATEGORY PAGES######################
-
             {
                 path: 'product-list/category',
                 loadComponent: () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
@@ -69,8 +66,13 @@ export const routes: Routes = [
             },
             {
                 path: 'product-list/category/sort-category',
-                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort/category-sort.component').then(m => m.CategorySortComponent),
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort-level0/category-sort-level0.component').then(m => m.CategorySortLevel0Component),
                 title: 'Product List/ Category / Sort Component'
+            },
+            {
+                path: 'product-list/category/:categoryId/sort-category/:categoryName',
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort-level1/category-sort-level1.component').then(m => m.CategorySortLevel1Component),
+                title: 'Product List/ Category / Sort Component / level 1'
             },
             //#######END OF CATEGORY PAGES##################
             //########### ITEM PAGES #######################
@@ -103,15 +105,13 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/pages/item/menu-crud/allergens/allergens.component').then(m => m.AllergensComponent),
                 title: 'allergens'
             },
-
-
             {
                 path: 'menu/item/recipe',
                 loadComponent: () => import('./components/main-pages/pages/item/menu-crud/recipe/recipe.component').then(m => m.RecipeComponent),
                 title: 'recipe'
             },
-             //###################################### END OF ITEM PAGES ######################################
-             //##################################### ADD ONS PAGES ############################################
+            //###################################### END OF ITEM PAGES ######################################
+            //##################################### ADD ONS PAGES ############################################
             {
                 path: 'addons-builder',
                 loadComponent: () =>
@@ -140,43 +140,17 @@ export const routes: Routes = [
                     },
                 ]
             },
-
             {
                 path: 'modifier-option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
                 title: 'Product Lists / Modifier Option',
             },
-                ]  
-            },
-            //############CATEGORY PAGES######################
-            {
-                path: 'product-list/category',
-                loadComponent: () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
-                title: 'Product List / Categories'
-
-            },
-            {
-                path: 'product-list/category/add-category',
-                loadComponent: () => import('./components/main-pages/pages/category/category-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
-                title: 'Product List/ Category / Add Category'
-            },
-            {
-                path: 'product-list/category/:categoryId/edit-category',
-                loadComponent: () => import('./components/main-pages/pages/category/category-crud/edit-category/edit-category.component').then(m => m.EditCategoryComponent),
-                title: 'Product List/ Category / Edit Category'
-            },
-            {
-                path: 'product-list/category/sort-category',
-                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort/category-sort.component').then(m => m.CategorySortComponent),
-                title: 'Product List/ Category / Sort Component'
-            },
-            //#######END OF CATEGORY PAGES##################
             {
                 path: 'menu/item/add-item',
                 loadComponent: () => import('./components/main-pages/pages/item/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
                 title: 'Create Item'
             },
-         
+
             {
                 path: 'addons-builder/modifier-option/create_modifier_option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-modifier-option/create-modifier-option.component').then(m => m.CreateModifierOptionComponent),
@@ -197,12 +171,14 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/edit-modifier-option/edit-modifier-option.component').then(m => m.EditModifierOptionComponent),
                 title: 'Edit Modifier Option'
             },
-             //#####################################END OF ADD ONS PAGES ############################################
+            //#####################################END OF ADD ONS PAGES ############################################
             {
                 path: 'test',
                 loadComponent: () => import('./components/layout/spinner-loader/spinner-loader.component').then(m => m.SpinnerLoaderComponent),
                 title: 'Test Page'
             }
+
         ]
-;
-//############END OF CATEGORY PAGES##################
+    },
+
+];
