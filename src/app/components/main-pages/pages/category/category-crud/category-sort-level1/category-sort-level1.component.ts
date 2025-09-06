@@ -57,22 +57,20 @@ export class CategorySortLevel1Component implements OnInit {
 
       this.level0Id.set(parseInt(Level0categoryId ?? '0'));
       this.level0Name.set(level0categoryName ?? '');
-
+      this.items = [
+        { label: 'Categories', routerLink: '/product-list/category' },
+        { label: 'Sort Categories' },
+        { label: this.level0Name() }
+      ]
       this.categoryService.getAllCategoryChildren(this.level0Id()).subscribe({
         next: (data: CategorySort[]) => {
           this.categoryToSort = data;
-
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching menu categories', error);
         }
       })
-
     });
-  }
-
-  getCategoriesChild() {
-
   }
 
   drop(event: CdkDragDrop<CategorySort[]>) {
@@ -82,7 +80,7 @@ export class CategorySortLevel1Component implements OnInit {
 
     this.categoryToSort.forEach((cat, index) => cat.sortNumber = index + 1);
 
-    this.categoryService.updateAllCategoryLevel0Sort(this.categoryToSort).subscribe({
+    this.categoryService.updateAllCategoryChildren(this.level0Id(), this.categoryToSort).subscribe({
       next: () => console.log(),
       error: (err) => console.error('Error updating sort order', err)
     })
@@ -96,9 +94,9 @@ export class CategorySortLevel1Component implements OnInit {
       panelClass: 'sort-checker-dialog'
     });
 
-    dialogRef.afterClosed().subscribe(choice  => {
-      if(choice === 'subcategories'){
-        this.router.navigate(['product-list/category', category.categoryId ,'sort-category', category.categoryName]);
+    dialogRef.afterClosed().subscribe(choice => {
+      if (choice === 'subcategories') {
+        this.router.navigate(['product-list/category', category.categoryId, 'sort-category', category.categoryName]);
       } else {
         //this.router.navigate(['product-list/category/', category.categoryId ,'sort-category/']);
       }

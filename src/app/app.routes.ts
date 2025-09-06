@@ -213,5 +213,4 @@ export const routes: Routes = [
                 loadComponent: () => import('./components/layout/spinner-loader/spinner-loader.component').then(m => m.SpinnerLoaderComponent),
                 title: 'Test Page'
             }
-        ]
-;
+        ];
