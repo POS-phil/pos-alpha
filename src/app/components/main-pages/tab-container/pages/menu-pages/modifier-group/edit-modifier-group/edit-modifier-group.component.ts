@@ -19,7 +19,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ScheduleEntry } from '../../../../../../../common/menu-categories';
+import { ScheduleEntry } from '../../../../../../../common/categories';
 import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
 import { MatCheckbox } from "@angular/material/checkbox";
 

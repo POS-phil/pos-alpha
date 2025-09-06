@@ -45,10 +45,9 @@ import { MatDividerModule } from '@angular/material/divider';
   providers: [
     DashboardService,
     provideNativeDateAdapter(),
-
   ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.scss'
 })
 
 export class DashboardComponent implements OnInit {

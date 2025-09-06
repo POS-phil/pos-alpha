@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CategoryLevel0, MenuCategories } from '../../../common/menu-categories';
+import { CategorySort, MenuCategories } from '../../../common/categories';
 
 @Injectable()
 export class MenuCategoriesService {
@@ -59,11 +59,24 @@ export class MenuCategoriesService {
   }
 
   validateParent(categoryId: number, parentId: number): Observable<{ valid: boolean }> {
-    return this.http.get<{ valid: boolean }>(`${this.menuCategoriesApiUrl}/${categoryId}/validate-parent/${parentId}`
-    );
+    return this.http.get<{ valid: boolean }>(`${this.menuCategoriesApiUrl}/${categoryId}/validate-parent/${parentId}`);
   }
 
-  getAllCategoryLevel0Sort(): Observable<CategoryLevel0[]> {
-    return this.http.get<CategoryLevel0[]>(`${this.menuCategoriesApiUrl}/get-all-sorting-level0`);
+  getAllCategoryLevel0Sort(): Observable<CategorySort[]> {
+    return this.http.get<CategorySort[]>(`${this.menuCategoriesApiUrl}/get-all-sorting-level0`);
   }
+
+  updateAllCategoryLevel0Sort(categories: CategorySort[]) : Observable<void>{
+    const payload = categories.map(c => ({ categoryId: c.categoryId, sortNumber: c.sortNumber }));
+    return this.http.put<void>(`${this.menuCategoriesApiUrl}/update-category-sort-level0`, payload);
+  }
+
+  hasChildren(categoryId : number) : Observable<boolean>{
+    return this.http.get<boolean>(`${this.menuCategoriesApiUrl}/${categoryId}/has-children`);
+  }
+
+  getAllCategoryChildren(categoryId : number) : Observable<CategorySort[]> {
+    return this.http.get<CategorySort[]>(`${this.menuCategoriesApiUrl}/${categoryId}/children`);
+  }
+  
 }

@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>What do you want to sort?<mat-icon matTooltipPosition="right" class="icon-helper" [matTooltip]="'If Sub-Categories/Items button are disabled there is no Sub-Categories/Items in selected category : ' + data.categoryName + ''">help_outline</mat-icon></h2>
+<mat-dialog-content>
+    <p>You selected <span class="category-name" [matTooltip]="data.categoryName" matTooltipPosition="above">{{ data.categoryName }}</span></p>
+
+    <div class="options">
+        <button matButton="outlined" (click)="choose('subcategories')" [disabled]="subCategoriesDisable()">
+            <mat-icon>category</mat-icon>
+            Sort Subcategories
+        </button>
+
+        <button matButton="outlined" (click)="choose('items')" [disabled]="itemsDisable()">
+            <mat-icon>inventory</mat-icon>
+            Sort Items
+        </button>
+    </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

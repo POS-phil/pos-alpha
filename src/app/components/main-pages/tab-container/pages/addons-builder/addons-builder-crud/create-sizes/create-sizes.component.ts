@@ -18,7 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { MenuCategories, ScheduleEntry } from '../../../../../../../common/menu-categories';
+import { MenuCategories, ScheduleEntry } from '../../../../../../../common/categories';
 import { Sort,MatSortModule } from '@angular/material/sort';
 import { createSize } from '../../../../../../../common/addons-builders';
 import { MatTableDataSource } from '@angular/material/table';

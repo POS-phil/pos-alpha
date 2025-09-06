@@ -14,7 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TreeTableModule } from 'primeng/treetable';
-import { MenuCategories, ToggleableFields } from '../../../../common/menu-categories';
+import { MenuCategories, ToggleableFields } from '../../../../common/categories';
 import { TreeNode } from 'primeng/api';
 import { MenuCategoriesService } from '../../../../service/api/menu-categories/menu-categories.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -328,9 +328,9 @@ export class CategoryComponent implements OnInit {
   onToggle(category: MenuCategories, field: string, newValue: boolean) {
     const key = field as ToggleableFields;
 
-    if (field === 'isActive') {
+    // if (field === 'isActive') {
 
-    }
+    // }
 
     const originalCategory = this.findCategoryById(this.categories, category.categoryId!);
     if (originalCategory) {

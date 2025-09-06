@@ -1,0 +1,107 @@
+@use '@angular/material' as mat;
+
+.container {
+  box-shadow: var(--mat-sys-level3);
+}
+
+.header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sort-list {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 15px;
+  padding: 15px;
+  min-height: 60px;
+  overflow: hidden;
+  //font-family: sans-serif;
+
+}
+
+.sort-box {
+  display: flex;
+  text-align: center;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  color: rgba(0, 0, 0, 0.87);
+  box-sizing: border-box;
+  background: white;
+  font-size: 14px;
+  width: 320px;
+  height: 80px;
+  cursor: pointer;
+  padding-right: 20px;
+}
+
+.spacer {
+  flex-grow: 1;
+}
+
+.category-sort-number {
+  font-size: 18px;
+  font-weight: 700;
+  margin-left: 15px;
+}
+
+.category-name {
+  font-size: 14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 700;
+  max-width: 160px;
+}
+
+.category-image {
+  height: 60px;
+  width: 70px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.category-icon {
+  font-size: 40px;
+  height: 40px;
+  width: 40px;
+}
+
+
+
+// .sort-handle {
+//   position: relative;
+//   top: 0px;
+//   left: 0px;
+//   cursor: move;
+//   width: 24px;
+//   height: 24px;
+// }
+
+// .sort-handle svg {
+//   color: #ccc;
+//}
+
+
+.cdk-drag-preview {
+
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.5;
+  border: dashed 2px #999;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}

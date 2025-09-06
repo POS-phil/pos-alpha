@@ -8,7 +8,7 @@ import { MatFormField, MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { MenuCategories } from '../../../../common/menu-categories';
+import { MenuCategories } from '../../../../common/categories';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';

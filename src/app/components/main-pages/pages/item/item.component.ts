@@ -14,7 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { RouterModule } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MenuCategories } from '../../../../common/menu-categories';
+import { MenuCategories } from '../../../../common/categories';
 import { MatButtonToggleModule } from "@angular/material/button-toggle";
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -41,7 +41,6 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
     MatSortModule,
     MatCheckbox,
     MatSlideToggleModule,
-    // CsMatTableComponent,
     ColumnSorterComponent,
     MatTabsModule,
     MatButtonToggleModule

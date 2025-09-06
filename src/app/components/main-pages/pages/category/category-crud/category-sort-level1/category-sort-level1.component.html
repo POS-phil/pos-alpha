@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="header-container">
+    <p-breadcrumb class="breadcrumb" [model]="items" />
+    <span class="spacer"></span>
+    <button matButton style="margin-right: 20px;" [routerLink]="['/product-list/category']">
+      <mat-icon style="margin-right: 5px;">arrow_back</mat-icon>
+      Back
+    </button>
+  </div>
+  
+  <div cdkDropList cdkDropListOrientation="mixed" class="sort-list" (cdkDropListDropped)="drop($event)">
+    @for (sort of categoryToSort; track sort.categoryId) {
+    <div class="sort-box" cdkDrag (click)="openDialogCheckIfHasChildOrItems(sort)" [matTooltip]="sort.categoryName">
+      <span class="category-sort-number">{{sort.sortNumber}}:</span>
+      <span class="category-name">{{sort.categoryName}}</span>
+      <span class="spacer"></span>
+      @if(sort.image){
+        <img [src]="sort.image" class="category-image" />
+      } @else {
+        <mat-icon class="category-icon">{{sort.icon}}</mat-icon>
+      }
+      <!-- <div class="sort-handle" cdkDragHandle>
+        <svg width="20px" viewBox="0 0 24 24">
+          <path
+            d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z">
+          </path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </div> -->
+    </div>
+    }
+  </div>
+</div>

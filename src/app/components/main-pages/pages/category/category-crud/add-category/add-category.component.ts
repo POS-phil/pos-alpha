@@ -19,14 +19,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MenuCategoryAvailabilityComponent } from '../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { ScheduleEntry } from '../../../../../../common/menu-categories';
+import { ScheduleEntry } from '../../../../../../common/categories';
 import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, combineLatest, debounceTime, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { NotificationService } from '../../../../../../service/notifications/notification.service';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
-import { CategoryIdAndName } from '../../../../../../common/menu-categories';
+import { CategoryIdAndName } from '../../../../../../common/categories';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DatePicker } from 'primeng/datepicker';
@@ -555,10 +555,10 @@ export class AddCategoryComponent implements OnInit {
     }
 
     //Uncomment for debugging
-    // console.log('Form Data:', formData);
-    // console.log('Form Value:', formValue);
-    // console.log('Category Form', this.createCategoryForm.value);
-    // console.log('bg color : ', this.selectedBackgroundColor)
+    console.log('Form Data:', formData);
+    console.log('Form Value:', formValue);
+    console.log('Category Form', this.createCategoryForm.value);
+    console.log('bg color : ', this.selectedBackgroundColor)
 
     this.menuCategoryService.createCategory(formData).subscribe({
       next: (response) => {

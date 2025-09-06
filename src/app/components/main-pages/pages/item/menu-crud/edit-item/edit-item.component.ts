@@ -13,7 +13,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { ScheduleEntry } from '../../../../../../common/menu-categories';
+import { ScheduleEntry } from '../../../../../../common/categories';
 import { MenuCategoryAvailabilityComponent } from '../../../../../dialogs/menu-category-availability/menu-category-availability.component';
 import { UploadImageComponent } from '../../../../../dialogs/upload-image/upload-image.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -214,8 +214,6 @@ dateRangeValue: any;
       }
     });
   }
-
-
 
 
   generateScheduleSummary(schedule: ScheduleEntry[]): string[] {
