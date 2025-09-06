@@ -41,6 +41,7 @@ import { ConfirmDialogComponent } from '../../../dialogs/confirm-dialog/confirm-
     MatSortModule,
     MatCheckbox,
     MatSlideToggleModule,
+    ColumnSorterComponent,
     MatTabsModule,
     MatButtonToggleModule
   ],
