@@ -78,5 +78,10 @@ export class MenuCategoriesService {
   getAllCategoryChildren(categoryId : number) : Observable<CategorySort[]> {
     return this.http.get<CategorySort[]>(`${this.menuCategoriesApiUrl}/${categoryId}/children`);
   }
-  
+
+  updateAllCategoryChildren(categoryId:number, categories: CategorySort[]) : Observable<void>{
+    const payload = categories.map(c => ({ categoryId: c.categoryId, sortNumber: c.sortNumber }));
+    return this.http.put<void>(`${this.menuCategoriesApiUrl}/${categoryId}/children/sort`, payload);
+  }
+
 }
