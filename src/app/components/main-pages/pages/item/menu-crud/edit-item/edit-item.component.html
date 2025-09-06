@@ -1,344 +1,463 @@
 <form [formGroup]="editItemForm" (ngSubmit)="confirmCreate()">
     <div class="header-flex">
-        <H1>Edit Item</H1>
-        <span class="spacer"></span>
+        <mat-tab-group>
+            <mat-tab label="Item Details">  
+                    <H1>Edit Item</H1>
+                    <span class="spacer"></span>           
+                    <div class="container-flex2">
 
-        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
-            Item Details
-        </button>
-        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/properties']">
-            Properties
-        </button>
-
-        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/allergens']">
-            Allergens
-        </button>
-        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/recipe']">
-            Recipes
-        </button>        
-
-        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
-            Cancel
-        </button>
-        <button type="button" mat-flat-button class="btnRadius">
-            Save
-        </button>
-    </div>
-    <div class="container-flex2">
-
-        <div class="container-basic-info">
-            <h3>Basic Info</h3>
-            <mat-form-field class="full-width">
-                <mat-label>Item Name</mat-label>
-                <input matInput type="text"  placeholder="Item Name" required  formControlName="itemName" placeholder="Item Name" >             
-            </mat-form-field>
-            <mat-form-field class="full-width">
-                <mat-label>Second Language</mat-label>
-                <input matInput type="text" 
-                    placeholder="Second language">
-            </mat-form-field>
-            <div class="grid-textArea">
-                <mat-form-field class="full-width">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."
-                        formControlName="description"></textarea>
-                </mat-form-field>
-            </div>
-
-            <mat-form-field class="full-width">
-                <mat-label>Category</mat-label>
-                <mat-select required>
-                    <mat-option value="Option">Category 1</mat-option>
-                    <mat-option value="Option">Category 2</mat-option>
-                    <mat-option value="Option">Category 3</mat-option>
-                    <mat-option value="Option">Category 4</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-           <mat-form-field class="full-width">
-                <mat-label>Item Type</mat-label>
-                <mat-select required>
-                    <mat-option value="Option">Menu Item</mat-option>
-                    <mat-option value="Option">Retail Item</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-
-            <div class="sku-row">
-                <mat-form-field class="sku-field full-width">
-                
-                    <mat-label>SKU</mat-label>
-                        <input matInput type="text" placeholder="SKU">
-                    </mat-form-field>
-
-                <button type="submit" mat-flat-button class="btnRadius btn-generate">
-                    Generate
-                </button>
-            </div> 
-
-            <mat-form-field class="full-width">
-                <mat-label>Barcode</mat-label>
-                <input matInput type="text" placeholder="Barcode"> 
-                                
-            </mat-form-field>  
-        </div>
-        <div class="container-availability">
-            <button type="button" mat-fab extended class="full-width btnAvailability"
-                (click)="openAvailabilityDialog()">
-                <mat-icon>event_repeat</mat-icon>
-                <span>Availability</span>
-            </button>
-            <mat-chip-set>
-                @for(item of scheduleSummary; track item){
-                <mat-chip>{{ item }}</mat-chip>
-                }
-            </mat-chip-set>
-
-
-        </div>
-
-        <div class="container-utility">
-            <h3>Utilities</h3>
-            <div class="container-utlity-content">
-                <div class="grid-image">
-                    <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
-                        @if (previewImage) {
-                        <img [src]="previewImage" alt="Uploaded" class="uploaded-image" />
-                        } @else {
-                        <mat-icon class="icon-image">add_a_photo</mat-icon>
-                        }
-                    </button>
-                </div>
-                <div class="grid-toggle-buttons">
-                    <mat-slide-toggle formControlName="webShop" class="toggle-button">
-                        Web Shop
-                    </mat-slide-toggle>
-                    <mat-slide-toggle formControlName="aggregator" class="toggle-button">
-                        Aggregator
-                    </mat-slide-toggle>
-                    <mat-slide-toggle formControlName="kiosk" class="toggle-button">
-                        Kiosk
-                    </mat-slide-toggle>
-                    <mat-slide-toggle formControlName="counterTop" class="toggle-button">
-                        Counter Top
-                    </mat-slide-toggle>
-                </div>
-                <div class="_grid-icon-picker">
-                    <div style="font: var(--mat-sys-label-small); margin-top: 10px;">
-                        <span>ICON PICKER : </span>
-                    </div>
-                    <button [disabled]="previewImage"
-                        matTooltip="If no image is provided, an icon can be selected to use as the category image."
-                        type="button" mat-icon-button class="iconSelector" class="icon-picker"
-                        [matMenuTriggerFor]="iconMenu">
-                        <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
-                    </button>
-                   
-                    <mat-menu #iconMenu="matMenu" class="icon-menu">
-                        <div class="icon-grid">
-                            @for(icon of icons; track icon) {
-                            <button mat-icon-button >
-                                <mat-icon>{{ icon }}</mat-icon>
-                            </button>
-                            }
-                        </div>
-                    </mat-menu> <!-- (click)="selectedIcon(icon)"-->   
-                </div>
-                <div class="grid-background-picker">
-                    <div style="font: var(--mat-sys-label-small);">
-                    <span>BACKGROUND PICKER :</span>
-                </div>
-                <div>
-                    <button type="button" class="background-selector" [matMenuTriggerFor]="backgroundMenu"
-                        [style.backgroundColor]="selectedBackgroundColor" matButton="outlined">
-
-                    </button>
-                    <mat-menu #backgroundMenu="matMenu" class="background-menu">
-                        <div class="background-grid">
-                            @for(background of background_colors; track background) {
-                            <button type="button" matButton="outlined" class="background-picker" [style.backgroundColor]="background"
-                                (click)="selectedBackgroundColor(background)">
-                            </button>
-                            }
-                        </div>
-                    </mat-menu>
-                </div>
-
-
-                </div>
-            </div>
-        </div>
-
-        <div class="container-PriceCosting">
-
-            <h3>Pricing</h3>
- 
-                    <div class="grid-itemPriceCosting">
-
-                    <mat-form-field class="full-width">
-                    <mat-label>Selling Method</mat-label>
-                        <mat-select>
-                            <mat-option value="Option">Category 1</mat-option>
-                            <mat-option value="Option">Category 2</mat-option>
-                            <mat-option value="Option">Category 3</mat-option>
-                            <mat-option value="Option">Category 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                        
-                    </div>
-                    <div class="grid-itemPriceCosting">
-                        <mat-form-field class="full-width">
-    
-
-                    <mat-label>Tax Group</mat-label>
-                        <mat-select>
-                            <mat-option value="Option">Menu Item</mat-option>
-                            <mat-option value="Option">Retail Item</mat-option>
-                            <mat-option value="Option">Category 3</mat-option>
-                            <mat-option value="Option">Category 4</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-
-
-
-                    </div>
-                    <div class="grid-itemPriceCosting">                    
-                    <div class="grid-containerOpenPrice">                     
-                        <div class="grid-">
+                        <div class="container-basic-info">
+                            <h3>Basic Info</h3>
                             <mat-form-field class="full-width">
-                            <mat-label>Enter Price</mat-label>
-                                <input matInput type="text" placeholder="Enter Price" [disabled]="!slideToggle.checked">                    
-                            </mat-form-field> 
-                        </div>  
-                        <div class="grid-itemOpenPrice">
-                            <mat-slide-toggle #slideToggle >Open Price</mat-slide-toggle>
-                        </div>
-                        
-                        </div>
-                    </div>
-                    <div class="grid-itemPriceCosting">                    
-                        <mat-form-field class="full-width">
-                            <mat-label>Preparation Time (Minutes)</mat-label>
-                            <input matInput type="text" placeholder="Preparation Time (Minutes)">                    
-                        </mat-form-field> 
-                    </div>
-                    
-                        <div class="priceSched-row">     
-                            <!--[for]="picker"-->
-                            <mat-form-field class="priceSched-field">
-                                    <mat-label>Enter Price Schedule</mat-label>
-                                    <input matInput type="text"  placeholder="Enter Price Schedule" [disabled]="dateRangeValue === ''">
-                            </mat-form-field>                            
-                            <mat-form-field class="priceSched-field" id="dateRangeValue">
-                                <mat-label>Enter a date range</mat-label>
-                                <mat-date-range-input [rangePicker]="picker">
-                                <input matStartDate placeholder="Start date">
-                                <input matEndDate placeholder="End date">
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                <mat-label>Item Name</mat-label>
+                                <input matInput type="text"  placeholder="Item Name" required  formControlName="itemName" placeholder="Item Name" >             
+                            </mat-form-field>
+                            <mat-form-field class="full-width">
+                                <mat-label>Second Language</mat-label>
+                                <input matInput type="text" 
+                                    placeholder="Second language">
+                            </mat-form-field>
+                            <div class="grid-textArea">
+                                <mat-form-field class="full-width">
+                                    <mat-label>Description</mat-label>
+                                    <textarea matInput rows="5" placeholder="Ex. This is a combo of pizza and soda..."
+                                        formControlName="description"></textarea>
+                                </mat-form-field>
+                            </div>
+
+                            <mat-form-field class="full-width">
+                                <mat-label>Category</mat-label>
+                                <mat-select required>
+                                    <mat-option value="Option">Category 1</mat-option>
+                                    <mat-option value="Option">Category 2</mat-option>
+                                    <mat-option value="Option">Category 3</mat-option>
+                                    <mat-option value="Option">Category 4</mat-option>
+                                </mat-select>
                             </mat-form-field>
 
+                        <mat-form-field class="full-width">
+                                <mat-label>Item Type</mat-label>
+                                <mat-select required>
+                                    <mat-option value="Option">Menu Item</mat-option>
+                                    <mat-option value="Option">Retail Item</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+
+                            <div class="sku-row">
+                                <mat-form-field class="sku-field full-width">
+                                
+                                    <mat-label>SKU</mat-label>
+                                        <input matInput type="text" placeholder="SKU">
+                                    </mat-form-field>
+
+                                <button type="submit" mat-flat-button class="btnRadius btn-generate">
+                                    Generate
+                                </button>
+                            </div> 
+
+                            <mat-form-field class="full-width">
+                                <mat-label>Barcode</mat-label>
+                                <input matInput type="text" placeholder="Barcode"> 
+                                                
+                            </mat-form-field>  
                         </div>
-                    <div class="grid-itemPriceCosting"></div>
-                    <div class="grid-itemPriceCosting">                      
-                        <mat-form-field class="full-width">
-                            <mat-label>Tags</mat-label>
-                            <mat-select required>
-                                <mat-option value="Tags 1">Tags 1</mat-option>
-                                <mat-option value="Tags 2">Tags 2</mat-option>
-                                <mat-option value="Tags 3">Tags 3</mat-option>
-                                <mat-option value="Tags 4">Tags 4</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                        <div class="container-availability">
+                            <button type="button" mat-fab extended class="full-width btnAvailability"
+                                (click)="openAvailabilityDialog()">
+                                <mat-icon>event_repeat</mat-icon>
+                                <span>Availability</span>
+                            </button>
+                            <mat-chip-set>
+                                @for(item of scheduleSummary; track item){
+                                <mat-chip>{{ item }}</mat-chip>
+                                }
+                            </mat-chip-set>
 
 
+                        </div>
 
-                    </div>
+                        <div class="container-utility">
+                            <h3>Utilities</h3>
+                            <div class="container-utlity-content">
+                                <div class="grid-image">
+                                    <button type="button" mat-icon-button class="btnImage" (click)="openUploadDialog()">
+                                        @if (previewImage) {
+                                        <img [src]="previewImage" alt="Uploaded" class="uploaded-image" />
+                                        } @else {
+                                        <mat-icon class="icon-image">add_a_photo</mat-icon>
+                                        }
+                                    </button>
+                                </div>
+                                <div class="grid-toggle-buttons">
+                                    <mat-slide-toggle formControlName="webShop" class="toggle-button">
+                                        Web Shop
+                                    </mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="aggregator" class="toggle-button">
+                                        Aggregator
+                                    </mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="kiosk" class="toggle-button">
+                                        Kiosk
+                                    </mat-slide-toggle>
+                                    <mat-slide-toggle formControlName="counterTop" class="toggle-button">
+                                        Counter Top
+                                    </mat-slide-toggle>
+                                </div>
+                                <div class="_grid-icon-picker">
+                                    <div style="font: var(--mat-sys-label-small); margin-top: 10px;">
+                                        <span>ICON PICKER : </span>
+                                    </div>
+                                    <button [disabled]="previewImage"
+                                        matTooltip="If no image is provided, an icon can be selected to use as the category image."
+                                        type="button" mat-icon-button class="iconSelector" class="icon-picker"
+                                        [matMenuTriggerFor]="iconMenu">
+                                        <mat-icon class="icon-picker-image">{{ selectedIcon }}</mat-icon>
+                                    </button>
+                                
+                                    <mat-menu #iconMenu="matMenu" class="icon-menu">
+                                        <div class="icon-grid">
+                                            @for(icon of icons; track icon) {
+                                            <button mat-icon-button >
+                                                <mat-icon>{{ icon }}</mat-icon>
+                                            </button>
+                                            }
+                                        </div>
+                                    </mat-menu> <!-- (click)="selectedIcon(icon)"-->   
+                                </div>
+                                <div class="grid-background-picker">
+                                    <div style="font: var(--mat-sys-label-small);">
+                                    <span>BACKGROUND PICKER :</span>
+                                </div>
+                                <div>
+                                    <button type="button" class="background-selector" [matMenuTriggerFor]="backgroundMenu"
+                                        [style.backgroundColor]="selectedBackgroundColor" matButton="outlined">
 
-        </div>
-
-        <div class="container-NetGrossWeight">
-
-            <h3>Costing</h3>
-                <div class="grid-containerNetGrossWeight">
-                    
-                    <div class="grid-itemNetGrossWeight">
-
-                        <mat-form-field class="full-width">
-                            <mat-label>Costing Method</mat-label>
-                            <mat-select required>
-                                <mat-option value="From Ingredient">From Ingredient</mat-option>
-                                <mat-option value="From recipe">From recipe</mat-option>
-                                <mat-option value="Fix">Fix</mat-option>
-                                <mat-option value="Option">Option 4</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                                    </button>
+                                    <mat-menu #backgroundMenu="matMenu" class="background-menu">
+                                        <div class="background-grid">
+                                            @for(background of background_colors; track background) {
+                                            <button type="button" matButton="outlined" class="background-picker" [style.backgroundColor]="background"
+                                                (click)="selectedBackgroundColor(background)">
+                                            </button>
+                                            }
+                                        </div>
+                                    </mat-menu>
+                                </div>
 
 
+                                </div>
+                            </div>
+                        </div>
 
-                    </div>
-                    <div class="grid-itemNetGrossWeight">   
-                        <mat-form-field class="full-width">
-                            <mat-label>Cost %</mat-label>
-                            <input matInput type="text" placeholder="0.0"  [readonly]="true">
-                        </mat-form-field> 
-                    </div>
-                    <div class="grid-itemNetGrossWeight">
-                        <mat-form-field class="full-width">
-                        <mat-label>Net Weight</mat-label>
-                        <input matInput type="text" placeholder="0.000">                    
-                    </mat-form-field>  
-                    </div>
+                        <div class="container-PriceCosting">
 
-                    <div class="grid-itemNetGrossWeight">
-                        <mat-form-field class="full-width">
-                        <mat-label>Gross Weight</mat-label>
-                        <input matInput type="text" placeholder="0.000">                    
-                    </mat-form-field>  
-                    </div>
-
-                    <div class="grid-itemNetGrossWeight">
-                        <mat-form-field class="full-width">
-                        <mat-label>Calories</mat-label>
-                        <input matInput type="text" placeholder="0.000">                    
-                    </mat-form-field>  
-                    </div>
-                    <div class="grid-itemNetGrossWeight">
-                        <mat-form-field class="full-width">
-                        <mat-label>Cost Amount</mat-label>
-                        <input matInput type="text"  placeholder="0.0"  [readonly]="true">                    
-                    </mat-form-field>  
-                    </div>
-
-                    <div class="grid-itemNetGrossWeight">     
-   
-                        <mat-checkbox class="full-width">High Salt Content</mat-checkbox>        
-                    </div>
-               
-
-                    <div class="grid-itemNetGrossWeight">
-                        <mat-form-field class="full-width">
-                        <mat-label>Markup</mat-label>
-                        <input matInput type="text"  placeholder="0.0" [readonly]="true">                    
-                    </mat-form-field>  
-                    </div>
-
+                            <h3>Pricing</h3>
                 
-                </div>
-        </div>
+                                    <div class="grid-itemPriceCosting">
 
-         <div class="container-accordion">
-             <button matButton type="button" (click)="accordion().openAll()">Expand All</button>
+                                    <mat-form-field class="full-width">
+                                    <mat-label>Selling Method</mat-label>
+                                        <mat-select>
+                                            <mat-option value="Option">Category 1</mat-option>
+                                            <mat-option value="Option">Category 2</mat-option>
+                                            <mat-option value="Option">Category 3</mat-option>
+                                            <mat-option value="Option">Category 4</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                        
+                                    </div>
+                                    <div class="grid-itemPriceCosting">
+                                        <mat-form-field class="full-width">
+                    
+
+                                    <mat-label>Tax Group</mat-label>
+                                        <mat-select>
+                                            <mat-option value="Option">Menu Item</mat-option>
+                                            <mat-option value="Option">Retail Item</mat-option>
+                                            <mat-option value="Option">Category 3</mat-option>
+                                            <mat-option value="Option">Category 4</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+
+
+
+                                    </div>
+                                    <div class="grid-itemPriceCosting">                    
+                                    <div class="grid-containerOpenPrice">                     
+                                        <div class="grid-">
+                                            <mat-form-field class="full-width">
+                                            <mat-label>Enter Price</mat-label>
+                                                <input matInput type="text" placeholder="Enter Price" [disabled]="!slideToggle.checked">                    
+                                            </mat-form-field> 
+                                        </div>  
+                                        <div class="grid-itemOpenPrice">
+                                            <mat-slide-toggle #slideToggle >Open Price</mat-slide-toggle>
+                                        </div>
+                                        
+                                        </div>
+                                    </div>
+                                    <div class="grid-itemPriceCosting">                    
+                                        <mat-form-field class="full-width">
+                                            <mat-label>Preparation Time (Minutes)</mat-label>
+                                            <input matInput type="text" placeholder="Preparation Time (Minutes)">                    
+                                        </mat-form-field> 
+                                    </div>
+                                    
+                                        <div class="priceSched-row">     
+                                            <!--[for]="picker"-->
+                                            <mat-form-field class="priceSched-field">
+                                                    <mat-label>Enter Price Schedule</mat-label>
+                                                    <input matInput type="text"  placeholder="Enter Price Schedule" [disabled]="dateRangeValue === ''">
+                                            </mat-form-field>                            
+                                            <mat-form-field class="priceSched-field" id="dateRangeValue">
+                                                <mat-label>Enter a date range</mat-label>
+                                                <mat-date-range-input [rangePicker]="picker">
+                                                <input matStartDate placeholder="Start date">
+                                                <input matEndDate placeholder="End date">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                            </mat-form-field>
+
+                                        </div>
+                                    <div class="grid-itemPriceCosting"></div>
+                                    <div class="grid-itemPriceCosting">                      
+                                        <mat-form-field class="full-width">
+                                            <mat-label>Tags</mat-label>
+                                            <mat-select required>
+                                                <mat-option value="Tags 1">Tags 1</mat-option>
+                                                <mat-option value="Tags 2">Tags 2</mat-option>
+                                                <mat-option value="Tags 3">Tags 3</mat-option>
+                                                <mat-option value="Tags 4">Tags 4</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+
+
+                                    </div>
+
+                        </div>
+
+                        <div class="container-NetGrossWeight">
+
+                            <h3>Costing</h3>
+                                <div class="grid-containerNetGrossWeight">
+                                    
+                                    <div class="grid-itemNetGrossWeight">
+
+                                        <mat-form-field class="full-width">
+                                            <mat-label>Costing Method</mat-label>
+                                            <mat-select required>
+                                                <mat-option value="From Ingredient">From Ingredient</mat-option>
+                                                <mat-option value="From recipe">From recipe</mat-option>
+                                                <mat-option value="Fix">Fix</mat-option>
+                                                <mat-option value="Option">Option 4</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+
+
+
+                                    </div>
+                                    <div class="grid-itemNetGrossWeight">   
+                                        <mat-form-field class="full-width">
+                                            <mat-label>Cost %</mat-label>
+                                            <input matInput type="text" placeholder="0.0"  [readonly]="true">
+                                        </mat-form-field> 
+                                    </div>
+                                    <div class="grid-itemNetGrossWeight">
+                                        <mat-form-field class="full-width">
+                                        <mat-label>Net Weight</mat-label>
+                                        <input matInput type="text" placeholder="0.000">                    
+                                    </mat-form-field>  
+                                    </div>
+
+                                    <div class="grid-itemNetGrossWeight">
+                                        <mat-form-field class="full-width">
+                                        <mat-label>Gross Weight</mat-label>
+                                        <input matInput type="text" placeholder="0.000">                    
+                                    </mat-form-field>  
+                                    </div>
+
+                                    <div class="grid-itemNetGrossWeight">
+                                        <mat-form-field class="full-width">
+                                        <mat-label>Calories</mat-label>
+                                        <input matInput type="text" placeholder="0.000">                    
+                                    </mat-form-field>  
+                                    </div>
+                                    <div class="grid-itemNetGrossWeight">
+                                        <mat-form-field class="full-width">
+                                        <mat-label>Cost Amount</mat-label>
+                                        <input matInput type="text"  placeholder="0.0"  [readonly]="true">                    
+                                    </mat-form-field>  
+                                    </div>
+
+                                    <div class="grid-itemNetGrossWeight">     
+                
+                                        <mat-checkbox class="full-width">High Salt Content</mat-checkbox>        
+                                    </div>
+                            
+
+                                    <div class="grid-itemNetGrossWeight">
+                                        <mat-form-field class="full-width">
+                                        <mat-label>Markup</mat-label>
+                                        <input matInput type="text"  placeholder="0.0" [readonly]="true">                    
+                                    </mat-form-field>  
+                                    </div>
+
+                                
+                                </div>
+                        </div>
+
+                        <div class="container-accordion">
+                            <button matButton type="button" (click)="accordion().openAll()">Expand All</button>
+                            <button matButton type="button" (click)="accordion().closeAll()">Collapse All</button>
+                            <mat-accordion multi class="accordion-container">
+                                <mat-expansion-panel expanded>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title> <mat-icon
+                                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">insert_invitation</mat-icon>
+                                            Creation Details </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div class="creation-details-table-container">
+                                        <table>
+                                            <colgroup>
+                                                <col span="4" class="creation-details-table">
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th>Created By</th>
+                                                    <th>Created At</th>
+                                                    <th>Last Modified By</th>
+                                                    <th>Last Modified At</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Agie Arellano</td>
+                                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                                    <td>Agie Arellano</td>
+                                                    <td>Sep 1, 2025, 03:17 PM</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </mat-expansion-panel>
+                                
+                                
+                                
+                                <mat-expansion-panel expanded>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title> <mat-icon
+                                                style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">menu_book</mat-icon>
+                                            Assigned Store </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <mat-chip-set>
+                                        <mat-chip>
+                                            Store 1
+                                            <button matChipRemove>
+                                                <mat-icon>cancel</mat-icon>
+                                            </button>
+                                        </mat-chip>
+                                        <mat-chip>
+                                            Store 2
+                                            <button matChipRemove>
+                                                <mat-icon>cancel</mat-icon>
+                                            </button>
+                                        </mat-chip>
+                                        <mat-chip>
+                                            Store 3
+                                            <button matChipRemove>
+                                                <mat-icon>cancel</mat-icon>
+                                            </button>
+                                        </mat-chip>
+                                        <mat-chip>
+                                            Store 4
+                                            <button matChipRemove>
+                                                <mat-icon>cancel</mat-icon>
+                                            </button>
+                                        </mat-chip>
+                                    </mat-chip-set>
+                                </mat-expansion-panel>
+                                
+                                <mat-expansion-panel expanded>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title> <mat-icon
+                                            >store</mat-icon>
+                                            Inactive Store(s) </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <mat-chip-set>
+                                        <table class="full-width" >
+                                        <tr>
+                                            <ng-container matColumnDef="Name">
+                                                <th mat-header-cell  mat-sort-header> Store name </th>                            
+                                            </ng-container>
+                                            <ng-container >                
+                                            <td mat-cell > &nbsp;</td>
+                                        </ng-container>
+                                        <ng-container >                
+                                            <td mat-cell > 
+                                                &nbsp;
+                                            </td>
+                                        </ng-container>
+                                        </tr>
+                                        <tr>
+                                        <ng-container matColumnDef="Name">               
+                                            <td mat-cell >
+                                                    <mat-form-field>
+                                                        <mat-label>Select Store</mat-label>
+                                                        <mat-select required>
+                                                            <mat-option value="Store 1">Store 1</mat-option>
+                                                            <mat-option value="Store 2">Store 2</mat-option>
+                                                            <mat-option value="Store 3">Store 3</mat-option>
+                                                            <mat-option value="Store 4">Store 4</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container >                
+                                            <td mat-cell > 
+                                                <mat-slide-toggle >Change to Active</mat-slide-toggle> 
+                                            </td>
+                                        </ng-container>
+
+                                        <ng-container>                
+                                            <td mat-cell >
+                                            <button matFab aria-label="Delete">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>    
+                                            </td>
+                                        </ng-container>
+                                        </tr>
+                                        </table>
+                                        <div class="full-width divAddStore">
+                                            <button type="button" matButton class="btnRadius">
+                                            Click add Store
+                                            </button>
+                                        </div>
+                                    </mat-chip-set>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </div>
+
+
+
+                    </div>
+
+            </mat-tab>
+            <mat-tab label="Properties">
+
+                    <div class="container-accordion">
+                <button matButton type="button" (click)="accordion().openAll()">Expand All</button>
             <button matButton type="button" (click)="accordion().closeAll()">Collapse All</button>
             <mat-accordion multi class="accordion-container">
                 <mat-expansion-panel expanded>
                     <mat-expansion-panel-header>
                         <mat-panel-title> <mat-icon
                                 style="margin-right: 20px; font-weight: 0; color: rgb(92, 92, 92);">insert_invitation</mat-icon>
-                            Creation Details </mat-panel-title>
+                            Modifier </mat-panel-title>
                     </mat-expansion-panel-header>
                     <div class="creation-details-table-container">
                         <table>
@@ -363,9 +482,7 @@
                             </tbody>
                         </table>
                     </div>
-                </mat-expansion-panel>
-                
-                
+                </mat-expansion-panel>            
                 
                 <mat-expansion-panel expanded>
                     <mat-expansion-panel-header>
@@ -403,9 +520,8 @@
                 
                 <mat-expansion-panel expanded>
                     <mat-expansion-panel-header>
-                        <mat-panel-title> <mat-icon
-                               >store</mat-icon>
-                            Inactive Store(s) </mat-panel-title>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                            Set of Stock </mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-chip-set>
                         <table mat-table class="full-width" >
@@ -416,9 +532,9 @@
                             <ng-container >                
                             <td mat-cell > &nbsp;</td>
                         </ng-container>
-                          <ng-container >                
+                            <ng-container >                
                             <td mat-cell > 
-                                 &nbsp;
+                                    &nbsp;
                             </td>
                         </ng-container>
                         </tr>
@@ -426,7 +542,7 @@
                         <ng-container matColumnDef="Name">               
                             <td mat-cell >
                                     <mat-form-field>
-                                        <mat-label>Select Store</mat-label>
+                                        <mat-label>Change to in Stock</mat-label>
                                         <mat-select required>
                                             <mat-option value="Store 1">Store 1</mat-option>
                                             <mat-option value="Store 2">Store 2</mat-option>
@@ -452,7 +568,183 @@
                         </ng-container>
                         </tr>
                         </table>
-                          <div class="full-width divAddStore">
+                            <div class="full-width divAddStore">
+                            <button type="button" matButton class="btnRadius">
+                            Click add Store
+                            </button>
+                        </div>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+
+
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                            Promotion</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <table mat-table class="full-width" >
+                        <tr>
+                            <ng-container matColumnDef="Name">
+                                <th > Name </th>                            
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Reference</td>
+                            </ng-container>
+            
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Meal Promotion
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Meal Promotion For Week end
+                            </td>
+                        </ng-container>
+                        </tr>
+                        
+                        </table>
+                            <div class="full-width divAddStore">
+                            <button type="button" matButton class="btnRadius">
+                            Click add Store
+                            </button>
+                        </div>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+
+
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                            Price-List</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <table mat-table class="full-width" >
+                        <tr>
+                            <ng-container matColumnDef="Name">
+                                <td > Name </td>                            
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Store</td>
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Price</td>
+                            </ng-container>                            
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Meal Promotion
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Meal Promotion For Week end
+                            </td>
+                        </ng-container>
+                        </tr>
+                        
+                        </table>
+                            <div class="full-width divAddStore">
+                            <button type="button" matButton class="btnRadius">
+                            Click add Store
+                            </button>
+                        </div>
+                    </mat-chip-set>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel expanded>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title> <mat-icon>store</mat-icon>
+                            Nutrition Values</mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-chip-set>
+                        <table mat-table class="full-width" >
+                        <tr>
+                            <ng-container matColumnDef="Name">
+                                <td > Name </td>                            
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > Value</td>
+                            </ng-container>
+                            <ng-container >                
+                                <td mat-cell > UOM</td>
+                            </ng-container>                            
+                        </tr>
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Happy Hour ECT
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                grams
+                            </td>
+                        </ng-container>
+                        </tr>
+
+                        <tr>
+                        <ng-container matColumnDef="Name">               
+                            <td mat-cell >
+                                Meal Promotion
+                            </td>
+                        </ng-container>
+
+                        <ng-container >                
+                            <td mat-cell > 
+                                Meal Promotion For Week end
+                            </td>
+                        </ng-container>
+
+                                            <ng-container >                
+                            <td mat-cell > 
+                                mg
+                            </td>
+                        </ng-container>
+                        </tr>
+
+                        
+                        </table>
+                            <div class="full-width divAddStore">
                             <button type="button" matButton class="btnRadius">
                             Click add Store
                             </button>
@@ -464,10 +756,237 @@
 
 
 
-         </div>
+                    </div>
+
+            </mat-tab>
+            <mat-tab label="Allergens">
+
+                <div class="tableContainer">
+                    <table mat-table  class="full-width mat-elevation-z8" >
+                        <ng-container matColumnDef="Items">
+                            <tr mat-header-row >
+                            <td mat-header-cell > Items </td>
+                            <td> DOES NOT CONTAIN </td>
+                            <td> MAY CONTAIN </td>
+                            <td> CONTAINS </td>
+                            </tr>
+                        </ng-container>
+
+                        <ng-container matColumnDef="">
+                            <tr mat-row>
+                        <td mat-cell >Casein </td>
+                        <td mat-cell > 
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>
+                            </td>
+                        <td mat-cell >
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>                
+                            </td>
+                        <td mat-cell > 
+                                <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>
+                        </td>
+                        </tr>
+                        </ng-container>
+
+                        <ng-container matColumnDef="">
+                            <tr mat-row>
+                        <td mat-cell >Crustacean</td>
+                        <td mat-cell > 
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>
+                            </td>
+                        <td mat-cell >
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>                
+                            </td>
+                        <td mat-cell > 
+                                <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>
+                        </td>
+                        </tr>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="">
+                            <tr mat-row>
+                        <td mat-cell>Molluscs</td>
+                        <td mat-cell > 
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>
+                            </td>
+                        <td mat-cell >
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>                
+                            </td>
+                        <td mat-cell > 
+                                <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button value="1"></mat-radio-button>
+                            </mat-radio-group>
+                        </td>
+                        </tr>
+                        </ng-container>
+
+                        
+
+
+
+                    </table>
+                </div>
+
+            </mat-tab>
+
+            <mat-tab label="Recipes"> 
+                    <div class="container-flex2">
+            <button matButton="outlined" class="btnRadius">
+                Recipe
+            </button>
+            <button matButton="outlined" class="btnRadius">
+                Item Type
+            </button>
+
+            <button matButton="outlined" class="btnRadius">
+                Name
+            </button>
+                        <button matButton="outlined" class="btnRadius">
+                Load Recipe
+            </button>
+            <button matButton="outlined" class="btnRadius">
+                Clear all
+            </button>
+                    </div>
+                    <div>
+                        <!--formControlName="itemName" -->
+                        <table>
+                            <tr>
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Name</mat-label>
+                                        <input matInput type="text"  placeholder=" Name"   >             
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Net QTY</mat-label>
+                                        <input matInput type="text"  placeholder=" Net QTY"   >             
+                                    </mat-form-field>
+                                </td>   
+                                        <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Yeild % </mat-label>
+                                        <input matInput type="text"  placeholder=" Yeild %"   >             
+                                    </mat-form-field>
+                                </td>
+                                        <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Waste QTY</mat-label>
+                                        <input matInput type="text"  placeholder=" Waste QTY"   >             
+                                    </mat-form-field>
+                                </td>
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Prep. Wastage</mat-label>
+                                        <input matInput type="text"  placeholder=" Prep. Wastage"   >             
+                                    </mat-form-field>
+                                </td> 
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Gross Qty</mat-label>
+                                        <input matInput type="text"  placeholder="Gross Qty"   >             
+                                    </mat-form-field>
+                                </td>  
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Modifier</mat-label>
+                                        <input matInput type="text"  placeholder="Modifier"   >             
+                                    </mat-form-field>
+                                </td>  
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Incl. In Cost</mat-label>
+                                        <input matInput type="text"  placeholder="Incl. In Cost"   >             
+                                    </mat-form-field>
+                                </td>              
+
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Cost Per Unit</mat-label>
+                                        <input matInput type="text"  placeholder="Cost Per Unit"   >             
+                                    </mat-form-field>
+                                </td> 
+                                <td>
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Total Cost</mat-label>
+                                        <input matInput type="text"  placeholder="Total Cost">             
+                                    </mat-form-field>
+                                </td>   
+                            </tr>
+                            <tr>
+                                <td>            
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Start Typing to find an item</mat-label>
+                                        <input matInput type="text"  placeholder="" >             
+                                    </mat-form-field>
+                                </td>
+                                    <td colspam="9"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="10">   <button matButton="outlined" class="btnRadius">
+                                Click to Add Recipe or Sub-Recipe
+                            </button></td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+    
+            </mat-tab>
+
+        </mat-tab-group>
+
+    </div>
+  
+    
+</form>
 
 
 <!--
+
+
+ 
+
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
+            Item Details
+        </button>
+        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/properties']">
+            Properties
+        </button>
+
+        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/allergens']">
+            Allergens
+        </button>
+        <button type="button" mat-flat-button class="btnRadius" [routerLink]="['/menu/item/recipe']">
+            Recipes
+        </button>        
+
+        <button type="button" mat-stroked-button class="btnRadius" [routerLink]="['/menu/item']">
+            Cancel
+        </button>
+        <button type="button" mat-flat-button class="btnRadius">
+            Save
+        </button>
+
+
+
         <div class="container-CreationDetail">
             <h3>Creation Details</h3>
                     <div class="grid-CreationDetail">
@@ -534,8 +1053,3 @@
 
         </div>
 -->
-
-    </div>
-</form>
-
-

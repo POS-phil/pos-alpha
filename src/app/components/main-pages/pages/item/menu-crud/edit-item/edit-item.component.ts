@@ -24,6 +24,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { BooleanInput } from '@angular/cdk/coercion';
 import { MatCheckbox } from "@angular/material/checkbox";
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatTabGroup,MatTab } from "@angular/material/tabs";
+import { MatRadioGroup, MatRadioButton } from "@angular/material/radio";
+//import {  } from "../../../../../../../../node_modules/@angular/material/radio/index";
 //import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from "../../../../../../../../../node_modules/@angular/material/expansion/index";
 
 
@@ -51,11 +54,13 @@ import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionP
     MatAccordion,
     MatExpansionPanel,
     MatExpansionPanelHeader,
-    MatExpansionPanelTitle
+    MatExpansionPanelTitle,
+    MatTabGroup,
+    MatTab,
+    MatRadioGroup,
+    MatRadioButton
 ],
-providers: [  
-  MatDatepickerModule,  
-],
+
 
   templateUrl: './edit-item.component.html',
   styleUrl: './edit-item.component.scss'
