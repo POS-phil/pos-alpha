@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { SortingVerificationComponent } from '../category-dialogs/sorting-verification/sorting-verification.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-category-sort-level0',
@@ -24,7 +25,8 @@ import { SortingVerificationComponent } from '../category-dialogs/sorting-verifi
     MatIconModule,
     MatTooltipModule,
     MatButtonModule,
-    RouterModule
+    RouterModule,
+    MatSelectModule
   ],
   providers: [
     MenuCategoriesService,
