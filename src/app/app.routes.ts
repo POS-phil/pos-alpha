@@ -172,8 +172,13 @@ export const routes: Routes = [
             },
             {
                 path: 'product-list/category/sort-category',
-                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort/category-sort.component').then(m => m.CategorySortComponent),
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort-level0/category-sort-level0.component').then(m => m.CategorySortLevel0Component),
                 title: 'Product List/ Category / Sort Component'
+            },
+            {
+                path: 'product-list/category/:categoryId/sort-category/:categoryName',
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort-level1/category-sort-level1.component').then(m => m.CategorySortLevel1Component),
+                title: 'Product List/ Category / Sort Component / level 1'
             },
             //#######END OF CATEGORY PAGES##################
             {
@@ -210,4 +215,3 @@ export const routes: Routes = [
             }
         ]
 ;
-//############END OF CATEGORY PAGES##################
