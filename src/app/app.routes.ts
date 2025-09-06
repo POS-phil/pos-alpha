@@ -140,11 +140,43 @@ export const routes: Routes = [
                     },
                 ]
             },
+
             {
-                path: 'addons-builder/modifier-group/create_modifier',
-                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-group/mg_create/create-modifier/create-modifier.component').then(m => m.CreateModifierComponent),
-                title: 'Create Modifier'
+                path: 'modifier-option',
+                loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/modifier-option/modifier-option.component').then(m => m.ModifierOptionComponent),
+                title: 'Product Lists / Modifier Option',
             },
+                ]  
+            },
+            //############CATEGORY PAGES######################
+            {
+                path: 'product-list/category',
+                loadComponent: () => import('./components/main-pages/pages/category/category.component').then(m => m.CategoryComponent),
+                title: 'Product List / Categories'
+
+            },
+            {
+                path: 'product-list/category/add-category',
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/add-category/add-category.component').then(m => m.AddCategoryComponent),
+                title: 'Product List/ Category / Add Category'
+            },
+            {
+                path: 'product-list/category/:categoryId/edit-category',
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/edit-category/edit-category.component').then(m => m.EditCategoryComponent),
+                title: 'Product List/ Category / Edit Category'
+            },
+            {
+                path: 'product-list/category/sort-category',
+                loadComponent: () => import('./components/main-pages/pages/category/category-crud/category-sort/category-sort.component').then(m => m.CategorySortComponent),
+                title: 'Product List/ Category / Sort Component'
+            },
+            //#######END OF CATEGORY PAGES##################
+            {
+                path: 'menu/item/add-item',
+                loadComponent: () => import('./components/main-pages/pages/item/menu-crud/create-item/create-item.component').then(m => m.CreateItemComponent),
+                title: 'Create Item'
+            },
+         
             {
                 path: 'addons-builder/modifier-option/create_modifier_option',
                 loadComponent: () => import('./components/main-pages/tab-container/pages/menu-pages/menu-crud/create-modifier-option/create-modifier-option.component').then(m => m.CreateModifierOptionComponent),
@@ -172,6 +204,5 @@ export const routes: Routes = [
                 title: 'Test Page'
             }
         ]
-    },
-
-];
+;
+//############END OF CATEGORY PAGES##################
