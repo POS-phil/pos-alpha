@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { MenuCategoriesService } from '../../../../../../service/api/menu-categories/menu-categories.service';
 import { CategorySort } from '../../../../../../common/categories';
@@ -7,8 +7,11 @@ import { NotificationService } from '../../../../../../service/notifications/not
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { MenuItem } from 'primeng/api';
 import { MatIconModule } from '@angular/material/icon';
-import { k } from "../../../../../../../../node_modules/@angular/material/module.d-m-qXd3m8";
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { Router, RouterModule } from '@angular/router';
+import { SortingVerificationComponent } from '../category-dialogs/sorting-verification/sorting-verification.component';
 
 @Component({
   selector: 'app-category-sort-level0',
@@ -19,8 +22,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     //CdkDragHandle,
     Breadcrumb,
     MatIconModule,
-    MatTooltipModule
-],
+    MatTooltipModule,
+    MatButtonModule,
+    RouterModule
+  ],
   providers: [
     MenuCategoriesService,
     NotificationService
@@ -31,16 +36,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class CategorySortLevel0Component implements OnInit {
 
+  readonly dialog = inject(MatDialog);
+
   categoryToSort: CategorySort[] = [];
   items: MenuItem[] | undefined;
 
   constructor(
     private categoryService: MenuCategoriesService,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private router : Router
   ) { }
 
   ngOnInit(): void {
-    this.items = [{ label: 'Categories', routerLink: '/product-list/category' }, { label: 'Sort Categories'}]
+    this.items = [{ label: 'Categories', routerLink: '/product-list/category' }, { label: 'Sort Categories' }]
     this.getCategoriesToSortLevel0();
   }
 
@@ -48,7 +56,6 @@ export class CategorySortLevel0Component implements OnInit {
     this.categoryService.getAllCategoryLevel0Sort().subscribe({
       next: (data: CategorySort[]) => {
         this.categoryToSort = data;
-        
       },
       error: (error: HttpErrorResponse) => {
         console.error('Error fetching menu categories', error);
@@ -69,8 +76,21 @@ export class CategorySortLevel0Component implements OnInit {
     })
   }
 
-  openDialog() {
-    console.log("yow")
+  openDialogCheckIfHasChildOrItems(category: CategorySort) {
+    const dialogRef = this.dialog.open(SortingVerificationComponent, {
+      width: '400px',
+      height: '300px',
+      data: { categoryId: category.categoryId, categoryName: category.categoryName },
+      panelClass: 'sort-checker-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe(choice  => {
+      if(choice === 'subcategories'){
+        this.router.navigate(['product-list/category', category.categoryId ,'sort-category', category.categoryName]);
+      } else {
+        //this.router.navigate(['product-list/category/', category.categoryId ,'sort-category/']);
+      }
+    });
   }
 
 }

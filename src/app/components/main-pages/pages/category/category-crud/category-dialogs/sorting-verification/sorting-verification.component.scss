@@ -1,0 +1,32 @@
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 20px;
+}
+
+p{
+    display: flex;
+    gap: 10px;
+}
+
+.category-name {
+    width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 700;
+    display: block;
+}
+
+button {
+    border-radius: 5px;
+}
+
+h2{
+    display: flex;
+    text-align: center;
+    margin-top: 10px;
+    align-items: center;
+    gap: 10px;
+}

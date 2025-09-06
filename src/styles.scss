@@ -95,6 +95,18 @@ app-main-layout>app-side-nav {
     padding: 10rem;
 }
 
+.mat-mdc-dialog-surface{
+  border-radius: 5px !important;
+}
+
+.icon-helper{
+    font-size: 20px;
+    font-weight: 600;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
 .snackbar-success {
     @include mat.snack-bar-overrides((container-shape: 0px,
             container-color: #ece0d1,

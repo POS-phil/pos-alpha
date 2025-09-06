@@ -59,8 +59,7 @@ export class MenuCategoriesService {
   }
 
   validateParent(categoryId: number, parentId: number): Observable<{ valid: boolean }> {
-    return this.http.get<{ valid: boolean }>(`${this.menuCategoriesApiUrl}/${categoryId}/validate-parent/${parentId}`
-    );
+    return this.http.get<{ valid: boolean }>(`${this.menuCategoriesApiUrl}/${categoryId}/validate-parent/${parentId}`);
   }
 
   getAllCategoryLevel0Sort(): Observable<CategorySort[]> {
@@ -71,4 +70,13 @@ export class MenuCategoriesService {
     const payload = categories.map(c => ({ categoryId: c.categoryId, sortNumber: c.sortNumber }));
     return this.http.put<void>(`${this.menuCategoriesApiUrl}/update-category-sort-level0`, payload);
   }
+
+  hasChildren(categoryId : number) : Observable<boolean>{
+    return this.http.get<boolean>(`${this.menuCategoriesApiUrl}/${categoryId}/has-children`);
+  }
+
+  getAllCategoryChildren(categoryId : number) : Observable<CategorySort[]> {
+    return this.http.get<CategorySort[]>(`${this.menuCategoriesApiUrl}/${categoryId}/children`);
+  }
+  
 }
